@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find Out If Solar Makes Financial Sense For Your Home:  Free 2-Minute Assessment</title>
-<meta name="description" content="Answer a few quick questions, and a 9-point eligibility check matches you with a vetted solar installer in your city  free personalised ROI, payback period and package match.">
+<title>Find Out If Solar Makes Financial Sense For Your Home: Free 2-Minute Assessment</title>
+<meta name="description" content="Answer a few quick questions and a 9-point eligibility check matches you with a vetted solar installer in your city. Free personalised ROI, payback period and package match.">
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
-   EDIT THIS SECTION FOR EACH NEW INSTALLER  nothing else in this
+   EDIT THIS SECTION FOR EACH NEW INSTALLER. Nothing else in this
    file needs to change. This is the ONLY place installer details,
    packages, and the active tier live. One file per installer.
    ══════════════════════════════════════════════════════════════════ */
@@ -18,6 +18,10 @@ const SITE_CONFIG = {
   installer: {
     businessName: "GreenerAfrik Energies",
     whatsapp: "2349034308140",
+    // Every disqualified / not-a-fit lead is routed here instead, so
+    // GreenerAfrik's line only ever receives buyers they are paying for.
+    // This one is Tubalcain's, for nurture and future re-engagement.
+    unqualifiedWhatsapp: "2348029234994",
     cityLabel: "Ibadan, Oyo State",
     locations: [
       "Bodija (Old & New)",
@@ -37,13 +41,13 @@ const SITE_CONFIG = {
   // ── THE PERSON ASKING THE QUESTIONS ──
   // Shown as a circular photo on the intro and on the result page, so the
   // assessment reads as a personal consultation rather than a form.
-  // PLACEHOLDER:  replace name/title and drop the real photo at
+  // PLACEHOLDER: replace name/title and drop the real photo at
   // assets/rep.jpg (square crop, face centred, 400x400 or larger).
   rep: {
-    name: "[Caleb Ayomide]",
+    name: "Caleb",
     title: "Co-Founder, GreenerAfrik Energies",
     photo: "assets/rep.jpg",
-    introLine: "I'll take you through this myself,  answer a few honest questions, and I'll show you exactly what solar would cost your home, and what it would save you.",
+    introLine: "I'll take you through this myself. Answer a few honest questions and I'll show you exactly what solar would cost your home, and what it would save you.",
   },
 
   // ── ACTIVE TIER ──
@@ -52,16 +56,16 @@ const SITE_CONFIG = {
     active: true,
     packages: [
       // These two sit below GreenerAfrik's entry system. They are presented
-      // exactly like every other option:  same format, same detail, no hint
+      // exactly like every other option: same format, same detail, no hint
       // that they fail a gate. A visible "below minimum" label would just
       // teach people to click a higher bracket to get through.
-      { name: "Power Station",    priceLabel: "₦1,000,000  Power Station",         price: 1000000,  systemSize: "1 kVA · 1.2 kWh",  whatItPowers: "Lights, phone charging, a small fan", belowMinimum: true },
-      { name: "Power Station Plus", priceLabel: "₦1,500,000  Power Station Plus",  price: 1500000,  systemSize: "1.5 kVA · 2.4 kWh", whatItPowers: "Lights, TV, fans, Wi-Fi, laptop charging", belowMinimum: true, recoverable: true },
-      { name: "Essential Home",   priceLabel: "₦1,770,000  Essential Home",     price: 1770000,  systemSize: "2 kVA · 3.6 kWh",  whatItPowers: "Lights, TV, fans, Wi-Fi, laptops, phone charging" },
-      { name: "Comfort Home",     priceLabel: "₦3,980,000  Comfort Home",       price: 3980000,  systemSize: "5 kVA · 7.2 kWh",  whatItPowers: "Essentials + fridge, multiple fans, more appliances" },
-      { name: "Lifestyle Home",   priceLabel: "₦4,720,000  Lifestyle Home",     price: 4720000,  systemSize: "6 kVA · 10 kWh",   whatItPowers: "Larger household  fridge, entertainment, home office" },
-      { name: "Signature Home",   priceLabel: "₦7,540,000  Signature Home",     price: 7540000,  systemSize: "10 kVA · 15 kWh",  whatItPowers: "Premium home  air conditioning, multiple fridges, full home office" },
-      { name: "Extravagant Home", priceLabel: "₦13,870,000  Extravagant Home",  price: 13870000, systemSize: "16 kVA · 30 kWh",  whatItPowers: "Large luxury residence  multiple ACs, smart home, entertainment zones" },
+      { name: "Power Station",    priceLabel: "₦1,000,000 · Power Station",         price: 1000000,  systemSize: "1 kVA · 1.2 kWh",  whatItPowers: "Lights, phone charging, a small fan", belowMinimum: true },
+      { name: "Power Station Plus", priceLabel: "₦1,500,000 · Power Station Plus",  price: 1500000,  systemSize: "1.5 kVA · 2.4 kWh", whatItPowers: "Lights, TV, fans, Wi-Fi, laptop charging", belowMinimum: true, recoverable: true },
+      { name: "Essential Home",   priceLabel: "₦1,770,000 · Essential Home",     price: 1770000,  systemSize: "2 kVA · 3.6 kWh",  whatItPowers: "Lights, TV, fans, Wi-Fi, laptops, phone charging" },
+      { name: "Comfort Home",     priceLabel: "₦3,980,000 · Comfort Home",       price: 3980000,  systemSize: "5 kVA · 7.2 kWh",  whatItPowers: "Essentials + fridge, multiple fans, more appliances" },
+      { name: "Lifestyle Home",   priceLabel: "₦4,720,000 · Lifestyle Home",     price: 4720000,  systemSize: "6 kVA · 10 kWh",   whatItPowers: "Larger household: fridge, entertainment, home office" },
+      { name: "Signature Home",   priceLabel: "₦7,540,000 · Signature Home",     price: 7540000,  systemSize: "10 kVA · 15 kWh",  whatItPowers: "Premium home: air conditioning, multiple fridges, full home office" },
+      { name: "Extravagant Home", priceLabel: "₦13,870,000 · Extravagant Home",  price: 13870000, systemSize: "16 kVA · 30 kWh",  whatItPowers: "Large luxury residence: multiple ACs, smart home, entertainment zones" },
     ],
   },
 
@@ -726,10 +730,10 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-hint">Solar installation requires property authority. This affects your eligibility.</div>
   <div class="options" id="q3-opts">
     <label class="option" data-val="owner"><div class="option-radio"></div><div><div class="option-text">I own the property</div></div></label>
-    <label class="option" data-val="renter-permission"><div class="option-radio"></div><div><div class="option-text">I rent  and I have my landlord's written permission</div></div></label>
-    <label class="option" data-val="family"><div class="option-radio"></div><div><div class="option-text">Family house  I have authority to install</div></div></label>
-    <label class="option" data-val="renter-no"><div class="option-radio"></div><div><div class="option-text">I rent  but I do not have landlord's permission</div></div></label>
-    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent, but  I'm not sure if I can get permission</div></div></label>
+    <label class="option" data-val="renter-permission"><div class="option-radio"></div><div><div class="option-text">I rent, and I have my landlord's written permission</div></div></label>
+    <label class="option" data-val="family"><div class="option-radio"></div><div><div class="option-text">Family house, and I have authority to install</div></div></label>
+    <label class="option" data-val="renter-no"><div class="option-radio"></div><div><div class="option-text">I rent, but I do not have landlord's permission</div></div></label>
+    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent, and I'm not sure if I can get permission</div></div></label>
   </div>
   <button class="next-btn" id="q3-next" disabled onclick="nextQ3()">Continue <span>→</span></button>
 </div>
@@ -742,11 +746,11 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text">When are you realistically planning to install solar?</div>
   <div class="q-hint">We serve homeowners with a confirmed installation window within 90 days.</div>
   <div class="options" id="q4-opts">
-    <label class="option" data-val="0-14days"><div class="option-radio"></div><div><div class="option-text">Immediately  within the next 2 weeks</div></div></label>
-    <label class="option" data-val="2-4weeks"><div class="option-radio"></div><div><div class="option-text">Soon  within the next month</div></div></label>
+    <label class="option" data-val="0-14days"><div class="option-radio"></div><div><div class="option-text">Immediately, within the next 2 weeks</div></div></label>
+    <label class="option" data-val="2-4weeks"><div class="option-radio"></div><div><div class="option-text">Soon, within the next month</div></div></label>
     <label class="option" data-val="1-3months"><div class="option-radio"></div><div><div class="option-text">Within 1–3 months</div></div></label>
     <label class="option" data-val="3-6months"><div class="option-radio"></div><div><div class="option-text">In 3–6 months</div></div></label>
-    <label class="option" data-val="info-only"><div class="option-radio"></div><div><div class="option-text">Just gathering information  no firm timeline</div></div></label>
+    <label class="option" data-val="info-only"><div class="option-radio"></div><div><div class="option-text">Just gathering information, no firm timeline</div></div></label>
   </div>
   <button class="next-btn" id="q4-next" disabled onclick="nextQ4()">Continue <span>→</span></button>
 </div>
@@ -761,7 +765,7 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="options" id="q5-opts"><!-- populated from SITE_CONFIG at load --></div>
   <div class="load-estimate" id="q5-load-estimate" style="display:none;">
     <div class="lval" id="q5-load-kva"></div>
-    <div class="llbl">Estimated system size  your installer confirms the exact fit on-site</div>
+    <div class="llbl">Estimated system size. Your installer confirms the exact fit on-site</div>
     <div class="lmatch" id="q5-load-match"></div>
   </div>
   <button class="next-btn" id="q5-next" disabled onclick="nextQ5()">Continue <span>→</span></button>
@@ -776,8 +780,8 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text" id="q5r-text">Many homeowners in your range install using a payment plan.</div>
   <div class="q-hint" id="q5r-hint">Would you like to see instalment options for a package in this range?</div>
   <div class="options" id="q5r-opts">
-    <label class="option" data-val="yes"><div class="option-radio"></div><div><div class="option-text">Yes  show me instalment options</div></div></label>
-    <label class="option" data-val="no"><div class="option-radio"></div><div><div class="option-text">No  full payment only works for me</div></div></label>
+    <label class="option" data-val="yes"><div class="option-radio"></div><div><div class="option-text">Yes, show me instalment options</div></div></label>
+    <label class="option" data-val="no"><div class="option-radio"></div><div><div class="option-text">No, full payment only works for me</div></div></label>
   </div>
   <button class="next-btn" id="q5r-next" disabled onclick="nextQ5r()">Continue <span>→</span></button>
 </div>
@@ -790,17 +794,17 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text">Quick home check:  do any of these apply to your property?</div>
   <div class="q-hint">Select all that apply. This does not disqualify you;  the flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
   <div class="options" id="q6-opts">
-    <label class="option" data-val="roof" data-flag="Roof has leaks or is noticeably weak  needs inspection before installation">
+    <label class="option" data-val="roof" data-flag="Roof has leaks or is noticeably weak, needs inspection before installation">
       <div class="option-radio"></div><div><div class="option-text">Roof has leaks or feels old / weak</div></div>
     </label>
-    <label class="option" data-val="shade" data-flag="Trees or buildings shade the roof  sun exposure needs site assessment">
+    <label class="option" data-val="shade" data-flag="Trees or buildings shade the roof, sun exposure needs site assessment">
       <div class="option-radio"></div><div><div class="option-text">Trees or tall buildings heavily shade the roof</div></div>
     </label>
-    <label class="option" data-val="electrical" data-flag="Electrical issues reported (tripping / burnt sockets / flickering)  wiring inspection required">
-      <div class="option-radio"></div><div><div class="option-text">Electrical problems  frequent tripping, burnt sockets or flickering lights</div></div>
+    <label class="option" data-val="electrical" data-flag="Electrical issues reported (tripping / burnt sockets / flickering), wiring inspection required">
+      <div class="option-radio"></div><div><div class="option-text">Electrical problems: frequent tripping, burnt sockets or flickering lights</div></div>
     </label>
     <label class="option" data-val="none">
-      <div class="option-radio"></div><div><div class="option-text">None of these  my home is ready</div><div class="option-sub">Solid roof, full sunlight, no electrical faults</div></div>
+      <div class="option-radio"></div><div><div class="option-text">None of these, my home is ready</div><div class="option-sub">Solid roof, full sunlight, no electrical faults</div></div>
     </label>
   </div>
   <button class="next-btn" id="q6-next" disabled onclick="nextQ6()">Continue <span>→</span></button>
@@ -814,10 +818,10 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text">Are you currently in active discussions with another solar installer?</div>
   <div class="q-hint">Comparing options is fine;  only a signed or near-signed commitment disqualifies.</div>
   <div class="options" id="q7-opts">
-    <label class="option" data-val="no-installer"><div class="option-radio"></div><div><div class="option-text">No  I haven't spoken to any installer yet</div></div></label>
+    <label class="option" data-val="no-installer"><div class="option-radio"></div><div><div class="option-text">No, I haven't spoken to any installer yet</div></div></label>
     <label class="option" data-val="browsing"><div class="option-radio"></div><div><div class="option-text">I've browsed but haven't committed to anyone</div></div></label>
     <label class="option" data-val="have-price"><div class="option-radio"></div><div><div class="option-text">I have a price but am open to compare options</div></div></label>
-    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes,  I'm in active talks / about to sign with someone</div></div></label>
+    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes, I'm in active talks / about to sign with someone</div></div></label>
   </div>
   <button class="next-btn" id="q7-next" disabled onclick="nextQ7()">Continue <span>→</span></button>
 </div>
@@ -830,10 +834,10 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text">How are you planning to pay for your system?</div>
   <div class="q-hint">This helps your installer show you the right payment options from the first message.</div>
   <div class="options" id="q8-opts">
-    <label class="option" data-val="full"><div class="option-radio"></div><div><div class="option-text">Full payment  I have the funds ready</div></div></label>
+    <label class="option" data-val="full"><div class="option-radio"></div><div><div class="option-text">Full payment, I have the funds ready</div></div></label>
     <label class="option" data-val="part"><div class="option-radio"></div><div><div class="option-text">Part payment now, balance spread over instalments</div></div></label>
     <label class="option" data-val="financing"><div class="option-radio"></div><div><div class="option-text">I would need a financing or instalment plan</div></div></label>
-    <label class="option" data-val="unsure"><div class="option-radio"></div><div><div class="option-text">Not sure yet  I'd like to see the options</div></div></label>
+    <label class="option" data-val="unsure"><div class="option-radio"></div><div><div class="option-text">Not sure yet, I'd like to see the options</div></div></label>
   </div>
   <button class="next-btn" id="q8-next" disabled onclick="nextQ8()">Continue <span>→</span></button>
 </div>
@@ -880,12 +884,13 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="dq-title">Solar May Not Be Right for You Yet</div>
   <div class="dq-body">Based on your current energy spend, a full solar installation is unlikely to give you a strong return on investment right now. The payback period would be too long to make financial sense.</div>
   <ul class="dq-reason-box">
-    <li>Combined spend below ₦30,000/month  the payback window stretches too far out</li>
+    <li>Combined spend below ₦30,000/month, so the payback window stretches too far out</li>
     <li>Solar investment is most profitable for homeowners spending ₦30k+ monthly</li>
     <li>Your energy costs don't yet justify a full system investment</li>
   </ul>
   <div class="dq-body">When your energy costs grow or you're ready for a larger system, we'll be here. In the meantime, a small inverter backup system may serve you well.</div>
-  <a href="#" class="dq-alt-btn" id="dq-spend-link">Download Our Free Solar Planning Guide →</a>
+  <a href="#" class="dq-alt-btn" id="dq-spend-link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Talk to Us About Your Options →</a>
+  <div style="margin-top:12px;"><a href="#" id="dq-spend-guide" target="_blank" rel="noopener" style="font-size:13.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Download the Free Solar Planning Guide</a></div>
 </div>
 
 <div class="dq-page" id="dq-ownership">
@@ -911,7 +916,8 @@ svg.icon{display:block;flex-shrink:0;}
     <li>Come back when you're within 3 months of your target install date</li>
   </ul>
   <div class="dq-body">In the meantime, download our free Solar Planning Guide to prepare your home and budget for when you're ready.</div>
-  <a href="#" class="dq-alt-btn" id="dq-timeline-link">Download Free Solar Planning Guide →</a>
+  <a href="#" class="dq-alt-btn" id="dq-timeline-link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Tell Us When You’ll Be Ready →</a>
+  <div style="margin-top:12px;"><a href="#" id="dq-timeline-guide" target="_blank" rel="noopener" style="font-size:13.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Download the Free Solar Planning Guide</a></div>
 </div>
 
 <div class="dq-page" id="dq-budget">
@@ -924,7 +930,8 @@ svg.icon{display:block;flex-shrink:0;}
     <li>Our minimum package ensures your system lasts 10–15 years</li>
   </ul>
   <div class="dq-body">If you're building towards a solar budget, our free planning guide shows you how to save strategically and what to budget for each system size.</div>
-  <a href="#" class="dq-alt-btn" id="dq-budget-link">Download Free Solar Budget Guide →</a>
+  <a href="#" class="dq-alt-btn" id="dq-budget-link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Ask About Payment Plan Options →</a>
+  <div style="margin-top:12px;"><a href="#" id="dq-budget-guide" target="_blank" rel="noopener" style="font-size:13.5px;color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Download the Free Solar Budget Guide</a></div>
 </div>
 
 <div class="dq-page" id="dq-installer">
@@ -1082,7 +1089,7 @@ svg.icon{display:block;flex-shrink:0;}
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
       Qualified  Site Details to Confirm
     </div>
-    <div class="result-title">Your Home Qualifies  A Few Details to Confirm On-Site</div>
+    <div class="result-title">Your Home Qualifies. A Few Details to Confirm On-Site</div>
     <div class="result-sub">Your energy spend and package qualify you. We'll confirm 1–2 flagged home conditions before installation  this is not a barrier to seeing prices now.</div>
     <div class="roi-grid">
       <div class="roi-card"><span class="roi-val blue" id="ra-payback"></span><div class="roi-lbl">Est. Payback Period</div></div>
@@ -1114,7 +1121,7 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="exit-overlay" id="exitOverlay">
   <div class="exit-modal">
     <div class="exit-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
-    <h3 id="exitHeadline">Wait  your ROI result is almost ready</h3>
+    <h3 id="exitHeadline">Wait, your ROI result is almost ready</h3>
     <p id="exitBody">Finish the remaining questions to see your payback period, monthly savings, and matched solar package. It takes under a minute.</p>
     <button class="exit-continue" id="exitContinue">Continue My Assessment →</button>
     <a class="exit-alt" id="exitGuide" href="#">I'm not ready;  send me the Free Solar Guide instead</a>
@@ -1253,16 +1260,73 @@ function typeHTML(target, html, opts){
   })();
 }
 
+// ══════════════════════════════════════════════════════
+// DISQUALIFIED-LEAD ROUTING
+// Every dead-end on this page goes to Tubalcain's own WhatsApp line,
+// never to GreenerAfrik's. GreenerAfrik only pays for buyers who pass
+// all nine gates, so their number must never receive a failed lead.
+// Each route also fires its own GA4 event carrying the reason, so
+// disqualified traffic is measurable instead of invisible.
+// ══════════════════════════════════════════════════════
+const UNQUALIFIED_ROUTES = {
+  'dq-spend-link':     { dq: 'dq-spend',     reason: 'Low energy spend (under ₦30k)',            msg: "Hi, I completed the solar assessment but my current power spend is below the threshold. I'd still like the free Solar Planning Guide and to hear when solar makes sense for me." },
+  'dq-timeline-link':  { dq: 'dq-timeline',  reason: 'Timeline too long or no timeline',         msg: "Hi, I completed the solar assessment. I'm not installing within 90 days yet, but I'd like the free Solar Planning Guide and a nudge when I'm closer." },
+  'dq-budget-link':    { dq: 'dq-budget',    reason: 'Below minimum package',                    msg: "Hi, I completed the solar assessment. My budget is below the entry system for now. Please send the free Solar Budget Guide and any payment-plan options." },
+  'dq-ownership-link': { dq: 'dq-ownership', reason: 'No property ownership / landlord permission', msg: "Hi, I'm a renter interested in solar. Can you help me understand the landlord permission process?" },
+  'dq-installer-link': { dq: 'dq-installer', reason: 'Already committed to another installer',   msg: 'Hi, I have a solar quote and would like a second opinion.' },
+  'dq-location-link':  { dq: 'dq-location',  reason: 'Out of service area',                      msg: 'Hi, I am interested in solar but my area is not yet covered. Please add me to your waitlist.' },
+};
+
 function bindGuideLinks(){
   const guide = SITE_CONFIG.guideUrl;
-  ['dq-spend-link','dq-timeline-link','dq-budget-link'].forEach(id => {
-    document.getElementById(id).href = guide;
+  // Falls back to the installer number only if no unqualified line is set,
+  // so an instance without one still works rather than producing dead links.
+  const unqualNum = SITE_CONFIG.installer.unqualifiedWhatsapp || SITE_CONFIG.installer.whatsapp;
+
+  Object.keys(UNQUALIFIED_ROUTES).forEach(function(id){
+    const el = document.getElementById(id);
+    if (!el) return;
+    const route = UNQUALIFIED_ROUTES[id];
+    el.href = 'https://wa.me/' + unqualNum + '?text=' + encodeURIComponent(route.msg);
+    el.target = '_blank';
+    el.rel = 'noopener';
+    el.addEventListener('click', function(){
+      trackUnqualifiedWhatsApp(route.dq, route.reason);
+    });
   });
-  const waNum = SITE_CONFIG.installer.whatsapp;
-  document.getElementById('dq-ownership-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent("Hi, I'm a renter interested in solar. Can you help me understand the landlord permission process?");
-  document.getElementById('dq-installer-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('Hi, I have a solar quote and would like a second opinion');
-  document.getElementById('dq-location-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('Hi, I am interested in solar but my area is not yet covered. Please add me to your waitlist.');
+
+  // The guide download is a second, separate action on the same screens.
+  ['dq-spend-guide','dq-timeline-guide','dq-budget-guide'].forEach(function(id){
+    const el = document.getElementById(id);
+    if (!el) return;
+    el.href = guide;
+    el.addEventListener('click', function(){
+      trackEvent('unqualified_guide_clicked', {
+        event_label: 'Guide download: ' + id,
+        content_id: id, content_type: 'unqualified_guide',
+      });
+    });
+  });
+
   document.getElementById('exitGuide').href = guide;
+}
+
+// GA4: fires when a disqualified person taps through to WhatsApp.
+// Reported separately from qualified CTA clicks so the two never mix
+// in reporting. A disqualified click is a nurture signal, not a lead.
+function trackUnqualifiedWhatsApp(dqId, reason){
+  trackEvent('unqualified_whatsapp_clicked', {
+    event_label: 'Unqualified WhatsApp click: ' + reason,
+    content_id: dqId,
+    content_type: 'unqualified_cta',
+    item_id: dqId,
+    item_name: reason,
+    disqualification_reason: reason,
+    destination: 'tubalcain_unqualified_line',
+  });
+  if (typeof fbq === 'function') {
+    fbq('trackCustom', 'UnqualifiedContact', { content_name: reason, content_category: dqId });
+  }
 }
 
 // ══════════════════════════════════════════════════════
@@ -2114,13 +2178,13 @@ function showAmberResult(payback, monthly, sysCost, lead){
     var left = questionsLeft();
     var headline = document.getElementById('exitHeadline'), body = document.getElementById('exitBody');
     if (state.currentQ === 'q9') {
-      headline.textContent = "Wait  you're one step from your ROI result";
+      headline.textContent = "Wait, you're one step from your ROI result";
       body.innerHTML = "Your answers are already in. Just add your details and your <strong>payback period, monthly savings, and matched package</strong> appear instantly.";
     } else if (left <= 3) {
-      headline.textContent = "Wait  only " + left + " quick question" + (left === 1 ? "" : "s") + " left";
+      headline.textContent = "Wait, only " + left + " quick question" + (left === 1 ? "" : "s") + " left";
       body.innerHTML = "You're seconds away from your <strong>payback period, monthly savings, and matched solar package</strong>. Don't lose your progress now.";
     } else {
-      headline.textContent = "Wait  your ROI result is almost ready";
+      headline.textContent = "Wait, your ROI result is almost ready";
       body.innerHTML = "Finish " + left + " quick questions to see your <strong>payback period, monthly savings, and matched solar package</strong>. It takes under a minute.";
     }
     document.getElementById('exitOverlay').classList.add('show');
