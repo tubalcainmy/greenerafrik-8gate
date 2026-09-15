@@ -1,0 +1,2172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Find Out If Solar Makes Financial Sense For Your Home  Free 2-Minute Assessment</title>
+<meta name="description" content="Answer a few quick questions and a 9-point eligibility check matches you with a vetted solar installer in your city  free personalised ROI, payback period and package match.">
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   EDIT THIS SECTION FOR EACH NEW INSTALLER  nothing else in this
+   file needs to change. This is the ONLY place installer details,
+   packages, and the active tier live. One file per installer.
+   ══════════════════════════════════════════════════════════════════ */
+const SITE_CONFIG = {
+
+  // ── INSTALLER DETAILS ──
+  installer: {
+    businessName: "GreenerAfrik Energies",
+    whatsapp: "2349034308140",
+    cityLabel: "Ibadan, Oyo State",
+    locations: [
+      "Bodija (Old & New)",
+      "Jericho GRA",
+      "Iyaganku GRA",
+      "Oluyole Estate",
+      "Agodi GRA",
+      "Akobo",
+      "Ring Road / Challenge",
+      "Samonda",
+      "Agbowo",
+      "Apete",
+      "Mokola",
+    ],
+  },
+
+  // ── THE PERSON ASKING THE QUESTIONS ──
+  // Shown as a circular photo on the intro and on the result page, so the
+  // assessment reads as a personal consultation rather than a form.
+  // PLACEHOLDER  replace name/title and drop the real photo at
+  // assets/rep.jpg (square crop, face centred, 400x400 or larger).
+  rep: {
+    name: "[REP FIRST NAME]",
+    title: "[REP TITLE], GreenerAfrik Energies",
+    photo: "assets/rep.jpg",
+    introLine: "I'll take you through this myself  answer a few honest questions and I'll show you exactly what solar would cost your home, and what it would save you.",
+  },
+
+  // ── ACTIVE TIER ──
+  // Tier 1 = the ₦5,000/lead model the GreenerAfrik SLA (clause 7) contracts for.
+  tier1: {
+    active: true,
+    packages: [
+      // These two sit below GreenerAfrik's entry system. They are presented
+      // exactly like every other option  same format, same detail, no hint
+      // that they fail a gate. A visible "below minimum" label would just
+      // teach people to click a higher bracket to get through.
+      { name: "Power Station",    priceLabel: "₦1,000,000  Power Station",         price: 1000000,  systemSize: "1 kVA · 1.2 kWh",  whatItPowers: "Lights, phone charging, a small fan", belowMinimum: true },
+      { name: "Power Station Plus", priceLabel: "₦1,500,000  Power Station Plus",  price: 1500000,  systemSize: "1.5 kVA · 2.4 kWh", whatItPowers: "Lights, TV, fans, Wi-Fi, laptop charging", belowMinimum: true, recoverable: true },
+      { name: "Essential Home",   priceLabel: "₦1,770,000  Essential Home",     price: 1770000,  systemSize: "2 kVA · 3.6 kWh",  whatItPowers: "Lights, TV, fans, Wi-Fi, laptops, phone charging" },
+      { name: "Comfort Home",     priceLabel: "₦3,980,000  Comfort Home",       price: 3980000,  systemSize: "5 kVA · 7.2 kWh",  whatItPowers: "Essentials + fridge, multiple fans, more appliances" },
+      { name: "Lifestyle Home",   priceLabel: "₦4,720,000  Lifestyle Home",     price: 4720000,  systemSize: "6 kVA · 10 kWh",   whatItPowers: "Larger household  fridge, entertainment, home office" },
+      { name: "Signature Home",   priceLabel: "₦7,540,000  Signature Home",     price: 7540000,  systemSize: "10 kVA · 15 kWh",  whatItPowers: "Premium home  air conditioning, multiple fridges, full home office" },
+      { name: "Extravagant Home", priceLabel: "₦13,870,000  Extravagant Home",  price: 13870000, systemSize: "16 kVA · 30 kWh",  whatItPowers: "Large luxury residence  multiple ACs, smart home, entertainment zones" },
+    ],
+  },
+
+  tier2: {
+    active: false,
+    packages: [
+      { name: "Essential Home",   kva: 2,  price: 1770000,  whatItPowers: "Lights, TV, fans, Wi-Fi, laptops" },
+      { name: "Comfort Home",     kva: 5,  price: 3980000,  whatItPowers: "Essentials + fridge, multiple fans" },
+      { name: "Lifestyle Home",   kva: 6,  price: 4720000,  whatItPowers: "Fridge, entertainment, home office" },
+      { name: "Signature Home",   kva: 10, price: 7540000,  whatItPowers: "AC, multiple fridges, full home office" },
+      { name: "Extravagant Home", kva: 16, price: 13870000, whatItPowers: "Multiple ACs, smart home, entertainment zones" },
+    ],
+  },
+
+  // ── WARRANTY / FINANCING  shown on the result page ──
+  warrantyMonths: 18,
+  financingLine: "Go Solar. Pay Small Small.",
+
+  // ── TRACKING & DELIVERY ──
+  // Per SLA clause 12 the campaign pixel stays Tubalcain's  do not swap
+  // in a GreenerAfrik pixel. installer_id routes the lead in the shared
+  // Make.com scenario (Addendum 5.0.1).
+  installerId: "greenerafrik-ibadan",
+  webhookUrl: "https://hook.us2.make.com/332cozc0nvke7hlwo5ucqbm4e2hirf27",
+  metaPixelId: "2252101838924260",
+  ga4MeasurementId: "G-62DKYP07HR",
+  guideUrl: "https://tubalcain.systeme.io/solar-guide-thank-you",
+};
+
+function activeTierName(){
+  if (SITE_CONFIG.tier2 && SITE_CONFIG.tier2.active) return 'tier2';
+  if (SITE_CONFIG.tier1 && SITE_CONFIG.tier1.active) return 'tier1';
+  return 'tier2'; // both/neither flagged active  Tier 2 wins, matches the doc comment above
+}
+</script>
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', SITE_CONFIG.metaPixelId);fbq('track','PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2252101838924260&ev=PageView&noscript=1"/></noscript>
+
+<!-- Google Analytics 4 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-62DKYP07HR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', SITE_CONFIG.ga4MeasurementId);
+</script>
+
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --navy:#001B3D;
+  --navy-2:#062A52;
+  --blue:#0081CC;
+  --blue-dark:#00629B;
+  --wash:#EEF3F8;
+  --white:#FFFFFF;
+  --body:#1C2733;
+  --muted:#5A6A7A;
+  --success:#1E9E5A;
+  --success-wash:#E7F6ED;
+  --warning:#E0A100;
+  --warning-wash:#FDF3DD;
+  --negative:#C0392B;
+  --negative-wash:#FBEAE8;
+  --border:#DCE5EE;
+}
+
+html{-webkit-text-size-adjust:100%;}
+body{
+  font-family:'Manrope',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  background:var(--wash);
+  color:var(--body);
+  min-height:100vh;
+  overflow-x:hidden;
+  font-size:16px;
+  line-height:1.6;
+}
+
+.wrap{max-width:600px;margin:0 auto;padding:20px 20px 64px;}
+
+svg.icon{display:block;flex-shrink:0;}
+
+/* ── HERO ── */
+.hero{
+  text-align:center;
+  padding:40px 24px 32px;
+  background:var(--navy);
+  border-radius:16px;
+  margin-bottom:20px;
+}
+.badge{
+  display:inline-flex;align-items:center;gap:8px;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.22);
+  color:#fff;
+  font-size:12px;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;
+  padding:7px 16px;border-radius:100px;
+  margin-bottom:20px;
+}
+.hero h1{
+  font-size:clamp(26px,6vw,32px);
+  font-weight:800;
+  line-height:1.2;
+  color:#fff;
+  margin-bottom:14px;
+}
+.hero h1 span{color:#7FC4F0;}
+.hero-sub{
+  font-size:16px;color:#C4D3E3;
+  line-height:1.6;max-width:440px;margin:0 auto 24px;
+}
+.trust-row{
+  display:flex;justify-content:center;gap:18px;flex-wrap:wrap;
+  padding-top:22px;
+  border-top:1px solid rgba(255,255,255,0.14);
+}
+.trust-item{
+  display:flex;align-items:center;gap:7px;
+  font-size:12.5px;color:#C4D3E3;font-weight:600;
+}
+.trust-item svg{stroke:#7FC4F0;}
+
+/* ── PROGRESS ── */
+.progress-wrap{
+  margin-bottom:18px;
+  display:flex;align-items:center;gap:12px;
+}
+.progress-bar{
+  flex:1;height:6px;background:#DCE5EE;
+  border-radius:10px;overflow:hidden;
+}
+.progress-fill{
+  height:100%;background:var(--blue);
+  border-radius:10px;transition:width 0.5s cubic-bezier(.4,0,.2,1);
+  width:0%;
+}
+.progress-label{
+  font-size:12.5px;color:var(--muted);font-weight:700;white-space:nowrap;min-width:48px;text-align:right;
+}
+
+/* ── QUESTION CARD ── */
+.q-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px 24px;
+  box-shadow:0 2px 10px rgba(0,27,61,0.05);
+  animation:qIn 0.35s cubic-bezier(.4,0,.2,1);
+  display:none;
+}
+.q-card.active{display:block;}
+
+@keyframes qIn{
+  from{opacity:0;transform:translateY(12px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+.q-num-row{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;flex-wrap:wrap;}
+.q-num{
+  font-size:11.5px;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--blue);
+}
+.q-gate{
+  font-size:11px;font-weight:700;color:var(--muted);
+  background:var(--wash);border:1px solid var(--border);
+  padding:3px 10px;border-radius:100px;white-space:nowrap;
+}
+
+.q-text{
+  font-size:clamp(19px,4vw,22px);
+  font-weight:800;color:var(--navy);
+  line-height:1.3;margin-bottom:6px;
+}
+
+.q-hint{
+  font-size:14px;color:var(--muted);margin-bottom:22px;line-height:1.6;
+}
+
+/* ── OPTIONS ── */
+.options{display:flex;flex-direction:column;gap:10px;}
+
+.option{
+  background:var(--wash);
+  border:1.5px solid var(--border);
+  border-radius:12px;
+  padding:15px 16px;
+  cursor:pointer;
+  transition:all 0.15s ease;
+  display:flex;align-items:flex-start;gap:13px;
+  user-select:none;
+  min-height:44px;
+}
+
+.option:hover{border-color:var(--blue);background:#E4F0FA;}
+
+.option.selected{
+  border-color:var(--blue);
+  background:#E4F0FA;
+  box-shadow:0 0 0 1px var(--blue);
+}
+
+.option-radio{
+  width:20px;height:20px;flex-shrink:0;margin-top:1px;
+  border:2px solid #B9C6D4;
+  border-radius:50%;
+  transition:all 0.15s;
+  display:flex;align-items:center;justify-content:center;
+}
+.option.selected .option-radio{border-color:var(--blue);background:var(--blue);}
+.option.selected .option-radio::after{content:'';width:8px;height:8px;background:#fff;border-radius:50%;}
+
+.option-text{font-size:15px;color:var(--body);line-height:1.4;font-weight:600;}
+.option-sub{font-size:13px;color:var(--muted);margin-top:3px;font-weight:400;}
+
+/* Next button */
+.next-btn{
+  width:100%;margin-top:22px;
+  min-height:52px;
+  padding:14px 24px;
+  background:var(--blue);
+  color:#fff;
+  font-family:'Manrope',sans-serif;
+  font-size:16px;font-weight:700;
+  border:none;border-radius:8px;cursor:pointer;
+  transition:all 0.2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.next-btn:hover:not(:disabled){background:var(--blue-dark);}
+.next-btn:disabled{opacity:0.4;cursor:not-allowed;}
+
+.text-input{
+  width:100%;padding:15px 16px;
+  background:var(--wash);
+  border:1.5px solid var(--border);
+  border-radius:8px;
+  font-size:16px;color:var(--body);
+  font-family:'Manrope',sans-serif;
+  transition:border-color 0.2s;
+  margin-bottom:14px;
+  min-height:52px;
+}
+.text-input:focus{outline:none;border-color:var(--blue);background:#fff;}
+.text-input::placeholder{color:#8899A8;}
+.field-error{font-size:12.5px;color:var(--negative);margin:-10px 0 12px;display:none;font-weight:600;}
+.field-error.show{display:block;}
+
+.spend-input-row{display:flex;align-items:center;gap:0;background:var(--wash);border:1.5px solid var(--border);border-radius:8px;margin-bottom:6px;transition:border-color 0.2s;}
+.spend-input-row:focus-within{border-color:var(--blue);background:#fff;}
+.spend-input-row.spend-error{border-color:var(--negative);}
+.spend-prefix{padding:0 0 0 16px;font-size:16px;font-weight:700;color:var(--muted);}
+.spend-input.text-input{border:none;background:transparent;margin-bottom:0;padding:15px 8px;min-height:52px;flex:1;min-width:0;}
+.spend-input.text-input:focus{outline:none;}
+.spend-suffix{padding:0 16px 0 4px;font-size:13px;color:var(--muted);white-space:nowrap;}
+
+/* ── CONSENT CHECKBOX ── */
+.consent-row{display:flex;align-items:flex-start;gap:11px;cursor:pointer;margin:4px 0 6px;user-select:none;}
+.consent-row input{width:19px;height:19px;flex-shrink:0;margin-top:2px;accent-color:var(--blue);cursor:pointer;}
+.consent-row span{font-size:13.5px;color:var(--body);line-height:1.55;}
+.consent-row.consent-invalid span{color:var(--negative);}
+
+/* ── REP / CONSULTANT FRAMING ── */
+.rep-intro{display:flex;align-items:center;gap:14px;margin-bottom:22px;text-align:left;}
+.rep-photo{width:58px;height:58px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(255,255,255,0.25);background:var(--wash);}
+.rep-intro-text{min-width:0;}
+.rep-name{font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;}
+.rep-line{font-size:13px;color:#C4D3E3;line-height:1.55;}
+
+.rep-byline{display:flex;align-items:center;gap:12px;background:var(--wash);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
+.rep-byline .rep-photo{width:46px;height:46px;border-color:#fff;}
+.rep-byline-name{font-size:14px;font-weight:800;color:var(--navy);margin-bottom:1px;}
+.rep-byline-sub{font-size:12px;color:var(--muted);}
+
+/* ── RESULT REPORT HEADER ── */
+.report-head{border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:16px;}
+.report-head-top{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:6px;flex-wrap:wrap;}
+.report-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--blue);}
+.report-id{font-size:11px;font-weight:700;color:var(--muted);font-variant-numeric:tabular-nums;}
+.report-for{font-size:14px;font-weight:700;color:var(--navy);}
+
+/* ── VERDICT / RECOMMENDATION BLOCK ── */
+.verdict-block{background:linear-gradient(155deg,var(--navy) 0%,var(--navy-2) 100%);border-radius:16px;padding:26px 22px;margin-bottom:14px;color:#fff;}
+.verdict-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#7FC4F0;margin-bottom:8px;}
+.verdict-title{font-size:19px;font-weight:800;margin-bottom:12px;line-height:1.3;color:#fff;}
+.verdict-body{font-size:14.5px;line-height:1.7;color:#DCE6F2;}
+.verdict-body strong{color:#fff;}
+
+/* ── COMPARISON: cost of doing nothing vs the system ── */
+.compare-chart{display:flex;flex-direction:column;gap:18px;margin-bottom:4px;}
+.compare-row{display:flex;flex-direction:column;gap:6px;}
+.compare-label{display:flex;align-items:baseline;justify-content:space-between;gap:10px;font-size:13px;font-weight:700;color:var(--body);}
+.compare-figure{font-size:16px;font-weight:800;white-space:nowrap;}
+.compare-figure-loss{color:var(--negative);}
+.compare-figure-cost{color:var(--blue);}
+.compare-track{height:16px;background:var(--wash);border-radius:8px;overflow:hidden;}
+.compare-bar{height:100%;border-radius:8px;width:0;transition:width 1.1s cubic-bezier(.16,1,.3,1);}
+.compare-bar-loss{background:linear-gradient(90deg,var(--negative),#E0574A);}
+.compare-bar-cost{background:linear-gradient(90deg,var(--blue),#35A6E8);}
+.compare-caption{font-size:13px;color:var(--muted);line-height:1.6;margin-top:14px;}
+
+/* ── PACKAGE DETAIL CARD ── */
+.pkg-card{background:var(--wash);border:1px solid var(--border);border-radius:12px;padding:18px 18px 14px;}
+.pkg-name{font-size:17px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+.pkg-price{font-size:22px;font-weight:800;color:var(--blue);margin-bottom:10px;}
+.pkg-spec{font-size:13.5px;color:var(--muted);line-height:1.65;margin-bottom:4px;}
+.pkg-powers{font-size:13.5px;color:var(--body);line-height:1.65;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);}
+.pkg-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
+.pkg-badge{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:100px;background:var(--success-wash);color:var(--success);}
+.pkg-badge.blue{background:#E4F0FA;color:var(--blue-dark);}
+
+/* ── TYPING CURSOR ── */
+.type-cursor{display:inline-block;width:2px;height:1em;background:currentColor;margin-left:1px;vertical-align:text-bottom;animation:typeBlink 0.8s step-end infinite;}
+@keyframes typeBlink{0%,100%{opacity:1;}50%{opacity:0;}}
+
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.01ms !important;transition-duration:0.01ms !important;}
+}
+
+.input-label{
+  font-size:13px;font-weight:700;color:var(--navy);
+  margin-bottom:8px;display:block;
+}
+
+/* Tier 2  appliance-load checklist */
+.load-check{border-radius:8px !important;}
+.load-estimate{
+  background:var(--wash);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin-top:6px;text-align:center;
+}
+.load-estimate .lval{font-size:20px;font-weight:800;color:var(--navy);}
+.load-estimate .llbl{font-size:12px;color:var(--muted);margin-top:2px;}
+.load-estimate .lmatch{font-size:12.5px;color:var(--blue);font-weight:700;margin-top:6px;}
+
+/* ── DISQUALIFICATION / SOFT PAGES ── */
+.dq-page{
+  display:none;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:36px 26px;
+  text-align:center;
+  box-shadow:0 2px 10px rgba(0,27,61,0.05);
+  animation:qIn 0.35s ease;
+}
+.dq-page.show{display:block;}
+.dq-icon-wrap{
+  width:64px;height:64px;border-radius:50%;
+  background:var(--wash);
+  display:flex;align-items:center;justify-content:center;
+  margin:0 auto 20px;
+}
+.dq-icon-wrap svg{stroke:var(--navy);}
+.dq-title{
+  font-size:23px;font-weight:800;color:var(--navy);
+  margin-bottom:12px;line-height:1.3;
+}
+.dq-body{
+  font-size:15px;color:var(--muted);
+  line-height:1.75;max-width:420px;margin:0 auto 22px;
+}
+.dq-reason-box{
+  background:var(--wash);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:18px 22px;
+  margin:0 auto 22px;
+  max-width:400px;
+  text-align:left;
+}
+.dq-reason-box li{
+  padding:6px 0;padding-left:18px;position:relative;
+  font-size:13.5px;color:var(--muted);list-style:none;
+}
+.dq-reason-box li::before{content:'';position:absolute;left:0;color:var(--blue);font-weight:700;}
+.dq-alt-btn{
+  display:inline-flex;align-items:center;gap:8px;
+  min-height:48px;
+  padding:13px 28px;
+  background:var(--navy);
+  color:#fff;
+  border-radius:8px;font-size:14.5px;font-weight:700;
+  text-decoration:none;cursor:pointer;
+  transition:all 0.2s;
+}
+.dq-alt-btn:hover{background:var(--navy-2);}
+
+/* ── EXIT INTENT MODAL ── */
+.exit-overlay{
+  display:none;
+  position:fixed;inset:0;z-index:9999;
+  background:rgba(0,10,20,0.6);
+  align-items:center;justify-content:center;
+  padding:20px;
+  animation:qIn 0.2s ease;
+}
+.exit-overlay.show{display:flex;}
+.exit-modal{
+  background:#fff;
+  border-radius:16px;
+  padding:32px 26px 26px;
+  max-width:400px;width:100%;
+  text-align:center;
+  box-shadow:0 24px 60px rgba(0,0,0,0.3);
+}
+.exit-modal .exit-icon-wrap{
+  width:56px;height:56px;border-radius:50%;background:var(--wash);
+  display:flex;align-items:center;justify-content:center;margin:0 auto 16px;
+}
+.exit-modal .exit-icon-wrap svg{stroke:var(--blue);}
+.exit-modal h3{
+  font-size:21px;font-weight:800;color:var(--navy);
+  line-height:1.3;margin-bottom:12px;
+}
+.exit-modal p{
+  font-size:14px;color:var(--muted);
+  line-height:1.7;margin-bottom:20px;
+}
+.exit-modal p strong{color:var(--blue);}
+.exit-continue{
+  display:block;width:100%;min-height:52px;
+  background:var(--blue);color:#fff;
+  border:none;border-radius:8px;
+  padding:15px 20px;
+  font-size:15px;font-weight:700;
+  cursor:pointer;
+  font-family:inherit;
+}
+.exit-continue:hover{background:var(--blue-dark);}
+.exit-alt{
+  display:inline-block;margin-top:14px;
+  font-size:13px;color:var(--muted);
+  text-decoration:underline;text-underline-offset:3px;
+}
+.exit-alt:hover{color:var(--navy);}
+
+/* ── LOADING ── */
+.loading-page{
+  display:none;
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:56px 32px;
+  text-align:center;
+}
+.loading-page.show{display:block;}
+.spinner{
+  width:44px;height:44px;
+  border:3px solid var(--wash);
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin 0.9s linear infinite;
+  margin:0 auto 22px;
+}
+@keyframes spin{to{transform:rotate(360deg);}}
+.loading-text{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:8px;}
+.loading-sub{font-size:14px;color:var(--muted);}
+
+/* ── RESULTS PAGES ── */
+.result-page{display:none;}
+.result-page.show{display:block;}
+
+.result-hero{
+  background:var(--navy);
+  border-radius:16px;
+  padding:32px 26px;
+  text-align:center;
+  margin-bottom:18px;
+}
+.result-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  padding:6px 16px;border-radius:100px;
+  font-size:11.5px;font-weight:700;letter-spacing:0.05em;text-transform:uppercase;
+  margin-bottom:18px;
+}
+.result-badge.green{background:rgba(30,158,90,0.2);color:#5FDB9A;}
+.result-badge.amber{background:rgba(224,161,0,0.2);color:#FBCB4E;}
+
+.result-title{
+  font-size:clamp(21px,5vw,26px);
+  font-weight:800;color:#fff;
+  margin-bottom:10px;line-height:1.3;
+}
+
+.result-sub{font-size:14.5px;color:#C4D3E3;line-height:1.65;max-width:420px;margin:0 auto;}
+
+.roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0 0;}
+.roi-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:16px 12px;text-align:center;}
+.roi-val{font-size:26px;font-weight:800;color:#fff;display:block;line-height:1;margin-bottom:5px;}
+.roi-val.blue{color:#7FC4F0;}
+.roi-val.green{color:#5FDB9A;}
+.roi-lbl{font-size:11.5px;color:#9FB3C8;}
+
+.section-card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:14px;
+  padding:24px;
+  margin-bottom:14px;
+}
+.section-title{
+  font-size:17px;font-weight:800;color:var(--navy);
+  margin-bottom:16px;display:flex;align-items:center;gap:10px;
+}
+.section-title svg{stroke:var(--blue);}
+
+.check-list{list-style:none;display:flex;flex-direction:column;gap:11px;}
+.check-list li{
+  display:flex;align-items:flex-start;gap:11px;
+  font-size:14px;color:var(--body);line-height:1.55;
+}
+.check-list li::before{
+  content:'';flex-shrink:0;margin-top:3px;
+  width:16px;height:16px;
+  background-color:var(--success);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='20 6 9 17 4 12'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+.check-list li.warn::before{
+  background-color:var(--warning);
+  -webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z'/%3E%3C/svg%3E") no-repeat center / contain;
+}
+
+.cta-box{
+  background:var(--wash);
+  border:1px solid var(--border);
+  border-radius:16px;
+  padding:28px 24px;
+  text-align:center;
+  margin-bottom:16px;
+}
+.cta-heading{font-size:19px;font-weight:800;color:var(--navy);margin-bottom:10px;}
+.cta-sub{font-size:14px;color:var(--muted);line-height:1.65;margin-bottom:22px;}
+
+.cta-btn{
+  display:inline-flex;align-items:center;gap:9px;
+  width:100%;min-height:52px;justify-content:center;
+  padding:16px 24px;
+  background:var(--blue);
+  color:#fff;font-size:15.5px;font-weight:700;
+  border-radius:8px;text-decoration:none;
+  transition:all 0.2s;
+}
+.cta-btn:hover{background:var(--blue-dark);}
+.cta-btn.amber{background:var(--warning);color:var(--navy);}
+.cta-btn.amber:hover{background:#C68F00;}
+
+.guarantee-note{
+  font-size:12px;color:var(--muted);margin-top:14px;
+  display:flex;align-items:center;justify-content:center;gap:6px;
+}
+.guarantee-note svg{stroke:var(--muted);width:14px;height:14px;}
+
+.score-section{background:var(--white);border:1px solid var(--border);border-radius:14px;padding:22px 24px;margin-bottom:14px;}
+.score-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:9px;}
+.score-name{font-size:13px;color:var(--muted);font-weight:600;}
+.score-val{font-size:13px;font-weight:700;color:var(--navy);}
+.score-bar{height:8px;background:var(--wash);border-radius:10px;overflow:hidden;margin-bottom:14px;}
+.score-fill{height:100%;border-radius:10px;transition:width 1.1s cubic-bezier(.4,0,.2,1);width:0;}
+.score-fill.green{background:var(--success);}
+.score-fill.gold{background:var(--warning);}
+
+.breakdown{background:var(--wash);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
+.breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:13.5px;border-bottom:1px solid var(--border);}
+.breakdown-row:last-child{border-bottom:none;}
+.breakdown-row.total{background:#E4F0FA;font-weight:700;}
+.breakdown-lbl{color:var(--muted);}
+.breakdown-val{color:var(--body);font-weight:700;}
+.breakdown-val.blue{color:var(--blue);}
+.breakdown-val.green{color:var(--success);}
+
+@media(max-width:480px){
+  .wrap{padding:14px 12px 48px;}
+  .hero{padding:30px 18px 26px;}
+  .q-card{padding:22px 18px;}
+  .section-card{padding:18px 16px;}
+  .roi-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<!-- ── HERO ── -->
+<div class="hero" id="hero">
+  <div class="badge">
+    <svg class="icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15.5 14"/></svg>
+    Free 2-Minute Assessment
+  </div>
+  <div class="rep-intro" id="repIntro" style="display:none;">
+    <img class="rep-photo" id="repPhotoIntro" src="" alt="">
+    <div class="rep-intro-text">
+      <div class="rep-name" id="repNameIntro"></div>
+      <div class="rep-line" id="repLineIntro"></div>
+    </div>
+  </div>
+  <h1>Find Out If Solar Will <span>Save You Money</span>  Before You Spend A Kobo</h1>
+  <p class="hero-sub" id="heroSub">Answer a few quick questions. Get your personalised ROI result, payback period, and a matched package from <span id="heroBusinessName">your local installer</span>.</p>
+  <div class="trust-row">
+    <div class="trust-item">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.42 4.58a5.4 5.4 0 0 0-7.65 0l-.77.78-.77-.78a5.4 5.4 0 0 0-7.65 0C1.46 6.7 1.33 10.28 4 13l8 8 8-8c2.67-2.72 2.54-6.3.42-8.42z"/></svg>
+      Vetted, local installer
+    </div>
+    <div class="trust-item">
+      <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      Your info is never sold
+    </div>
+  </div>
+</div>
+
+<!-- ── PROGRESS ── -->
+<div class="progress-wrap" id="progressWrap" style="display:none;">
+  <div class="progress-bar"><div class="progress-fill" id="progressFill"></div></div>
+  <div class="progress-label" id="progressLabel">0 / 9</div>
+</div>
+
+<!-- ══════════════════════════════════
+     Q1  Power spend gate
+═══════════════════════════════════ -->
+<div class="q-card" id="q1">
+  <div class="q-num-row"><div class="q-num">Question 1 of 9</div><div class="q-gate" id="gate-q1"></div></div>
+  <div class="q-text">Roughly how much do you spend monthly on electricity and generator fuel combined?</div>
+  <div class="q-hint">This helps us calculate whether solar makes financial sense for your home. Type your best real number  the more accurate it is, the more accurate your savings estimate will be.</div>
+  <div class="spend-input-row">
+    <span class="spend-prefix">₦</span>
+    <input type="number" inputmode="numeric" id="q1-spend-input" class="text-input spend-input" placeholder="e.g. 45000" min="0">
+    <span class="spend-suffix">/ month</span>
+  </div>
+  <div class="field-error" id="q1-spend-error">Please enter a number.</div>
+  <button class="next-btn" id="q1-next" disabled onclick="nextQ1()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q2  Location gate (this installer's own service area)
+═══════════════════════════════════ -->
+<div class="q-card" id="q2">
+  <div class="q-num-row"><div class="q-num">Question 2 of 9</div><div class="q-gate" id="gate-q2"></div></div>
+  <div class="q-text">Which area is the property in?</div>
+  <div class="q-hint" id="q2-hint">We currently serve specific areas. This confirms a vetted installer is active near you.</div>
+  <div class="options" id="q2-opts"><!-- populated from SITE_CONFIG.installer.locations at load --></div>
+  <button class="next-btn" id="q2-next" disabled onclick="nextQ2()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q3  Ownership gate
+═══════════════════════════════════ -->
+<div class="q-card" id="q3">
+  <div class="q-num-row"><div class="q-num">Question 3 of 9</div><div class="q-gate" id="gate-q3"></div></div>
+  <div class="q-text">What is your relationship with the property where you want to install solar?</div>
+  <div class="q-hint">Solar installation requires property authority. This affects your eligibility.</div>
+  <div class="options" id="q3-opts">
+    <label class="option" data-val="owner"><div class="option-radio"></div><div><div class="option-text">I own the property</div></div></label>
+    <label class="option" data-val="renter-permission"><div class="option-radio"></div><div><div class="option-text">I rent  and I have my landlord's written permission</div></div></label>
+    <label class="option" data-val="family"><div class="option-radio"></div><div><div class="option-text">Family house  I have authority to install</div></div></label>
+    <label class="option" data-val="renter-no"><div class="option-radio"></div><div><div class="option-text">I rent  but I do not have landlord's permission</div></div></label>
+    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent  I'm not sure if I can get permission</div></div></label>
+  </div>
+  <button class="next-btn" id="q3-next" disabled onclick="nextQ3()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q4  Timeline gate
+═══════════════════════════════════ -->
+<div class="q-card" id="q4">
+  <div class="q-num-row"><div class="q-num">Question 4 of 9</div><div class="q-gate" id="gate-q4"></div></div>
+  <div class="q-text">When are you realistically planning to install solar?</div>
+  <div class="q-hint">We serve homeowners with a confirmed installation window within 90 days.</div>
+  <div class="options" id="q4-opts">
+    <label class="option" data-val="0-14days"><div class="option-radio"></div><div><div class="option-text">Immediately  within the next 2 weeks</div></div></label>
+    <label class="option" data-val="2-4weeks"><div class="option-radio"></div><div><div class="option-text">Soon  within the next month</div></div></label>
+    <label class="option" data-val="1-3months"><div class="option-radio"></div><div><div class="option-text">Within 1–3 months</div></div></label>
+    <label class="option" data-val="3-6months"><div class="option-radio"></div><div><div class="option-text">In 3–6 months</div></div></label>
+    <label class="option" data-val="info-only"><div class="option-radio"></div><div><div class="option-text">Just gathering information  no firm timeline</div></div></label>
+  </div>
+  <button class="next-btn" id="q4-next" disabled onclick="nextQ4()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q5  Package (Tier 1: pick a price range · Tier 2: appliance-load match)
+═══════════════════════════════════ -->
+<div class="q-card" id="q5">
+  <div class="q-num-row"><div class="q-num">Question 5 of 9</div><div class="q-gate" id="gate-q5"></div></div>
+  <div class="q-text" id="q5-text">Which solar package range fits your budget?</div>
+  <div class="q-hint" id="q5-hint">Pick the range that fits  the package size and what it powers is shown under each option. This selects a range; it's not a confirmation of funds.</div>
+  <div class="options" id="q5-opts"><!-- populated from SITE_CONFIG at load --></div>
+  <div class="load-estimate" id="q5-load-estimate" style="display:none;">
+    <div class="lval" id="q5-load-kva"></div>
+    <div class="llbl">Estimated system size  your installer confirms the exact fit on-site</div>
+    <div class="lmatch" id="q5-load-match"></div>
+  </div>
+  <button class="next-btn" id="q5-next" disabled onclick="nextQ5()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q5-RECOVER  instalment recovery interstitial (only fires if a
+     package is flagged recoverable:true in SITE_CONFIG.tier1.packages)
+═══════════════════════════════════ -->
+<div class="q-card" id="q5r">
+  <div class="q-num-row"><div class="q-num">Question 5 of 9</div><div class="q-gate" id="gate-q5r"></div></div>
+  <div class="q-text" id="q5r-text">Many homeowners in your range install using a payment plan.</div>
+  <div class="q-hint" id="q5r-hint">Would you like to see instalment options for a package in this range?</div>
+  <div class="options" id="q5r-opts">
+    <label class="option" data-val="yes"><div class="option-radio"></div><div><div class="option-text">Yes  show me instalment options</div></div></label>
+    <label class="option" data-val="no"><div class="option-radio"></div><div><div class="option-text">No  full payment only works for me</div></div></label>
+  </div>
+  <button class="next-btn" id="q5r-next" disabled onclick="nextQ5r()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q6  Home quick check (multi-select, never disqualifies)
+═══════════════════════════════════ -->
+<div class="q-card" id="q6">
+  <div class="q-num-row"><div class="q-num">Question 6 of 9</div><div class="q-gate" id="gate-q6"></div></div>
+  <div class="q-text">Quick home check  do any of these apply to your property?</div>
+  <div class="q-hint">Select all that apply. This does not disqualify you  the flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
+  <div class="options" id="q6-opts">
+    <label class="option" data-val="roof" data-flag="Roof has leaks or is noticeably weak  needs inspection before installation">
+      <div class="option-radio"></div><div><div class="option-text">Roof has leaks or feels old / weak</div></div>
+    </label>
+    <label class="option" data-val="shade" data-flag="Trees or buildings shade the roof  sun exposure needs site assessment">
+      <div class="option-radio"></div><div><div class="option-text">Trees or tall buildings heavily shade the roof</div></div>
+    </label>
+    <label class="option" data-val="electrical" data-flag="Electrical issues reported (tripping / burnt sockets / flickering)  wiring inspection required">
+      <div class="option-radio"></div><div><div class="option-text">Electrical problems  frequent tripping, burnt sockets or flickering lights</div></div>
+    </label>
+    <label class="option" data-val="none">
+      <div class="option-radio"></div><div><div class="option-text">None of these  my home is ready</div><div class="option-sub">Solid roof, full sunlight, no electrical faults</div></div>
+    </label>
+  </div>
+  <button class="next-btn" id="q6-next" disabled onclick="nextQ6()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q7  Already with another installer
+═══════════════════════════════════ -->
+<div class="q-card" id="q7">
+  <div class="q-num-row"><div class="q-num">Question 7 of 9</div><div class="q-gate" id="gate-q7"></div></div>
+  <div class="q-text">Are you currently in active discussions with another solar installer?</div>
+  <div class="q-hint">Comparing options is fine  only a signed or near-signed commitment disqualifies.</div>
+  <div class="options" id="q7-opts">
+    <label class="option" data-val="no-installer"><div class="option-radio"></div><div><div class="option-text">No  I haven't spoken to any installer yet</div></div></label>
+    <label class="option" data-val="browsing"><div class="option-radio"></div><div><div class="option-text">I've browsed but haven't committed to anyone</div></div></label>
+    <label class="option" data-val="have-price"><div class="option-radio"></div><div><div class="option-text">I have a price but am open to compare options</div></div></label>
+    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes  I'm in active talks / about to sign with someone</div></div></label>
+  </div>
+  <button class="next-btn" id="q7-next" disabled onclick="nextQ7()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q8  Payment method (Gate 9)  never disqualifies, routes messaging
+═══════════════════════════════════ -->
+<div class="q-card" id="q8">
+  <div class="q-num-row"><div class="q-num">Question 8 of 9</div><div class="q-gate" id="gate-q8"></div></div>
+  <div class="q-text">How are you planning to pay for your system?</div>
+  <div class="q-hint">This helps your installer show you the right payment options from the first message.</div>
+  <div class="options" id="q8-opts">
+    <label class="option" data-val="full"><div class="option-radio"></div><div><div class="option-text">Full payment  I have the funds ready</div></div></label>
+    <label class="option" data-val="part"><div class="option-radio"></div><div><div class="option-text">Part payment now, balance spread over instalments</div></div></label>
+    <label class="option" data-val="financing"><div class="option-radio"></div><div><div class="option-text">I would need a financing or instalment plan</div></div></label>
+    <label class="option" data-val="unsure"><div class="option-radio"></div><div><div class="option-text">Not sure yet  I'd like to see the options</div></div></label>
+  </div>
+  <button class="next-btn" id="q8-next" disabled onclick="nextQ8()">Continue <span>→</span></button>
+</div>
+
+<!-- ══════════════════════════════════
+     Q9  Contact info
+═══════════════════════════════════ -->
+<div class="q-card" id="q9">
+  <div class="q-num-row"><div class="q-num">Question 9 of 9</div><div class="q-gate" id="gate-q9"></div></div>
+  <div class="q-text">Where should we send your ROI result and package options?</div>
+  <div class="q-hint" id="q9-hint">A vetted installer will reach out on WhatsApp. Your details are never shared with third parties.</div>
+
+  <label class="input-label">Your First Name</label>
+  <input type="text" class="text-input" id="firstName" placeholder="e.g. Emeka" autocomplete="given-name">
+  <div class="field-error" id="err-firstName">Please enter a valid name (letters only, at least 2 characters).</div>
+
+  <label class="input-label">WhatsApp Number</label>
+  <input type="tel" class="text-input" id="whatsapp" placeholder="08012345678" autocomplete="tel">
+  <div class="field-error" id="err-whatsapp">Please enter a valid Nigerian phone number.</div>
+
+  <label class="input-label">Your City / Location</label>
+  <input type="text" class="text-input" id="location" placeholder="e.g. Lagos, Abuja, Port Harcourt..." autocomplete="address-level2">
+  <div class="field-error" id="err-location">Please enter a valid city name.</div>
+
+  <label class="consent-row" id="consentRow">
+    <input type="checkbox" id="contactConsent">
+    <span id="consentText">I agree to be contacted by GreenerAfrik Energies on WhatsApp about my solar assessment.</span>
+  </label>
+  <div class="field-error" id="err-consent">Please confirm you're happy to be contacted, so we can send your result.</div>
+
+  <button class="next-btn" id="q9-next" onclick="submitForm()">Get My ROI &amp; Package Options <span>→</span></button>
+  <p style="font-size:12.5px;color:var(--muted);text-align:center;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px;">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+    Your information is private. We do not spam or sell your data.
+  </p>
+</div>
+
+<!-- ══════════════════════════════════
+     DISQUALIFICATION PAGES
+═══════════════════════════════════ -->
+
+<div class="dq-page" id="dq-spend">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+  <div class="dq-title">Solar May Not Be Right for You Yet</div>
+  <div class="dq-body">Based on your current energy spend, a full solar installation is unlikely to give you a strong return on investment right now. The payback period would be too long to make financial sense.</div>
+  <ul class="dq-reason-box">
+    <li>Combined spend below ₦30,000/month  the payback window stretches too far out</li>
+    <li>Solar investment is most profitable for homeowners spending ₦30k+ monthly</li>
+    <li>Your energy costs don't yet justify a full system investment</li>
+  </ul>
+  <div class="dq-body">When your energy costs grow or you're ready for a larger system, we'll be here. In the meantime, a small inverter backup system may serve you well.</div>
+  <a href="#" class="dq-alt-btn" id="dq-spend-link">Download Our Free Solar Planning Guide →</a>
+</div>
+
+<div class="dq-page" id="dq-ownership">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+  <div class="dq-title">Property Authority Required for Solar</div>
+  <div class="dq-body">Solar installation requires consent from the property owner. Without written landlord permission, we cannot proceed  this protects both you and the property owner legally.</div>
+  <ul class="dq-reason-box">
+    <li>Panels are a permanent structural modification to the roof</li>
+    <li>We require documented permission before any work begins</li>
+    <li>Getting landlord permission is often simpler than expected</li>
+  </ul>
+  <div class="dq-body">If you can obtain written permission from your landlord, come back and complete this assessment  many renters successfully install solar once they have it in writing.</div>
+  <a href="#" class="dq-alt-btn" id="dq-ownership-link" target="_blank">Ask Us About the Permission Process →</a>
+</div>
+
+<div class="dq-page" id="dq-timeline">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+  <div class="dq-title">Come Back When You're Ready to Install</div>
+  <div class="dq-body">We're best matched with homeowners who have a confirmed installation window within 90 days. This ensures you get the most relevant pricing and availability.</div>
+  <ul class="dq-reason-box">
+    <li>Solar pricing and availability shift regularly  quotes are time-sensitive</li>
+    <li>We prioritise homeowners with a firm install timeline</li>
+    <li>Come back when you're within 3 months of your target install date</li>
+  </ul>
+  <div class="dq-body">In the meantime, download our free Solar Planning Guide to prepare your home and budget for when you're ready.</div>
+  <a href="#" class="dq-alt-btn" id="dq-timeline-link">Download Free Solar Planning Guide →</a>
+</div>
+
+<div class="dq-page" id="dq-budget">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
+  <div class="dq-title" id="dq-budget-title">Your Range Is Below Our Minimum Package</div>
+  <div class="dq-body">A properly sized solar system that covers a Nigerian home's energy needs starts higher than this range. Systems below this threshold often underperform and lead to poor outcomes.</div>
+  <ul class="dq-reason-box">
+    <li>Undersized systems burn out faster and waste your investment</li>
+    <li>Component quality is compromised at very low price points</li>
+    <li>Our minimum package ensures your system lasts 10–15 years</li>
+  </ul>
+  <div class="dq-body">If you're building towards a solar budget, our free planning guide shows you how to save strategically and what to budget for each system size.</div>
+  <a href="#" class="dq-alt-btn" id="dq-budget-link">Download Free Solar Budget Guide →</a>
+</div>
+
+<div class="dq-page" id="dq-installer">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 0 1 3-3.87m5-3.13a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm7 2a4 4 0 1 0 0-8"/></svg></div>
+  <div class="dq-title">You're Already in Good Hands</div>
+  <div class="dq-body">Since you're already in active discussions with an installer, we don't want to create confusion or split your focus. We work best with homeowners who haven't yet committed to a provider.</div>
+  <div class="dq-body">If your current discussions don't work out, or if you'd like a second opinion on a proposal you've received, come back and we'll pick things up from here.</div>
+  <a href="#" class="dq-alt-btn" id="dq-installer-link" target="_blank">Get a Second Opinion on WhatsApp →</a>
+</div>
+
+<div class="dq-page" id="dq-location">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+  <div class="dq-title">We Don't Cover Your Area Yet</div>
+  <div class="dq-body" id="dq-location-body">We currently only serve specific areas. We do not have coverage confirmed for your area at this time.</div>
+  <ul class="dq-reason-box">
+    <li>We are expanding to new areas regularly</li>
+    <li>Leave your details and we will notify you when your area becomes active</li>
+  </ul>
+  <div class="dq-body">If you would like to be the first to know when we launch in your area, message us on WhatsApp and we will add you to our waitlist.</div>
+  <a href="#" class="dq-alt-btn" id="dq-location-link" target="_blank">Join the Waitlist on WhatsApp →</a>
+</div>
+
+<!-- ══════════════════════════════════
+     LOADING
+═══════════════════════════════════ -->
+<div class="loading-page" id="loadingPage">
+  <div class="spinner"></div>
+  <div class="loading-text">Calculating your solar ROI...</div>
+  <div class="loading-sub">Running your numbers against 20-year projections</div>
+</div>
+
+<!-- ══════════════════════════════════
+     RESULT: GREEN (Qualified + ROI)
+═══════════════════════════════════ -->
+<div class="result-page" id="resultGreen">
+
+  <div class="section-card" style="padding-bottom:18px;">
+    <div class="report-head">
+      <div class="report-head-top">
+        <span class="report-eyebrow">Solar Assessment Report</span>
+        <span class="report-id" id="rg-report-id">#000000</span>
+      </div>
+      <div class="report-for" id="rg-report-for">Prepared for </div>
+    </div>
+    <div class="rep-byline" style="margin-bottom:0;">
+      <img class="rep-photo" id="repPhotoResult" src="" alt="">
+      <div>
+        <div class="rep-byline-name" id="repNameResult"></div>
+        <div class="rep-byline-sub" id="repTitleResult"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="result-hero">
+    <div class="result-badge green">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+      Qualified  Home Suitable for Solar
+    </div>
+    <div class="result-title" id="rg-title">Your Home Qualifies. Here's Your ROI.</div>
+    <div class="result-sub" id="rg-sub">Based on your answers, your home passes every eligibility check. Here are your personalised solar financial results and your matched package.</div>
+    <div class="roi-grid">
+      <div class="roi-card"><span class="roi-val blue" id="rg-payback"></span><div class="roi-lbl">Payback Period (years)</div></div>
+      <div class="roi-card"><span class="roi-val green" id="rg-monthly"></span><div class="roi-lbl">Monthly Savings (Year 1)</div></div>
+      <div class="roi-card"><span class="roi-val blue" id="rg-roi"></span><div class="roi-lbl">20-Year ROI %</div></div>
+      <div class="roi-card"><span class="roi-val green" id="rg-total"></span><div class="roi-lbl">Total 20-Year Savings</div></div>
+    </div>
+  </div>
+
+  <div class="score-section">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg> Home Safety Score</div>
+    <div class="score-label"><span class="score-name">Structural Readiness</span><span class="score-val" id="ss-structural"></span></div>
+    <div class="score-bar"><div class="score-fill green" id="sb-structural"></div></div>
+    <div class="score-label"><span class="score-name">Electrical Readiness</span><span class="score-val" id="ss-electrical"></span></div>
+    <div class="score-bar"><div class="score-fill green" id="sb-electrical"></div></div>
+    <div class="score-label"><span class="score-name">Sun Exposure</span><span class="score-val" id="ss-sun"></span></div>
+    <div class="score-bar"><div class="score-fill gold" id="sb-sun"></div></div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg> Your Financial Breakdown</div>
+    <div class="breakdown">
+      <div class="breakdown-row"><span class="breakdown-lbl">Current monthly spend</span><span class="breakdown-val" id="rg-cur-monthly"></span></div>
+      <div class="breakdown-row"><span class="breakdown-lbl">Current annual cost</span><span class="breakdown-val" id="rg-cur-annual"></span></div>
+      <div class="breakdown-row"><span class="breakdown-lbl">System investment</span><span class="breakdown-val" id="rg-system-cost"></span></div>
+      <div class="breakdown-row"><span class="breakdown-lbl">Annual maintenance</span><span class="breakdown-val">₦30,000 – ₦60,000</span></div>
+      <div class="breakdown-row"><span class="breakdown-lbl">Battery replacement at</span><span class="breakdown-val" id="rg-battery-yr"></span></div>
+      <div class="breakdown-row total"><span class="breakdown-lbl">Break-even point</span><span class="breakdown-val blue" id="rg-breakeven"></span></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg> Your Matched Package</div>
+    <div class="pkg-card">
+      <div class="pkg-name" id="rg-pkg-name"></div>
+      <div class="pkg-price" id="rg-pkg-price"></div>
+      <div class="pkg-spec" id="rg-pkg-spec"></div>
+      <div class="pkg-powers" id="rg-pkg-powers"></div>
+      <div class="pkg-badges" id="rg-pkg-badges"></div>
+    </div>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6;">Final pricing is subject to site visit, load assessment and technical audit.</p>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="20" x2="12" y2="10"/><line x1="18" y1="20" x2="18" y2="4"/><line x1="6" y1="20" x2="6" y2="16"/></svg> What Doing Nothing Costs You</div>
+    <div class="compare-chart">
+      <div class="compare-row">
+        <div class="compare-label">
+          <span>Power costs over the next 10 years</span>
+          <span class="compare-figure compare-figure-loss" id="cmp-loss-fig"></span>
+        </div>
+        <div class="compare-track"><div class="compare-bar compare-bar-loss" id="cmp-bar-loss"></div></div>
+      </div>
+      <div class="compare-row">
+        <div class="compare-label">
+          <span id="cmp-cost-label">Your matched system, one-off</span>
+          <span class="compare-figure compare-figure-cost" id="cmp-cost-fig"></span>
+        </div>
+        <div class="compare-track"><div class="compare-bar compare-bar-cost" id="cmp-bar-cost"></div></div>
+      </div>
+    </div>
+    <p class="compare-caption" id="cmp-caption"></p>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg> Why You Qualified</div>
+    <ul class="check-list" id="rg-qualifiers"></ul>
+  </div>
+
+  <div class="verdict-block">
+    <div class="verdict-eyebrow">The recommendation</div>
+    <div class="verdict-title" id="rg-verdict-title">Here's what we'd recommend</div>
+    <div class="verdict-body" id="rg-verdict-body"></div>
+  </div>
+
+  <div class="cta-box">
+    <div class="cta-heading">Your Next Step: See Your Package Options</div>
+    <div class="cta-sub" id="greenCTASub">Message us on WhatsApp to see the exact packages, prices, and what each one powers.</div>
+    <a href="#" class="cta-btn" id="greenCTA" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      See My Package Options on WhatsApp →
+    </a>
+    <div class="guarantee-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      <span id="rg-guarantee-note">We reply with package details soon</span>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     RESULT: AMBER (Qualified, needs inspection first  same CTA as green)
+═══════════════════════════════════ -->
+<div class="result-page" id="resultAmber">
+  <div class="result-hero">
+    <div class="result-badge amber">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
+      Qualified  Site Details to Confirm
+    </div>
+    <div class="result-title">Your Home Qualifies  A Few Details to Confirm On-Site</div>
+    <div class="result-sub">Your energy spend and package qualify you. We'll confirm 1–2 flagged home conditions before installation  this is not a barrier to seeing prices now.</div>
+    <div class="roi-grid">
+      <div class="roi-card"><span class="roi-val blue" id="ra-payback"></span><div class="roi-lbl">Est. Payback Period</div></div>
+      <div class="roi-card"><span class="roi-val green" id="ra-monthly"></span><div class="roi-lbl">Monthly Savings (Year 1)</div></div>
+    </div>
+  </div>
+
+  <div class="section-card">
+    <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg> We'll Confirm These</div>
+    <ul class="check-list" id="ra-issues"></ul>
+    <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.7;">These are common and fixable. We confirm them on-site as part of the same visit where we walk you through packages  it's not a separate booking step.</p>
+  </div>
+
+  <div class="cta-box">
+    <div class="cta-heading">Your Next Step: See Your Package Options</div>
+    <div class="cta-sub">Message us on WhatsApp to see package options and prices  we'll confirm the flagged items when we visit.</div>
+    <a href="#" class="cta-btn amber" id="amberCTA" target="_blank">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+      See My Package Options on WhatsApp →
+    </a>
+    <div class="guarantee-note">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      No obligation  we confirm, then you decide
+    </div>
+  </div>
+</div>
+
+<!-- ══ EXIT INTENT MODAL ══ -->
+<div class="exit-overlay" id="exitOverlay">
+  <div class="exit-modal">
+    <div class="exit-icon-wrap"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg></div>
+    <h3 id="exitHeadline">Wait  your ROI result is almost ready</h3>
+    <p id="exitBody">Finish the remaining questions to see your payback period, monthly savings, and matched solar package. It takes under a minute.</p>
+    <button class="exit-continue" id="exitContinue">Continue My Assessment →</button>
+    <a class="exit-alt" id="exitGuide" href="#">I'm not ready  send me the Free Solar Guide instead</a>
+  </div>
+</div>
+
+</div><!-- /.wrap -->
+
+<script>
+// ══════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════
+const state = {
+  currentQ: 'q1',
+  totalQ: 9,
+  answers: {},
+  safetyFlags: [],
+  completed: false,
+  recoverContext: null,
+};
+
+const STEP = { q1:1, q2:2, q3:3, q4:4, q5:5, q5r:5, q6:6, q7:7, q8:8, q9:9 };
+const GATE_MAP = { q1:2, q2:7, q3:4, q4:1, q5:3, q5r:3, q6:5, q7:6, q8:9, q9:8 };
+
+// Gate labels never vary per installer, so they stay fixed here rather
+// than in SITE_CONFIG  one less thing to edit per client.
+const GATES = [
+  { n: 1, confirms: "Install window within 90 days", label: "Timeline Set" },
+  { n: 2, confirms: "Monthly power spend of ₦30,000+", label: "ROI Verified" },
+  { n: 3, confirms: "Package selected", label: "Package Selected" },
+  { n: 4, confirms: "Property ownership or documented authority", label: "Decision Maker" },
+  { n: 5, confirms: "Roof, wiring and shading self-reported", label: "Home Condition Flagged" },
+  { n: 6, confirms: "Not signed with another installer", label: "Winnable" },
+  { n: 7, confirms: "Inside the service area", label: "Location Matched" },
+  { n: 8, confirms: "WhatsApp given willingly, expecting contact", label: "Pre-Warmed" },
+  { n: 9, confirms: "Full payment or instalment preference stated", label: "Payment Method Known" },
+];
+
+function gateChipText(qId){
+  const g = GATES.find(x => x.n === GATE_MAP[qId]);
+  return g ? ('Gate ' + g.n + ' · ' + g.label) : '';
+}
+
+// ══════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('[id^="gate-"]').forEach(el => {
+    const qId = el.id.replace('gate-', '');
+    el.textContent = gateChipText(qId);
+  });
+
+  document.getElementById('heroBusinessName').textContent = SITE_CONFIG.installer.businessName;
+  document.getElementById('q2-hint').textContent = 'We currently serve ' + SITE_CONFIG.installer.cityLabel + '. This confirms ' + SITE_CONFIG.installer.businessName + ' covers your area.';
+  document.getElementById('q9-hint').textContent = SITE_CONFIG.installer.businessName + ' will reach out on WhatsApp. Your details are never shared with third parties.';
+  document.getElementById('consentText').textContent = 'I agree to be contacted by ' + SITE_CONFIG.installer.businessName + ' on WhatsApp about my solar assessment.';
+  document.getElementById('dq-location-body').textContent = 'We currently only serve ' + SITE_CONFIG.installer.cityLabel + '. We do not have coverage confirmed for your area at this time.';
+  document.getElementById('rg-guarantee-note').textContent = SITE_CONFIG.installer.businessName + ' replies with package details soon';
+
+  applyRepIdentity();
+  buildLocationOptions();
+  buildPackageOptions();
+  bindGuideLinks();
+  wireStaticOptionCards();
+  wireSpendInput();
+
+  ['firstName','whatsapp','location'].forEach(id => {
+    document.getElementById(id).addEventListener('input', checkQ9);
+  });
+  document.getElementById('contactConsent').addEventListener('change', function(){
+    document.getElementById('err-consent').classList.remove('show');
+    document.getElementById('consentRow').classList.remove('consent-invalid');
+    checkQ9();
+  });
+
+  if (!restoreSession()) {
+    trackEvent('qualifier_started', { event_label: 'Qualifier page loaded  Q1 visible', engagement_type: 'funnel_entry' });
+    showCard('q1');
+  }
+
+  flushPendingLeads();
+});
+
+// ══════════════════════════════════════════════════════
+// REP IDENTITY  one config block drives the photo and name on both
+// the intro and the result page. Everything hides gracefully if no
+// rep is configured, so a client without a photo still works.
+// ══════════════════════════════════════════════════════
+function applyRepIdentity(){
+  var rep = SITE_CONFIG.rep;
+  if (!rep || !rep.photo) return;
+
+  var intro = document.getElementById('repIntro');
+  var introImg = document.getElementById('repPhotoIntro');
+  introImg.src = rep.photo;
+  introImg.alt = 'Photo of ' + (rep.name || 'your consultant');
+  document.getElementById('repNameIntro').textContent = rep.name ? ("Hi, I'm " + rep.name + '.') : SITE_CONFIG.installer.businessName;
+  document.getElementById('repLineIntro').textContent = rep.introLine || '';
+  intro.style.display = 'flex';
+
+  var resImg = document.getElementById('repPhotoResult');
+  resImg.src = rep.photo;
+  resImg.alt = 'Photo of ' + (rep.name || 'your consultant');
+  document.getElementById('repNameResult').textContent = rep.name ? ('Your assessment, from ' + rep.name) : ('Your assessment from ' + SITE_CONFIG.installer.businessName);
+  document.getElementById('repTitleResult').textContent = rep.title || SITE_CONFIG.installer.businessName;
+}
+
+// ══════════════════════════════════════════════════════
+// LIVE-TYPING EFFECT  reveals HTML character by character but
+// consumes any tag atomically, so bold formatting is never split
+// mid-render. Falls back to instant text under prefers-reduced-motion.
+// ══════════════════════════════════════════════════════
+function prefersReducedMotion(){
+  return window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+}
+
+function typeHTML(target, html, opts){
+  opts = opts || {};
+  if (prefersReducedMotion()) { target.innerHTML = html; return; }
+  var charsPerTick = opts.charsPerTick || 2;
+  var tickMs = opts.tickMs || 14;
+  target.innerHTML = '';
+  var i = 0, len = html.length;
+  (function tick(){
+    var budget = charsPerTick;
+    while (budget > 0 && i < len) {
+      if (html[i] === '<') {
+        var close = html.indexOf('>', i);
+        if (close === -1) { i = len; break; }
+        i = close + 1;
+      } else { i++; budget--; }
+    }
+    target.innerHTML = html.slice(0, i) + '<span class="type-cursor"></span>';
+    if (i < len) setTimeout(tick, tickMs);
+    else target.innerHTML = html;
+  })();
+}
+
+function bindGuideLinks(){
+  const guide = SITE_CONFIG.guideUrl;
+  ['dq-spend-link','dq-timeline-link','dq-budget-link'].forEach(id => {
+    document.getElementById(id).href = guide;
+  });
+  const waNum = SITE_CONFIG.installer.whatsapp;
+  document.getElementById('dq-ownership-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent("Hi, I'm a renter interested in solar. Can you help me understand the landlord permission process?");
+  document.getElementById('dq-installer-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('Hi, I have a solar quote and would like a second opinion');
+  document.getElementById('dq-location-link').href = 'https://wa.me/' + waNum + '?text=' + encodeURIComponent('Hi, I am interested in solar but my area is not yet covered. Please add me to your waitlist.');
+  document.getElementById('exitGuide').href = guide;
+}
+
+// ══════════════════════════════════════════════════════
+// Q2  LOCATION (this installer's own area list, from SITE_CONFIG)
+// ══════════════════════════════════════════════════════
+function buildLocationOptions(){
+  const wrap = document.getElementById('q2-opts');
+  const frag = document.createDocumentFragment();
+  SITE_CONFIG.installer.locations.forEach(loc => {
+    const label = document.createElement('label');
+    label.className = 'option';
+    label.dataset.val = loc;
+    label.innerHTML = '<div class="option-radio"></div><div><div class="option-text">' + loc + '</div></div>';
+    frag.appendChild(label);
+  });
+  const other = document.createElement('label');
+  other.className = 'option';
+  other.dataset.val = 'other';
+  other.innerHTML = '<div class="option-radio"></div><div><div class="option-text">Somewhere else</div><div class="option-sub">We may not have coverage in your area yet</div></div>';
+  frag.appendChild(other);
+  wrap.appendChild(frag);
+
+  wrap.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      wrap.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      document.getElementById('q2-next').disabled = false;
+    });
+  });
+}
+
+function nextQ2(){
+  const selected = document.querySelector('#q2-opts .option.selected');
+  if (!selected) return;
+  const locVal = selected.dataset.val;
+  state.answers.city = { val: locVal, name: locVal === 'other' ? SITE_CONFIG.installer.cityLabel : locVal };
+  trackQuestionAnswered('q2', locVal);
+  if (locVal === 'other') { trackDisqualification('dq-location','q2',locVal); showDQ('dq-location'); return; }
+  showCard('q3');
+}
+
+// ══════════════════════════════════════════════════════
+// Q5  TIER 1 (pick a price range) or TIER 2 (appliance-load match)
+// ══════════════════════════════════════════════════════
+function buildPackageOptions(){
+  if (activeTierName() === 'tier2') { buildApplianceChecklist(); return; }
+  buildBracketOptions();
+}
+
+function buildBracketOptions(){
+  const wrap = document.getElementById('q5-opts');
+  const frag = document.createDocumentFragment();
+  SITE_CONFIG.tier1.packages.forEach((p, i) => {
+    const label = document.createElement('label');
+    label.className = 'option';
+    label.dataset.val = 'pkg-' + i;
+    label.dataset.cost = p.price;
+    label.dataset.size = p.systemSize || '';
+    label.dataset.budgetLabel = p.priceLabel;
+    label.dataset.packageName = p.name;
+    if (p.belowMinimum) label.dataset.belowMinimum = '1';
+    if (p.recoverable) label.dataset.recoverable = '1';
+    // Every option renders identically regardless of belowMinimum, so the
+    // gate is invisible to the person answering. Gating happens after the
+    // choice is made, in nextQ5()  never signposted in the option itself.
+    var subText = p.systemSize
+      ? ('System size: ' + p.systemSize + (p.whatItPowers ? ' · ' + p.whatItPowers : ''))
+      : (p.whatItPowers || '');
+    label.innerHTML = '<div class="option-radio"></div><div><div class="option-text">' + p.priceLabel + '</div>' +
+      (subText ? '<div class="option-sub">' + subText + '</div>' : '') +
+      '</div>';
+    frag.appendChild(label);
+  });
+  wrap.appendChild(frag);
+
+  wrap.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => {
+      wrap.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+      opt.classList.add('selected');
+      document.getElementById('q5-next').disabled = false;
+      state.answers.q5 = {
+        val: opt.dataset.val,
+        cost: opt.dataset.cost,
+        size: opt.dataset.size,
+        budgetLabel: opt.dataset.budgetLabel,
+        packageName: opt.dataset.packageName,
+        belowMinimum: !!opt.dataset.belowMinimum,
+        recoverable: !!opt.dataset.recoverable,
+      };
+    });
+  });
+}
+
+// Typical average running wattage per category  clearly an estimate,
+// not a site survey. The installer confirms exact sizing on-site.
+const APPLIANCE_LOAD_TABLE = [
+  { id:'lighting', label:'Lighting throughout the home', sub:'~10 LED bulbs', watts:100 },
+  { id:'fans', label:'Ceiling / standing fans', sub:'~4 fans', watts:300 },
+  { id:'fridge', label:'Refrigerator / freezer', sub:'', watts:200 },
+  { id:'tv', label:'TV, decoder & sound system', sub:'', watts:150 },
+  { id:'router', label:'Router, phone & laptop charging', sub:'', watts:60 },
+  { id:'washer', label:'Washing machine', sub:'', watts:500 },
+  { id:'small', label:'Iron / microwave (used briefly)', sub:'', watts:1000 },
+  { id:'pump', label:'Water pump  borehole or overhead tank', sub:'', watts:750 },
+  { id:'ac1', label:'Air conditioner  1 unit', sub:'1HP split unit', watts:900 },
+  { id:'ac2', label:'Air conditioner  a second unit', sub:'each extra 1HP split unit', watts:900 },
+];
+
+function calcRequiredKVA(selectedIds){
+  const totalWatts = APPLIANCE_LOAD_TABLE.filter(a => selectedIds.includes(a.id)).reduce((s,a) => s + a.watts, 0);
+  const kva = Math.ceil(((totalWatts / 1000 / 0.8) * 1.15) * 10) / 10;
+  return { totalWatts, kva };
+}
+
+function matchPackageToLoad(requiredKVA, packages){
+  const sorted = [...packages].sort((a, b) => a.kva - b.kva);
+  let match = sorted.find(p => p.kva >= requiredKVA);
+  let undersized = false;
+  if (!match) { match = sorted[sorted.length - 1]; undersized = true; }
+  return { match, undersized };
+}
+
+function buildApplianceChecklist(){
+  document.getElementById('q5-text').textContent = 'Which appliances do you want your solar system to power?';
+  document.getElementById('q5-hint').textContent = 'Select everything you want covered. We size your system from this and match it to a real package  not a generic range.';
+
+  const wrap = document.getElementById('q5-opts');
+  const frag = document.createDocumentFragment();
+  APPLIANCE_LOAD_TABLE.forEach(a => {
+    const label = document.createElement('label');
+    label.className = 'option load-check';
+    label.dataset.val = a.id;
+    label.innerHTML = '<div class="option-radio"></div><div><div class="option-text">' + a.label + '</div>' + (a.sub ? '<div class="option-sub">' + a.sub + '</div>' : '') + '</div>';
+    frag.appendChild(label);
+  });
+  wrap.appendChild(frag);
+
+  const estimateBox = document.getElementById('q5-load-estimate');
+  const kvaEl = document.getElementById('q5-load-kva');
+  const matchEl = document.getElementById('q5-load-match');
+  const nextBtn = document.getElementById('q5-next');
+
+  function updateEstimate(){
+    const selected = Array.from(wrap.querySelectorAll('.option.selected')).map(o => o.dataset.val);
+    nextBtn.disabled = selected.length === 0;
+    if (selected.length === 0) { estimateBox.style.display = 'none'; return; }
+
+    const { totalWatts, kva } = calcRequiredKVA(selected);
+    const { match, undersized } = matchPackageToLoad(kva, SITE_CONFIG.tier2.packages);
+    estimateBox.style.display = 'block';
+    kvaEl.textContent = '~' + kva + ' kVA';
+    matchEl.textContent = undersized
+      ? 'Matches our largest available package: ' + match.name + ' (' + match.kva + ' kVA)  we confirm sizing for this load'
+      : 'Matches: ' + match.name + ' (' + match.kva + ' kVA)';
+
+    state.answers.q5 = {
+      val: 'matched-' + match.name, cost: match.price, size: match.kva + ' kVA',
+      budgetLabel: match.name, packageName: match.name, note: match.whatItPowers,
+      tier2Match: true, undersized,
+      applianceLoad: { selectedIds: selected, totalWatts, requiredKVA: kva },
+    };
+  }
+
+  wrap.querySelectorAll('.option').forEach(opt => {
+    opt.addEventListener('click', () => { opt.classList.toggle('selected'); updateEstimate(); });
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// STATIC OPTION CARDS (Q1, Q3, Q4, Q6 multi-select, Q7, Q8, Q5R)
+// ══════════════════════════════════════════════════════
+function wireStaticOptionCards(){
+  document.querySelectorAll('.q-card').forEach(card => {
+    if (card.id === 'q1' || card.id === 'q2' || card.id === 'q5') return; // q1 is a typed field, q2/q5 built dynamically above
+    card.querySelectorAll('.option').forEach(opt => {
+      opt.addEventListener('click', () => {
+        if (card.id === 'q6') { handleHomeCheck(card, opt); return; }
+        card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+        opt.classList.add('selected');
+        const nextBtn = document.getElementById(card.id + '-next');
+        if (nextBtn) nextBtn.disabled = false;
+        state.answers[card.id] = {
+          val: opt.dataset.val,
+          nepa: opt.dataset.nepa,
+          fuel: opt.dataset.fuel,
+          flag: opt.dataset.flag || null,
+        };
+      });
+    });
+  });
+}
+
+// ══════════════════════════════════════════════════════
+// Q1  TYPED MONTHLY SPEND FIELD
+// Real number instead of a band select, so the ROI result (payback
+// period, 20-year savings, etc.) is calculated from what the homeowner
+// actually told us rather than a band midpoint.
+// ══════════════════════════════════════════════════════
+const SPEND_MIN = 0;
+const SPEND_MAX = 2000000; // sanity ceiling  catches fat-finger typos (extra zero, etc.)
+
+function wireSpendInput(){
+  const input = document.getElementById('q1-spend-input');
+  const row = input.closest('.spend-input-row');
+  const error = document.getElementById('q1-spend-error');
+  const nextBtn = document.getElementById('q1-next');
+
+  function validate(showError){
+    const raw = input.value.trim();
+    if (raw === '') {
+      if (showError) { error.textContent = 'Please enter your monthly spend.'; error.classList.add('show'); row.classList.add('spend-error'); }
+      nextBtn.disabled = true;
+      return null;
+    }
+    const val = Number(raw);
+    if (!Number.isFinite(val) || /[^0-9.]/.test(raw)) {
+      if (showError) { error.textContent = 'Numbers only, please  no letters or symbols.'; error.classList.add('show'); row.classList.add('spend-error'); }
+      nextBtn.disabled = true;
+      return null;
+    }
+    if (val < SPEND_MIN) {
+      if (showError) { error.textContent = "That can't be negative."; error.classList.add('show'); row.classList.add('spend-error'); }
+      nextBtn.disabled = true;
+      return null;
+    }
+    if (val > SPEND_MAX) {
+      if (showError) { error.textContent = 'That seems too high  check the number and try again.'; error.classList.add('show'); row.classList.add('spend-error'); }
+      nextBtn.disabled = true;
+      return null;
+    }
+    error.classList.remove('show');
+    row.classList.remove('spend-error');
+    nextBtn.disabled = false;
+    return val;
+  }
+
+  input.addEventListener('input', () => {
+    const val = validate(false); // live: only clear errors, don't nag while typing
+    state.answers.q1 = val !== null ? { val: val, spend: val } : null;
+  });
+  input.addEventListener('blur', () => { validate(true); });
+}
+
+function handleHomeCheck(card, opt){
+  if (opt.dataset.val === 'none') {
+    card.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
+    opt.classList.add('selected');
+  } else {
+    const noneOpt = card.querySelector('.option[data-val="none"]');
+    if (noneOpt) noneOpt.classList.remove('selected');
+    opt.classList.toggle('selected');
+  }
+  const selected = Array.from(card.querySelectorAll('.option.selected'));
+  document.getElementById('q6-next').disabled = selected.length === 0;
+  state.answers['q6'] = {
+    val: selected.map(o => o.dataset.val).join(','),
+    flags: selected.filter(o => o.dataset.val !== 'none').map(o => o.dataset.flag),
+  };
+}
+
+// ══════════════════════════════════════════════════════
+// CARD DISPLAY
+// ══════════════════════════════════════════════════════
+function showCard(id){
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  const card = document.getElementById(id);
+  if (!card) return;
+  card.classList.add('active');
+  state.currentQ = id;
+  document.getElementById('progressWrap').style.display = 'flex';
+  if (id !== 'q1') document.getElementById('hero').style.display = 'none';
+  updateProgress(STEP[id] || 1);
+  card.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  _furthestQ = id;
+  _questionsViewed++;
+  _lastActiveTime = Date.now();
+  trackQuestionView(id);
+  persistSession();
+}
+
+function updateProgress(step){
+  const pct = Math.round(((step - 1) / state.totalQ) * 100);
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressLabel').textContent = (step - 1) + ' / ' + state.totalQ;
+}
+
+// ══════════════════════════════════════════════════════
+// NAVIGATION / GATE LOGIC
+// ══════════════════════════════════════════════════════
+function nextQ1(){
+  const ans = state.answers.q1;
+  if (!ans) return;
+  trackQuestionAnswered('q1', ans.val);
+  if (ans.spend < 30000) { trackDisqualification('dq-spend','q1',ans.val); showDQ('dq-spend'); return; }
+  showCard('q2');
+}
+
+function nextQ3(){
+  const ans = state.answers.q3;
+  if (!ans) return;
+  trackQuestionAnswered('q3', ans.val);
+  if (ans.val === 'renter-no' || ans.val === 'renter-unknown') { trackDisqualification('dq-ownership','q3',ans.val); showDQ('dq-ownership'); return; }
+  showCard('q4');
+}
+
+function nextQ4(){
+  const ans = state.answers.q4;
+  if (!ans) return;
+  trackQuestionAnswered('q4', ans.val);
+  if (ans.val === 'info-only' || ans.val === '3-6months') { trackDisqualification('dq-timeline','q4',ans.val); showDQ('dq-timeline'); return; }
+  showCard('q5');
+}
+
+// Q5  Tier 1 packages may optionally flag belowMinimum/recoverable;
+// Tier 2 matches never carry those flags, so this falls straight
+// through to Q6 for every appliance-load match.
+function nextQ5(){
+  const ans = state.answers.q5;
+  if (!ans) return;
+  trackQuestionAnswered('q5', ans.val);
+
+  if (ans.belowMinimum && !ans.recoverable) { trackDisqualification('dq-budget','q5',ans.val); showDQ('dq-budget'); return; }
+
+  if (ans.recoverable) {
+    state.recoverContext = 'instalment';
+    document.getElementById('q5r-text').textContent = 'Many homeowners in your range install using a payment plan.';
+    document.getElementById('q5r-hint').textContent = 'Would you like to see instalment options for a package in this range?';
+    showCard('q5r');
+    return;
+  }
+
+  showCard('q6');
+}
+
+function nextQ5r(){
+  const selected = document.querySelector('#q5r-opts .option.selected');
+  if (!selected) return;
+  const val = selected.dataset.val;
+  trackQuestionAnswered('q5r', state.recoverContext + ':' + val);
+  if (val === 'yes') {
+    state.answers.q5.tagged = 'instalment-recovered';
+    showCard('q6');
+  } else {
+    trackDisqualification('dq-budget','q5r',val); showDQ('dq-budget');
+  }
+}
+
+function nextQ6(){
+  const ans = state.answers.q6;
+  if (!ans) return;
+  trackQuestionAnswered('q6', ans.val);
+  state.safetyFlags = ans.flags || [];
+  showCard('q7');
+}
+
+function nextQ7(){
+  const ans = state.answers.q7;
+  if (!ans) return;
+  trackQuestionAnswered('q7', ans.val);
+  if (ans.val === 'in-talks') { trackDisqualification('dq-installer','q7',ans.val); showDQ('dq-installer'); return; }
+  showCard('q8');
+}
+
+function nextQ8(){
+  const ans = state.answers.q8;
+  if (!ans) return;
+  trackQuestionAnswered('q8', ans.val);
+  showCard('q9');
+}
+
+function showDQ(id){
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.dq-page, .result-page, .loading-page').forEach(p => { p.classList.remove('show'); p.style.display=''; });
+  document.getElementById(id).classList.add('show');
+  document.getElementById('progressWrap').style.display = 'none';
+  window.scrollTo({ top:0, behavior:'smooth' });
+  clearSession();
+}
+
+// ══════════════════════════════════════════════════════
+// FIELD VALIDATION
+// ══════════════════════════════════════════════════════
+const NAME_RE = /^[A-Za-z][A-Za-z '-]{1,}$/;
+const CITY_RE = /^[A-Za-z][A-Za-z .'-]{1,}$/;
+function isValidNGPhone(v){
+  const digits = v.replace(/[\s-]+/g, '');
+  return /^(?:\+?234|0)[7-9][01]\d{8}$/.test(digits);
+}
+
+function checkQ9(){
+  const fn = document.getElementById('firstName').value.trim();
+  const wa = document.getElementById('whatsapp').value.trim();
+  const loc = document.getElementById('location').value.trim();
+  const consent = document.getElementById('contactConsent').checked;
+  const btn = document.getElementById('q9-next');
+  // Consent is required rather than optional: the entire purpose of this
+  // form is to pass the person's details to a named third-party installer.
+  // Without agreement there is no lawful basis to deliver the lead, and a
+  // lead who hasn't agreed to contact isn't a deliverable lead anyway.
+  btn.disabled = !(NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent);
+}
+
+function showFieldErrors(){
+  const fn = document.getElementById('firstName').value.trim();
+  const wa = document.getElementById('whatsapp').value.trim();
+  const loc = document.getElementById('location').value.trim();
+  document.getElementById('err-firstName').classList.toggle('show', !NAME_RE.test(fn));
+  document.getElementById('err-whatsapp').classList.toggle('show', !isValidNGPhone(wa));
+  document.getElementById('err-location').classList.toggle('show', !CITY_RE.test(loc));
+  const consent = document.getElementById('contactConsent').checked;
+  document.getElementById('err-consent').classList.toggle('show', !consent);
+  document.getElementById('consentRow').classList.toggle('consent-invalid', !consent);
+  return NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent;
+}
+
+// ══════════════════════════════════════════════════════
+// SESSION PERSISTENCE  survive accidental back-navigation / reload
+// ══════════════════════════════════════════════════════
+const SESSION_KEY = 'solar_qualifier_session_v1';
+
+function persistSession(){
+  try {
+    sessionStorage.setItem(SESSION_KEY, JSON.stringify({
+      currentQ: state.currentQ, answers: state.answers, safetyFlags: state.safetyFlags, recoverContext: state.recoverContext,
+    }));
+  } catch (e) {}
+}
+
+function clearSession(){
+  try { sessionStorage.removeItem(SESSION_KEY); } catch (e) {}
+}
+
+function restoreSession(){
+  let saved;
+  try { saved = JSON.parse(sessionStorage.getItem(SESSION_KEY) || 'null'); } catch (e) { saved = null; }
+  if (!saved || !saved.currentQ || saved.currentQ === 'q1') return false;
+
+  state.answers = saved.answers || {};
+  state.safetyFlags = saved.safetyFlags || [];
+  state.recoverContext = saved.recoverContext || null;
+
+  Object.keys(state.answers).forEach(qId => {
+    const ans = state.answers[qId];
+    const card = document.getElementById(qId);
+    if (!card || !ans || !ans.val) return;
+    ans.val.split(',').forEach(v => {
+      const opt = card.querySelector('.option[data-val="' + v + '"]');
+      if (opt) opt.classList.add('selected');
+    });
+    const btn = document.getElementById(qId + '-next');
+    if (btn) btn.disabled = false;
+  });
+
+  trackEvent('qualifier_resumed', { event_label: 'Session restored at ' + saved.currentQ, content_id: saved.currentQ });
+  showCard(saved.currentQ);
+  return true;
+}
+
+// ══════════════════════════════════════════════════════
+// GA4 FUNNEL TRACKING
+// ══════════════════════════════════════════════════════
+const Q_LABELS = {
+  q1: 'Q1  Monthly power spend', q2: 'Q2  Location', q3: 'Q3  Property ownership',
+  q4: 'Q4  Install timeline', q5: 'Q5  Package', q5r: 'Q5 recovery  instalment',
+  q6: 'Q6  Home quick check', q7: 'Q7  Already with installer', q8: 'Q8  Payment method',
+  q9: 'Q9  Contact details',
+};
+const DQ_LABELS = {
+  'dq-spend': 'Low energy spend (under ₦30k)', 'dq-location': 'Out of service area',
+  'dq-ownership': 'No property ownership / landlord permission', 'dq-timeline': 'Timeline too long or no timeline',
+  'dq-budget': 'Below minimum package', 'dq-installer': 'Already committed to another installer',
+};
+
+var _gaQueue = [];
+var _gaReady = false;
+function trackEvent(eventName, params){
+  var gaParams = Object.assign({}, params || {});
+  delete gaParams.event_category;
+  gaParams.funnel_name = 'Solar 9-Gate Qualifier';
+  if (typeof gtag === 'function') gtag('event', eventName, gaParams);
+  else _gaQueue.push({ name: eventName, params: gaParams });
+}
+function _flushGAQueue(){
+  _gaReady = true;
+  while (_gaQueue.length > 0) { var e = _gaQueue.shift(); if (typeof gtag === 'function') gtag('event', e.name, e.params); }
+}
+var _gaCheckInterval = setInterval(function(){ if (typeof gtag === 'function') { clearInterval(_gaCheckInterval); _flushGAQueue(); } }, 50);
+
+function trackQuestionView(qId){
+  trackEvent('qualifier_question_viewed', { event_label: Q_LABELS[qId] || qId, content_id: qId, content_type: 'quiz_step', value: STEP[qId] || 0 });
+}
+function trackQuestionAnswered(qId, answerVal){
+  trackEvent('qualifier_question_answered', { event_label: (Q_LABELS[qId] || qId) + ' → ' + answerVal, content_id: qId, content_type: 'quiz_answer', item_id: answerVal, value: STEP[qId] || 0 });
+}
+function trackDisqualification(dqId, triggeredAtQ, answerVal){
+  var dqLabel = DQ_LABELS[dqId] || dqId, qLabel = Q_LABELS[triggeredAtQ] || triggeredAtQ;
+  trackEvent('qualifier_disqualified', { event_label: qLabel + ' → ' + dqLabel, content_id: triggeredAtQ, content_type: 'disqualification', item_id: dqId, item_name: dqLabel, item_category: qLabel, value: STEP[triggeredAtQ] || 0 });
+}
+function trackConversion(resultType, systemCost, city){
+  var label = resultType === 'green' ? 'Qualified  Green' : 'Qualified  Amber';
+  trackEvent('qualifier_completed', { event_label: label, content_id: resultType, content_type: 'quiz_result', value: systemCost, currency: 'NGN', item_id: city || 'Unknown', item_name: city || 'Unknown' });
+  trackEvent('generate_lead', { event_label: label, value: systemCost, currency: 'NGN', lead_source: 'Solar 9-Gate Qualifier' });
+}
+function trackWhatsAppClick(resultType){ trackEvent('whatsapp_cta_clicked', { event_label: 'WhatsApp click  ' + resultType + ' result', result_type: resultType }); }
+
+var _furthestQ = 'q1', _lastActiveTime = Date.now(), _questionsViewed = 0;
+
+document.addEventListener('visibilitychange', function(){
+  if (document.visibilityState === 'hidden' && !state.completed) {
+    trackEvent('qualifier_abandoned', {
+      event_label: Q_LABELS[_furthestQ] || _furthestQ, furthest_question: Q_LABELS[_furthestQ] || _furthestQ,
+      furthest_question_id: _furthestQ, questions_viewed: _questionsViewed,
+      seconds_on_page: Math.round((Date.now() - _lastActiveTime) / 1000),
+    });
+  }
+});
+window.addEventListener('beforeunload', function(){
+  if (!state.completed) trackEvent('qualifier_abandoned', { event_label: Q_LABELS[_furthestQ] || _furthestQ, furthest_question_id: _furthestQ, questions_viewed: _questionsViewed });
+});
+
+// ══════════════════════════════════════════════════════
+// SUBMIT + ROI CALCULATION
+// ══════════════════════════════════════════════════════
+const TIMELINE_LABELS = { '0-14days': 'within the next 2 weeks', '2-4weeks': 'within the next month', '1-3months': 'within 1–3 months' };
+function fmt(n){ return '₦' + Math.round(n).toLocaleString('en-NG'); }
+
+function slugify(s){ return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
+
+async function submitForm(){
+  if (!showFieldErrors()) return;
+  trackEvent('qualifier_form_submitted', { event_label: 'Q9 Contact form submitted', question_id: 'q9' });
+
+  const fn = document.getElementById('firstName').value.trim();
+  const wa = document.getElementById('whatsapp').value.trim();
+  const loc = document.getElementById('location').value.trim();
+
+  document.querySelectorAll('.q-card').forEach(c => c.classList.remove('active'));
+  document.getElementById('progressWrap').style.display = 'none';
+  document.getElementById('loadingPage').classList.add('show');
+  window.scrollTo({ top:0, behavior:'smooth' });
+
+  const spendAns = state.answers.q1;
+  const pkgAns = state.answers.q5;
+  const monthlyTotal = parseInt(spendAns?.spend || 40000);
+  const annualCost = monthlyTotal * 12;
+  const systemCost = parseInt(pkgAns?.cost || 2000000);
+  const batteryLife = 12;
+  const maintenanceCost = 45000;
+  const batteryReplacement = systemCost * 0.38;
+  const fuelInflation = 0.18;
+
+  let cumSavings = 0, breakEvenYear = 0, currentCostYear = annualCost;
+  for (let yr = 1; yr <= 20; yr++) {
+    currentCostYear *= (1 + fuelInflation);
+    let solarCost = maintenanceCost;
+    if (yr === batteryLife) solarCost += batteryReplacement;
+    cumSavings += (currentCostYear - solarCost);
+    if (!breakEvenYear && cumSavings >= systemCost) breakEvenYear = yr;
+  }
+  let payback = 0, running = 0, tempCost = annualCost;
+  for (let yr = 1; yr <= 30; yr++) {
+    tempCost *= (1 + fuelInflation);
+    let sc = maintenanceCost;
+    if (yr === batteryLife) sc += batteryReplacement;
+    running += (tempCost - sc);
+    if (running >= systemCost) { payback = yr; break; }
+  }
+  const roi20 = ((cumSavings - systemCost) / systemCost) * 100;
+  const monthlySavingsY1 = (annualCost - maintenanceCost) / 12;
+
+  const isAmber = state.safetyFlags.length > 0;
+
+  const packageRange = pkgAns?.size || 'To be assessed';
+  const budgetRange = pkgAns?.budgetLabel || 'Not specified';
+  const timelineLabel = TIMELINE_LABELS[state.answers.q4?.val] || 'within 90 days';
+  const competitorStatus = state.answers.q7?.val || 'Not specified';
+  const paymentAns = state.answers.q8?.val || 'Not specified';
+  const cityName = state.answers.city ? state.answers.city.name : loc;
+
+  const payload = {
+    installer_business_name: SITE_CONFIG.installer.businessName,
+    installer_id: SITE_CONFIG.installerId || slugify(SITE_CONFIG.installer.businessName),
+    active_tier: activeTierName(),
+    submissionURL: window.location.href,
+    firstName: fn, whatsapp: wa, location: loc,
+    contactConsent: true,
+    contactConsentText: document.getElementById('consentText').textContent,
+    contactConsentAt: new Date().toISOString(),
+    packageRange, budgetRange, packageBracketTag: pkgAns?.tagged || null,
+    timeline: timelineLabel, competitorStatus,
+    paymentMethod: paymentAns,
+    homeFlags: state.safetyFlags, safetyFlags: state.safetyFlags,
+    territory: cityName,
+    answers: state.answers,
+    leadStatus: isAmber ? 'yellow' : 'green',
+    roi: { paybackYears: payback, roi20pct: Math.round(roi20), monthlySavingsY1: Math.round(monthlySavingsY1), totalSavings20: Math.round(cumSavings), systemCost, monthlySpend: monthlyTotal },
+    submissionTime: new Date().toISOString(),
+    city: cityName,
+    matchedPackage: pkgAns?.tier2Match ? { name: pkgAns.packageName, kva: pkgAns.size, price: pkgAns.cost, powers: pkgAns.note, undersized: !!pkgAns.undersized } : null,
+    applianceLoad: pkgAns?.applianceLoad || null,
+  };
+
+  const sent = await submitWithRetry(payload);
+  if (sent && !isAmber) fbq('track', 'Lead', { content_name: 'Solar 9-Gate Qualifier', lead_status: 'green', value: systemCost });
+
+  setTimeout(() => {
+    document.getElementById('loadingPage').classList.remove('show');
+    const lead = { fn, cityName, packageRange, budgetRange, timelineLabel, monthlyTotal, paymentAns, tier2Match: !!pkgAns?.tier2Match, packageName: pkgAns?.packageName || null, undersized: !!pkgAns?.undersized };
+    if (isAmber) showAmberResult(payback, monthlySavingsY1, systemCost, lead);
+    else showGreenResult(payback, monthlySavingsY1, roi20, cumSavings, systemCost, annualCost, breakEvenYear, batteryLife, lead);
+    clearSession();
+  }, 2200);
+}
+
+const PENDING_LEADS_KEY = 'solar_pending_leads_v1';
+async function submitWithRetry(payload, attempts){
+  attempts = attempts || 3;
+  for (let i = 0; i < attempts; i++) {
+    try {
+      await fetch(SITE_CONFIG.webhookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(payload) });
+      return true;
+    } catch (e) {
+      if (i < attempts - 1) await new Promise(r => setTimeout(r, 600 * (i + 1)));
+    }
+  }
+  try {
+    const pending = JSON.parse(localStorage.getItem(PENDING_LEADS_KEY) || '[]');
+    pending.push(payload);
+    localStorage.setItem(PENDING_LEADS_KEY, JSON.stringify(pending));
+  } catch (e) {}
+  return false;
+}
+async function flushPendingLeads(){
+  let pending;
+  try { pending = JSON.parse(localStorage.getItem(PENDING_LEADS_KEY) || '[]'); } catch (e) { pending = []; }
+  if (!pending.length) return;
+  const remaining = [];
+  for (const p of pending) {
+    try { await fetch(SITE_CONFIG.webhookUrl, { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(p) }); }
+    catch (e) { remaining.push(p); }
+  }
+  try { localStorage.setItem(PENDING_LEADS_KEY, JSON.stringify(remaining)); } catch (e) {}
+}
+
+function bindWhatsAppCTA(id, msg, resultType){
+  const btn = document.getElementById(id);
+  btn.href = 'https://wa.me/' + SITE_CONFIG.installer.whatsapp + '?text=' + encodeURIComponent(msg);
+  btn.addEventListener('click', () => trackWhatsAppClick(resultType), { once: true });
+}
+
+function showGreenResult(payback, monthly, roi, cumSavings, sysCost, annualCost, breakEven, batteryLife, lead){
+  document.getElementById('rg-title').textContent = `${lead.fn}, your home qualifies. Here's your solar ROI.`;
+  document.getElementById('rg-payback').textContent = payback > 0 ? payback.toFixed(1) : '< 3';
+  document.getElementById('rg-monthly').textContent = fmt(monthly);
+  document.getElementById('rg-roi').textContent = Math.round(roi) + '%';
+  document.getElementById('rg-total').textContent = fmt(cumSavings);
+  document.getElementById('rg-cur-monthly').textContent = fmt(lead.monthlyTotal);
+  document.getElementById('rg-cur-annual').textContent = fmt(annualCost);
+  document.getElementById('rg-system-cost').textContent = fmt(sysCost);
+  document.getElementById('rg-battery-yr').textContent = 'Year ' + batteryLife;
+  document.getElementById('rg-breakeven').textContent = breakEven > 0 ? 'Year ' + breakEven : '< 3 years';
+
+  renderReportHead(lead);
+  renderMatchedPackage(lead, sysCost);
+  renderCostComparison(lead, sysCost, annualCost);
+
+  const checks = (state.answers.q6?.val || '').split(',');
+  const roofSafe = !checks.includes('roof'), shadeSafe = !checks.includes('shade'), elecSafe = !checks.includes('electrical');
+  setScore('structural', roofSafe ? 95 : 70, roofSafe ? '95%' : '70%', roofSafe ? 'green' : 'gold');
+  setScore('electrical', elecSafe ? 95 : 65, elecSafe ? '95%' : '65%', elecSafe ? 'green' : 'gold');
+  setScore('sun', shadeSafe ? 90 : 65, shadeSafe ? '90%' : '65%', shadeSafe ? 'green' : 'gold');
+
+  const qualList = document.getElementById('rg-qualifiers');
+  qualList.innerHTML = '';
+  const budgetKnown = lead.budgetRange !== 'Not sure yet';
+  const paymentLabel = { full:'paying in full', part:'paying part now with instalments', financing:'looking at a financing plan', unsure:'still deciding how to pay' }[lead.paymentAns] || 'payment method noted';
+  const packageLine = lead.tier2Match
+    ? 'Matched to the ' + lead.packageName + ' package (' + lead.packageRange + ') based on your appliance load'
+    : (budgetKnown ? 'Package selected: ' + lead.budgetRange + ' (' + lead.packageRange + ')' : 'Package to be matched by your installer');
+  [
+    'Property authority confirmed  decision-maker',
+    'Energy spend qualifies: ' + fmt(lead.monthlyTotal) + '/month',
+    'Installing ' + lead.timelineLabel,
+    packageLine,
+    'Payment method known before delivery  ' + paymentLabel,
+    'Home passed the readiness check',
+    'Not committed to another installer',
+  ].forEach(q => { const li = document.createElement('li'); li.textContent = q; qualList.appendChild(li); });
+
+  if (lead.tier2Match) {
+    document.getElementById('greenCTASub').textContent = lead.undersized
+      ? `Based on your selected appliances, you're matched to our largest package, ${lead.packageName} (${lead.packageRange})  we'll confirm final sizing on WhatsApp.`
+      : `Based on your selected appliances, you're matched to the ${lead.packageName} package (${lead.packageRange}). Message us on WhatsApp to confirm.`;
+  } else {
+    document.getElementById('greenCTASub').textContent = budgetKnown
+      ? `Based on your usage and package, you fit the ${lead.packageRange} range. Message us on WhatsApp to see the exact packages, prices, and what each one powers.`
+      : `Message us on WhatsApp to see the package options and prices that match your energy usage.`;
+  }
+
+  const budgetBit = lead.tier2Match
+    ? `I've been matched to your ${lead.packageName} package (${lead.packageRange}) based on my appliance load`
+    : (budgetKnown ? `my package range is ${lead.budgetRange} (${lead.packageRange})` : `I'd like your recommendation on the right package for my usage`);
+  const msg = `Hi! I completed the ${SITE_CONFIG.installer.businessName} Solar Assessment and I QUALIFIED. I spend about ${fmt(lead.monthlyTotal)}/month on power, ${budgetBit}, I'm planning to pay: ${paymentLabel}, I'm in ${lead.cityName}, and I'm installing ${lead.timelineLabel}. Please confirm and send next steps. My name is ${lead.fn}.`;
+  bindWhatsAppCTA('greenCTA', msg, 'green');
+
+  renderVerdict(lead, payback, monthly, sysCost);
+
+  document.getElementById('resultGreen').classList.add('show');
+  window.scrollTo({ top:0, behavior:'smooth' });
+  state.completed = true;
+  trackConversion('green', sysCost, lead.cityName);
+  setTimeout(() => { document.querySelectorAll('.score-fill').forEach(b => { const w = b.dataset.target; if (w) b.style.width = w; }); }, 300);
+}
+
+// ══════════════════════════════════════════════════════
+// RESULT DETAIL BLOCKS
+// ══════════════════════════════════════════════════════
+function renderReportHead(lead){
+  var d = new Date();
+  var stamp = '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
+  var suffix = (document.getElementById('whatsapp').value || '0000').replace(/[^0-9]/g,'').slice(-4);
+  document.getElementById('rg-report-id').textContent = '#GA-' + stamp + '-' + suffix;
+  document.getElementById('rg-report-for').textContent = 'Prepared for ' + lead.fn + '  ' + lead.cityName;
+}
+
+function renderMatchedPackage(lead, sysCost){
+  var pkg = state.answers.q5 || {};
+  var nameEl = document.getElementById('rg-pkg-name');
+  var priceEl = document.getElementById('rg-pkg-price');
+  var specEl = document.getElementById('rg-pkg-spec');
+  var powersEl = document.getElementById('rg-pkg-powers');
+  var badgesEl = document.getElementById('rg-pkg-badges');
+
+  nameEl.textContent = pkg.packageName || 'Package to be matched';
+  priceEl.textContent = sysCost ? fmt(sysCost) : '';
+  specEl.textContent = pkg.size ? ('System size: ' + pkg.size) : '';
+
+  // whatItPowers isn't carried on the answer object for tier 1, so look it
+  // back up from config by package name  keeps one source of truth.
+  var cfgPkg = (SITE_CONFIG.tier1.packages || []).filter(function(p){ return p.name === pkg.packageName; })[0];
+  var powers = pkg.note || (cfgPkg && cfgPkg.whatItPowers) || '';
+  powersEl.textContent = powers ? ('Powers: ' + powers) : '';
+  powersEl.style.display = powers ? '' : 'none';
+
+  badgesEl.innerHTML = '';
+  var badges = [];
+  if (SITE_CONFIG.warrantyMonths) badges.push({ t: SITE_CONFIG.warrantyMonths + '-month warranty', c: '' });
+  badges.push({ t: 'Logistics & installation included', c: '' });
+  if (lead.paymentAns === 'part' || lead.paymentAns === 'financing' || lead.paymentAns === 'unsure') {
+    badges.push({ t: SITE_CONFIG.financingLine || 'Payment plans available', c: 'blue' });
+  }
+  badges.forEach(function(b){
+    var s = document.createElement('span');
+    s.className = 'pkg-badge' + (b.c ? ' ' + b.c : '');
+    s.textContent = b.t;
+    badgesEl.appendChild(s);
+  });
+}
+
+// Compares 10 years of doing nothing (with fuel/tariff inflation) against
+// the one-off system cost. Uses the same 18% inflation assumption as the
+// ROI maths above so the two sections can never contradict each other.
+function renderCostComparison(lead, sysCost, annualCost){
+  var infl = 0.18, running = 0, yearCost = annualCost;
+  for (var yr = 1; yr <= 10; yr++) { yearCost *= (1 + infl); running += yearCost; }
+  var tenYearCost = Math.round(running);
+
+  document.getElementById('cmp-loss-fig').textContent = fmt(tenYearCost);
+  document.getElementById('cmp-cost-fig').textContent = fmt(sysCost);
+  document.getElementById('cmp-cost-label').textContent = (state.answers.q5 && state.answers.q5.packageName)
+    ? (state.answers.q5.packageName + ', one-off') : 'Your matched system, one-off';
+
+  var max = Math.max(tenYearCost, sysCost, 1);
+  setTimeout(function(){
+    document.getElementById('cmp-bar-loss').style.width = Math.max((tenYearCost / max) * 100, 4) + '%';
+    document.getElementById('cmp-bar-cost').style.width = Math.max((sysCost / max) * 100, 4) + '%';
+  }, 300);
+
+  var mult = sysCost > 0 ? Math.round((tenYearCost / sysCost) * 10) / 10 : 0;
+  // The assumption behind the figure is stated on-screen rather than buried.
+  // A homeowner who can't see where a big number came from stops trusting
+  // the whole report  and this one rests on a real assumption, not a fact.
+  var basis = ' This assumes energy costs keep rising at around 18% a year, in line with recent Nigerian fuel and tariff increases. If costs rise more slowly, the figure is lower.';
+  document.getElementById('cmp-caption').textContent = tenYearCost > sysCost
+    ? 'At your current spend, staying on NEPA and generator fuel would cost you roughly ' + mult + '\u00d7 what the system costs over the next 10 years  and that money is gone, not invested. The system is yours.' + basis
+    : 'Your current spend is lower than the system cost over 10 years, so the payback runs longer. Worth reviewing a smaller package with your installer.' + basis;
+}
+
+function renderVerdict(lead, payback, monthly, sysCost){
+  var pkgName = (state.answers.q5 && state.answers.q5.packageName) || 'a system';
+  var payLine = '';
+  if (lead.paymentAns === 'financing' || lead.paymentAns === 'part' || lead.paymentAns === 'unsure') {
+    payLine = ' You told us you would rather spread the payment  ' + SITE_CONFIG.installer.businessName + ' offers financing for qualified customers, so that is something to raise in your first message.';
+  } else {
+    payLine = ' You told us you are paying in full, so there is nothing further to arrange on that side.';
+  }
+  document.getElementById('rg-verdict-title').textContent = 'We would recommend the ' + pkgName;
+  var html = 'Based on what you told us, <strong>' + pkgName + '</strong> is the right fit for your home. At ' + fmt(lead.monthlyTotal)
+    + ' a month on power right now, you would save around <strong>' + fmt(monthly) + ' a month</strong> from year one'
+    + (payback > 0 ? ', and the system pays for itself in roughly <strong>' + payback.toFixed(1) + ' years</strong>' : '')
+    + '.' + payLine
+    + '<br><br>Every year you wait, that money goes to fuel and NEPA instead of into something you own. If this is worth doing, the next step is a short WhatsApp conversation to confirm the package and book your site assessment.';
+  typeHTML(document.getElementById('rg-verdict-body'), html);
+}
+
+function setScore(key, pct, label, cls){
+  document.getElementById('ss-' + key).textContent = label;
+  const bar = document.getElementById('sb-' + key);
+  bar.dataset.target = pct + '%';
+  bar.className = 'score-fill ' + cls;
+  setTimeout(() => { bar.style.width = pct + '%'; }, 400);
+}
+
+function showAmberResult(payback, monthly, sysCost, lead){
+  document.getElementById('ra-payback').textContent = payback > 0 ? payback.toFixed(1) : 'TBD';
+  document.getElementById('ra-monthly').textContent = fmt(monthly);
+
+  const issueList = document.getElementById('ra-issues');
+  issueList.innerHTML = '';
+  state.safetyFlags.forEach(flag => { const li = document.createElement('li'); li.classList.add('warn'); li.textContent = flag; issueList.appendChild(li); });
+
+  const paymentLabel = { full:'paying in full', part:'paying part now with instalments', financing:'looking at a financing plan', unsure:'still deciding how to pay' }[lead.paymentAns] || 'payment method noted';
+  const budgetBit = lead.tier2Match
+    ? `I've been matched to your ${lead.packageName} package (${lead.packageRange}) based on my appliance load`
+    : (lead.budgetRange !== 'Not sure yet' ? `My package range is ${lead.budgetRange} (${lead.packageRange})` : `I'd like your recommendation on the right package for my usage`);
+  const msg = `Hi! I completed the ${SITE_CONFIG.installer.businessName} Solar Assessment and I QUALIFIED. My home has 1-2 conditions to confirm on-site before installation. ${budgetBit}, I'm planning to pay: ${paymentLabel}, I'm in ${lead.cityName}, and I'm installing ${lead.timelineLabel}. Please confirm and send next steps. My name is ${lead.fn}.`;
+  bindWhatsAppCTA('amberCTA', msg, 'amber');
+
+  document.getElementById('resultAmber').classList.add('show');
+  window.scrollTo({ top:0, behavior:'smooth' });
+  state.completed = true;
+  trackConversion('amber', sysCost, lead.cityName);
+}
+
+// ══════════════════════════════════════════════════════
+// EXIT INTENT  desktop mouse-leave + Android/iOS back-button trap.
+// ══════════════════════════════════════════════════════
+(function(){
+  var exitShown = false, trapArmed = false;
+
+  function eligible(){
+    return !exitShown && !state.completed && document.querySelector('.q-card.active') !== null && !document.getElementById('exitOverlay').classList.contains('show');
+  }
+  function questionsLeft(){ return state.totalQ - (STEP[state.currentQ] || 1) + 1; }
+
+  function showExitModal(trigger){
+    if (!eligible()) return;
+    exitShown = true;
+    var left = questionsLeft();
+    var headline = document.getElementById('exitHeadline'), body = document.getElementById('exitBody');
+    if (state.currentQ === 'q9') {
+      headline.textContent = "Wait  you're one step from your ROI result";
+      body.innerHTML = "Your answers are already in. Just add your details and your <strong>payback period, monthly savings, and matched package</strong> appear instantly.";
+    } else if (left <= 3) {
+      headline.textContent = "Wait  only " + left + " quick question" + (left === 1 ? "" : "s") + " left";
+      body.innerHTML = "You're seconds away from your <strong>payback period, monthly savings, and matched solar package</strong>. Don't lose your progress now.";
+    } else {
+      headline.textContent = "Wait  your ROI result is almost ready";
+      body.innerHTML = "Finish " + left + " quick questions to see your <strong>payback period, monthly savings, and matched solar package</strong>. It takes under a minute.";
+    }
+    document.getElementById('exitOverlay').classList.add('show');
+    trackEvent('exit_intent_shown', { event_label: (Q_LABELS[state.currentQ] || state.currentQ) + '  via ' + trigger, content_id: state.currentQ, trigger_type: trigger, questions_remaining: left });
+  }
+  function hideExitModal(){ document.getElementById('exitOverlay').classList.remove('show'); }
+
+  document.addEventListener('mouseout', function(e){ if (!e.relatedTarget && e.clientY <= 0) showExitModal('mouseleave'); });
+
+  function armBackTrap(){
+    if (trapArmed) return;
+    try { history.pushState({ exitTrap: true }, ''); trapArmed = true; } catch (err) {}
+  }
+  window.addEventListener('popstate', function(){
+    trapArmed = false;
+    if (eligible()) { armBackTrap(); showExitModal('back_button'); }
+  });
+  document.addEventListener('click', function armOnce(e){
+    if (e.target.closest && e.target.closest('.option')) { armBackTrap(); document.removeEventListener('click', armOnce); }
+  });
+
+  var idleTimer = null;
+  function armIdleTimer(){
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(function(){ showExitModal('idle_45s'); }, 45000);
+  }
+  ['click','input','scroll','touchstart'].forEach(evt => document.addEventListener(evt, armIdleTimer, { passive: true }));
+  armIdleTimer();
+
+  document.addEventListener('DOMContentLoaded', function(){
+    document.getElementById('exitContinue').addEventListener('click', function(){
+      hideExitModal();
+      trackEvent('exit_intent_continued', { event_label: Q_LABELS[state.currentQ] || state.currentQ, content_id: state.currentQ });
+    });
+    document.getElementById('exitGuide').addEventListener('click', function(){
+      trackEvent('exit_intent_guide_clicked', { event_label: Q_LABELS[state.currentQ] || state.currentQ, content_id: state.currentQ });
+    });
+    document.getElementById('exitOverlay').addEventListener('click', function(e){
+      if (e.target === this) {
+        hideExitModal();
+        trackEvent('exit_intent_continued', { event_label: (Q_LABELS[state.currentQ] || state.currentQ) + '  backdrop', content_id: state.currentQ });
+      }
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
