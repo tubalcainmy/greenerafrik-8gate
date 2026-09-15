@@ -3,8 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Find Out If Solar Makes Financial Sense For Your Home  Free 2-Minute Assessment</title>
-<meta name="description" content="Answer a few quick questions and a 9-point eligibility check matches you with a vetted solar installer in your city  free personalised ROI, payback period and package match.">
+<title>Find Out If Solar Makes Financial Sense For Your Home:  Free 2-Minute Assessment</title>
+<meta name="description" content="Answer a few quick questions, and a 9-point eligibility check matches you with a vetted solar installer in your city  free personalised ROI, payback period and package match.">
 
 <script>
 /* ══════════════════════════════════════════════════════════════════
@@ -37,13 +37,13 @@ const SITE_CONFIG = {
   // ── THE PERSON ASKING THE QUESTIONS ──
   // Shown as a circular photo on the intro and on the result page, so the
   // assessment reads as a personal consultation rather than a form.
-  // PLACEHOLDER  replace name/title and drop the real photo at
+  // PLACEHOLDER:  replace name/title and drop the real photo at
   // assets/rep.jpg (square crop, face centred, 400x400 or larger).
   rep: {
-    name: "[REP FIRST NAME]",
-    title: "[REP TITLE], GreenerAfrik Energies",
+    name: "[Caleb Ayomide]",
+    title: "Co-Founder, GreenerAfrik Energies",
     photo: "assets/rep.jpg",
-    introLine: "I'll take you through this myself  answer a few honest questions and I'll show you exactly what solar would cost your home, and what it would save you.",
+    introLine: "I'll take you through this myself,  answer a few honest questions, and I'll show you exactly what solar would cost your home, and what it would save you.",
   },
 
   // ── ACTIVE TIER ──
@@ -52,7 +52,7 @@ const SITE_CONFIG = {
     active: true,
     packages: [
       // These two sit below GreenerAfrik's entry system. They are presented
-      // exactly like every other option  same format, same detail, no hint
+      // exactly like every other option:  same format, same detail, no hint
       // that they fail a gate. A visible "below minimum" label would just
       // teach people to click a higher bracket to get through.
       { name: "Power Station",    priceLabel: "₦1,000,000  Power Station",         price: 1000000,  systemSize: "1 kVA · 1.2 kWh",  whatItPowers: "Lights, phone charging, a small fan", belowMinimum: true },
@@ -696,7 +696,7 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="q-card" id="q1">
   <div class="q-num-row"><div class="q-num">Question 1 of 9</div><div class="q-gate" id="gate-q1"></div></div>
   <div class="q-text">Roughly how much do you spend monthly on electricity and generator fuel combined?</div>
-  <div class="q-hint">This helps us calculate whether solar makes financial sense for your home. Type your best real number  the more accurate it is, the more accurate your savings estimate will be.</div>
+  <div class="q-hint">This helps us calculate whether solar makes financial sense for your home. Type your best real number;  the more accurate it is, the more accurate your savings estimate will be.</div>
   <div class="spend-input-row">
     <span class="spend-prefix">₦</span>
     <input type="number" inputmode="numeric" id="q1-spend-input" class="text-input spend-input" placeholder="e.g. 45000" min="0">
@@ -729,7 +729,7 @@ svg.icon{display:block;flex-shrink:0;}
     <label class="option" data-val="renter-permission"><div class="option-radio"></div><div><div class="option-text">I rent  and I have my landlord's written permission</div></div></label>
     <label class="option" data-val="family"><div class="option-radio"></div><div><div class="option-text">Family house  I have authority to install</div></div></label>
     <label class="option" data-val="renter-no"><div class="option-radio"></div><div><div class="option-text">I rent  but I do not have landlord's permission</div></div></label>
-    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent  I'm not sure if I can get permission</div></div></label>
+    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent, but  I'm not sure if I can get permission</div></div></label>
   </div>
   <button class="next-btn" id="q3-next" disabled onclick="nextQ3()">Continue <span>→</span></button>
 </div>
@@ -769,7 +769,7 @@ svg.icon{display:block;flex-shrink:0;}
 
 <!-- ══════════════════════════════════
      Q5-RECOVER  instalment recovery interstitial (only fires if a
-     package is flagged recoverable:true in SITE_CONFIG.tier1.packages)
+     package is flagged recoverable: true in SITE_CONFIG.tier1.packages)
 ═══════════════════════════════════ -->
 <div class="q-card" id="q5r">
   <div class="q-num-row"><div class="q-num">Question 5 of 9</div><div class="q-gate" id="gate-q5r"></div></div>
@@ -787,8 +787,8 @@ svg.icon{display:block;flex-shrink:0;}
 ═══════════════════════════════════ -->
 <div class="q-card" id="q6">
   <div class="q-num-row"><div class="q-num">Question 6 of 9</div><div class="q-gate" id="gate-q6"></div></div>
-  <div class="q-text">Quick home check  do any of these apply to your property?</div>
-  <div class="q-hint">Select all that apply. This does not disqualify you  the flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
+  <div class="q-text">Quick home check:  do any of these apply to your property?</div>
+  <div class="q-hint">Select all that apply. This does not disqualify you;  the flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
   <div class="options" id="q6-opts">
     <label class="option" data-val="roof" data-flag="Roof has leaks or is noticeably weak  needs inspection before installation">
       <div class="option-radio"></div><div><div class="option-text">Roof has leaks or feels old / weak</div></div>
@@ -812,12 +812,12 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="q-card" id="q7">
   <div class="q-num-row"><div class="q-num">Question 7 of 9</div><div class="q-gate" id="gate-q7"></div></div>
   <div class="q-text">Are you currently in active discussions with another solar installer?</div>
-  <div class="q-hint">Comparing options is fine  only a signed or near-signed commitment disqualifies.</div>
+  <div class="q-hint">Comparing options is fine;  only a signed or near-signed commitment disqualifies.</div>
   <div class="options" id="q7-opts">
     <label class="option" data-val="no-installer"><div class="option-radio"></div><div><div class="option-text">No  I haven't spoken to any installer yet</div></div></label>
     <label class="option" data-val="browsing"><div class="option-radio"></div><div><div class="option-text">I've browsed but haven't committed to anyone</div></div></label>
     <label class="option" data-val="have-price"><div class="option-radio"></div><div><div class="option-text">I have a price but am open to compare options</div></div></label>
-    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes  I'm in active talks / about to sign with someone</div></div></label>
+    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes,  I'm in active talks / about to sign with someone</div></div></label>
   </div>
   <button class="next-btn" id="q7-next" disabled onclick="nextQ7()">Continue <span>→</span></button>
 </div>
@@ -891,13 +891,13 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="dq-page" id="dq-ownership">
   <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
   <div class="dq-title">Property Authority Required for Solar</div>
-  <div class="dq-body">Solar installation requires consent from the property owner. Without written landlord permission, we cannot proceed  this protects both you and the property owner legally.</div>
+  <div class="dq-body">Solar installation requires consent from the property owner. Without written landlord permission, we cannot proceed;  this protects both you and the property owner legally.</div>
   <ul class="dq-reason-box">
     <li>Panels are a permanent structural modification to the roof</li>
     <li>We require documented permission before any work begins</li>
     <li>Getting landlord permission is often simpler than expected</li>
   </ul>
-  <div class="dq-body">If you can obtain written permission from your landlord, come back and complete this assessment  many renters successfully install solar once they have it in writing.</div>
+  <div class="dq-body">If you can obtain written permission from your landlord, come back and complete this assessment. Many renters successfully install solar once they have it in writing.</div>
   <a href="#" class="dq-alt-btn" id="dq-ownership-link" target="_blank">Ask Us About the Permission Process →</a>
 </div>
 
@@ -906,7 +906,7 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="dq-title">Come Back When You're Ready to Install</div>
   <div class="dq-body">We're best matched with homeowners who have a confirmed installation window within 90 days. This ensures you get the most relevant pricing and availability.</div>
   <ul class="dq-reason-box">
-    <li>Solar pricing and availability shift regularly  quotes are time-sensitive</li>
+    <li>Solar pricing and availability shift regularly;  quotes are time-sensitive</li>
     <li>We prioritise homeowners with a firm install timeline</li>
     <li>Come back when you're within 3 months of your target install date</li>
   </ul>
@@ -941,9 +941,9 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="dq-body" id="dq-location-body">We currently only serve specific areas. We do not have coverage confirmed for your area at this time.</div>
   <ul class="dq-reason-box">
     <li>We are expanding to new areas regularly</li>
-    <li>Leave your details and we will notify you when your area becomes active</li>
+    <li>Leave your details, and we will notify you when your area becomes active</li>
   </ul>
-  <div class="dq-body">If you would like to be the first to know when we launch in your area, message us on WhatsApp and we will add you to our waitlist.</div>
+  <div class="dq-body">If you would like to be the first to know when we launch in your area, message us on WhatsApp, and we will add you to our waitlist.</div>
   <a href="#" class="dq-alt-btn" id="dq-location-link" target="_blank">Join the Waitlist on WhatsApp →</a>
 </div>
 
@@ -1024,7 +1024,7 @@ svg.icon{display:block;flex-shrink:0;}
       <div class="pkg-powers" id="rg-pkg-powers"></div>
       <div class="pkg-badges" id="rg-pkg-badges"></div>
     </div>
-    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6;">Final pricing is subject to site visit, load assessment and technical audit.</p>
+    <p style="font-size:12.5px;color:var(--muted);margin-top:12px;line-height:1.6;">Final pricing is subject to site visit, load assessment, and technical audit.</p>
   </div>
 
   <div class="section-card">
@@ -1074,7 +1074,7 @@ svg.icon{display:block;flex-shrink:0;}
 </div>
 
 <!-- ══════════════════════════════════
-     RESULT: AMBER (Qualified, needs inspection first  same CTA as green)
+     RESULT: AMBER (Qualified, needs inspection first;  same CTA as green)
 ═══════════════════════════════════ -->
 <div class="result-page" id="resultAmber">
   <div class="result-hero">
@@ -1093,19 +1093,19 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="section-card">
     <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg> We'll Confirm These</div>
     <ul class="check-list" id="ra-issues"></ul>
-    <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.7;">These are common and fixable. We confirm them on-site as part of the same visit where we walk you through packages  it's not a separate booking step.</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.7;">These are common and fixable. We confirm them on-site as part of the same visit where we walk you through packages;  it's not a separate booking step.</p>
   </div>
 
   <div class="cta-box">
     <div class="cta-heading">Your Next Step: See Your Package Options</div>
-    <div class="cta-sub">Message us on WhatsApp to see package options and prices  we'll confirm the flagged items when we visit.</div>
+    <div class="cta-sub">Message us on WhatsApp to see package options and prices;  we'll confirm the flagged items when we visit.</div>
     <a href="#" class="cta-btn amber" id="amberCTA" target="_blank">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       See My Package Options on WhatsApp →
     </a>
     <div class="guarantee-note">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      No obligation  we confirm, then you decide
+      No obligation;  we confirm, then you decide
     </div>
   </div>
 </div>
@@ -1117,7 +1117,7 @@ svg.icon{display:block;flex-shrink:0;}
     <h3 id="exitHeadline">Wait  your ROI result is almost ready</h3>
     <p id="exitBody">Finish the remaining questions to see your payback period, monthly savings, and matched solar package. It takes under a minute.</p>
     <button class="exit-continue" id="exitContinue">Continue My Assessment →</button>
-    <a class="exit-alt" id="exitGuide" href="#">I'm not ready  send me the Free Solar Guide instead</a>
+    <a class="exit-alt" id="exitGuide" href="#">I'm not ready;  send me the Free Solar Guide instead</a>
   </div>
 </div>
 
@@ -1140,7 +1140,7 @@ const STEP = { q1:1, q2:2, q3:3, q4:4, q5:5, q5r:5, q6:6, q7:7, q8:8, q9:9 };
 const GATE_MAP = { q1:2, q2:7, q3:4, q4:1, q5:3, q5r:3, q6:5, q7:6, q8:9, q9:8 };
 
 // Gate labels never vary per installer, so they stay fixed here rather
-// than in SITE_CONFIG  one less thing to edit per client.
+// than in SITE_CONFIG;  one less thing to edit per client.
 const GATES = [
   { n: 1, confirms: "Install window within 90 days", label: "Timeline Set" },
   { n: 2, confirms: "Monthly power spend of ₦30,000+", label: "ROI Verified" },
@@ -1356,7 +1356,7 @@ function buildBracketOptions(){
   });
 }
 
-// Typical average running wattage per category  clearly an estimate,
+// Typical average running wattage per category,  clearly an estimate,
 // not a site survey. The installer confirms exact sizing on-site.
 const APPLIANCE_LOAD_TABLE = [
   { id:'lighting', label:'Lighting throughout the home', sub:'~10 LED bulbs', watts:100 },
@@ -1387,7 +1387,7 @@ function matchPackageToLoad(requiredKVA, packages){
 
 function buildApplianceChecklist(){
   document.getElementById('q5-text').textContent = 'Which appliances do you want your solar system to power?';
-  document.getElementById('q5-hint').textContent = 'Select everything you want covered. We size your system from this and match it to a real package  not a generic range.';
+  document.getElementById('q5-hint').textContent = 'Select everything you want covered. We size your system from this and match it to a real package,  not a generic range.';
 
   const wrap = document.getElementById('q5-opts');
   const frag = document.createDocumentFragment();
@@ -1489,7 +1489,7 @@ function wireSpendInput(){
       return null;
     }
     if (val > SPEND_MAX) {
-      if (showError) { error.textContent = 'That seems too high  check the number and try again.'; error.classList.add('show'); row.classList.add('spend-error'); }
+      if (showError) { error.textContent = 'That seems too high. Check the number and try again.'; error.classList.add('show'); row.classList.add('spend-error'); }
       nextBtn.disabled = true;
       return null;
     }
