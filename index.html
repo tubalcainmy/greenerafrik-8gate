@@ -726,14 +726,15 @@ svg.icon{display:block;flex-shrink:0;}
 ═══════════════════════════════════ -->
 <div class="q-card" id="q3">
   <div class="q-num-row"><div class="q-num">Question 3 of 9</div><div class="q-gate" id="gate-q3"></div></div>
-  <div class="q-text">What is your relationship with the property where you want to install solar?</div>
-  <div class="q-hint">Solar installation requires property authority. This affects your eligibility.</div>
+  <div class="q-text">Whose permission would you need to install a solar system at this property?</div>
+  <div class="q-hint">Panels are a permanent fixture, so we confirm who signs off before any work is quoted.</div>
   <div class="options" id="q3-opts">
-    <label class="option" data-val="owner"><div class="option-radio"></div><div><div class="option-text">I own the property</div></div></label>
-    <label class="option" data-val="renter-permission"><div class="option-radio"></div><div><div class="option-text">I rent, and I have my landlord's written permission</div></div></label>
-    <label class="option" data-val="family"><div class="option-radio"></div><div><div class="option-text">Family house, and I have authority to install</div></div></label>
-    <label class="option" data-val="renter-no"><div class="option-radio"></div><div><div class="option-text">I rent, but I do not have landlord's permission</div></div></label>
-    <label class="option" data-val="renter-unknown"><div class="option-radio"></div><div><div class="option-text">I rent, and I'm not sure if I can get permission</div></div></label>
+    <label class="option" data-val="owner-self"><div class="option-radio"></div><div><div class="option-text">Nobody, I own the property</div></div></label>
+    <label class="option" data-val="spouse-agreed"><div class="option-radio"></div><div><div class="option-text">My spouse or partner's, and we're already agreed</div></div></label>
+    <label class="option" data-val="family-agreed"><div class="option-radio"></div><div><div class="option-text">The property belongs to family, and I have their go-ahead</div></div></label>
+    <label class="option" data-val="landlord-have"><div class="option-radio"></div><div><div class="option-text">My landlord's, and I already have it in writing</div></div></label>
+    <label class="option" data-val="landlord-not-asked"><div class="option-radio"></div><div><div class="option-text">My landlord's, and I haven't asked them yet</div></div></label>
+    <label class="option" data-val="family-need-ask"><div class="option-radio"></div><div><div class="option-text">The property belongs to family, and I'd still need to ask</div></div></label>
   </div>
   <button class="next-btn" id="q3-next" disabled onclick="nextQ3()">Continue <span>→</span></button>
 </div>
@@ -743,14 +744,13 @@ svg.icon{display:block;flex-shrink:0;}
 ═══════════════════════════════════ -->
 <div class="q-card" id="q4">
   <div class="q-num-row"><div class="q-num">Question 4 of 9</div><div class="q-gate" id="gate-q4"></div></div>
-  <div class="q-text">When are you realistically planning to install solar?</div>
-  <div class="q-hint">We serve homeowners with a confirmed installation window within 90 days.</div>
+  <div class="q-text">When would the money for this realistically be available?</div>
+  <div class="q-hint">Asked so your installer quotes against a real date instead of a guess.</div>
   <div class="options" id="q4-opts">
-    <label class="option" data-val="0-14days"><div class="option-radio"></div><div><div class="option-text">Immediately, within the next 2 weeks</div></div></label>
-    <label class="option" data-val="2-4weeks"><div class="option-radio"></div><div><div class="option-text">Soon, within the next month</div></div></label>
-    <label class="option" data-val="1-3months"><div class="option-radio"></div><div><div class="option-text">Within 1–3 months</div></div></label>
-    <label class="option" data-val="3-6months"><div class="option-radio"></div><div><div class="option-text">In 3–6 months</div></div></label>
-    <label class="option" data-val="info-only"><div class="option-radio"></div><div><div class="option-text">Just gathering information, no firm timeline</div></div></label>
+    <label class="option" data-val="funds-now"><div class="option-radio"></div><div><div class="option-text">It's available now</div></div></label>
+    <label class="option" data-val="funds-1month"><div class="option-radio"></div><div><div class="option-text">Within the next month</div></div></label>
+    <label class="option" data-val="funds-2-3months"><div class="option-radio"></div><div><div class="option-text">In 2 to 3 months</div></div></label>
+    <label class="option" data-val="funds-building"><div class="option-radio"></div><div><div class="option-text">I'm still building towards it</div></div></label>
   </div>
   <button class="next-btn" id="q4-next" disabled onclick="nextQ4()">Continue <span>→</span></button>
 </div>
@@ -815,13 +815,14 @@ svg.icon{display:block;flex-shrink:0;}
 ═══════════════════════════════════ -->
 <div class="q-card" id="q7">
   <div class="q-num-row"><div class="q-num">Question 7 of 9</div><div class="q-gate" id="gate-q7"></div></div>
-  <div class="q-text">Are you currently in active discussions with another solar installer?</div>
-  <div class="q-hint">Comparing options is fine;  only a signed or near-signed commitment disqualifies.</div>
+  <div class="q-text">How far along are you with any installer you've spoken to?</div>
+  <div class="q-hint">Comparing quotes is normal and welcome. This just tells your installer where to pick things up.</div>
   <div class="options" id="q7-opts">
-    <label class="option" data-val="no-installer"><div class="option-radio"></div><div><div class="option-text">No, I haven't spoken to any installer yet</div></div></label>
-    <label class="option" data-val="browsing"><div class="option-radio"></div><div><div class="option-text">I've browsed but haven't committed to anyone</div></div></label>
-    <label class="option" data-val="have-price"><div class="option-radio"></div><div><div class="option-text">I have a price but am open to compare options</div></div></label>
-    <label class="option" data-val="in-talks"><div class="option-radio"></div><div><div class="option-text">Yes, I'm in active talks / about to sign with someone</div></div></label>
+    <label class="option" data-val="none-yet"><div class="option-radio"></div><div><div class="option-text">I haven't spoken to anyone yet</div></div></label>
+    <label class="option" data-val="seen-prices"><div class="option-radio"></div><div><div class="option-text">I've seen general prices online or in ads</div></div></label>
+    <label class="option" data-val="have-quote"><div class="option-radio"></div><div><div class="option-text">I have a written quote and I'm comparing options</div></div></label>
+    <label class="option" data-val="chosen-unpaid"><div class="option-radio"></div><div><div class="option-text">I've chosen who I want to use, but nothing is paid yet</div></div></label>
+    <label class="option" data-val="deposit-paid"><div class="option-radio"></div><div><div class="option-text">I've paid a deposit or agreed an installation date</div></div></label>
   </div>
   <button class="next-btn" id="q7-next" disabled onclick="nextQ7()">Continue <span>→</span></button>
 </div>
@@ -884,8 +885,8 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="dq-title">Solar May Not Be Right for You Yet</div>
   <div class="dq-body">Based on your current energy spend, a full solar installation is unlikely to give you a strong return on investment right now. The payback period would be too long to make financial sense.</div>
   <ul class="dq-reason-box">
-    <li>Combined spend below ₦30,000/month, so the payback window stretches too far out</li>
-    <li>Solar investment is most profitable for homeowners spending ₦30k+ monthly</li>
+    <li>At your current spend, the payback window stretches further out than we'd recommend</li>
+    <li>Solar returns fastest for homes where power costs are a larger monthly burden</li>
     <li>Your energy costs don't yet justify a full system investment</li>
   </ul>
   <div class="dq-body">When your energy costs grow or you're ready for a larger system, we'll be here. In the meantime, a small inverter backup system may serve you well.</div>
@@ -896,24 +897,24 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="dq-page" id="dq-ownership">
   <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
   <div class="dq-title">Property Authority Required for Solar</div>
-  <div class="dq-body">Solar installation requires consent from the property owner. Without written landlord permission, we cannot proceed;  this protects both you and the property owner legally.</div>
+  <div class="dq-body">Solar installation needs sign-off from whoever owns the property. Until that permission is in hand we can't proceed, and that protects you as much as the owner.</div>
   <ul class="dq-reason-box">
     <li>Panels are a permanent structural modification to the roof</li>
     <li>We require documented permission before any work begins</li>
-    <li>Getting landlord permission is often simpler than expected</li>
+    <li>Getting that permission is often simpler than people expect</li>
   </ul>
-  <div class="dq-body">If you can obtain written permission from your landlord, come back and complete this assessment. Many renters successfully install solar once they have it in writing.</div>
+  <div class="dq-body">Once you have that permission in writing, come back and complete this assessment. Plenty of people install solar successfully on a property they don't own.</div>
   <a href="#" class="dq-alt-btn" id="dq-ownership-link" target="_blank">Ask Us About the Permission Process →</a>
 </div>
 
 <div class="dq-page" id="dq-timeline">
   <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
   <div class="dq-title">Come Back When You're Ready to Install</div>
-  <div class="dq-body">We're best matched with homeowners who have a confirmed installation window within 90 days. This ensures you get the most relevant pricing and availability.</div>
+  <div class="dq-body">We're best matched with homeowners whose funds are close to ready, so the quote you get reflects real pricing and availability rather than an estimate that will have moved by the time you buy.</div>
   <ul class="dq-reason-box">
     <li>Solar pricing and availability shift regularly;  quotes are time-sensitive</li>
-    <li>We prioritise homeowners with a firm install timeline</li>
-    <li>Come back when you're within 3 months of your target install date</li>
+    <li>We prioritise homeowners who are close to being able to proceed</li>
+    <li>Come back once your budget is in place and we'll pick this up</li>
   </ul>
   <div class="dq-body">In the meantime, download our free Solar Planning Guide to prepare your home and budget for when you're ready.</div>
   <a href="#" class="dq-alt-btn" id="dq-timeline-link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Tell Us When You’ll Be Ready →</a>
@@ -922,12 +923,12 @@ svg.icon{display:block;flex-shrink:0;}
 
 <div class="dq-page" id="dq-budget">
   <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="6" width="20" height="14" rx="2"/><path d="M2 10h20"/><path d="M6 15h4"/></svg></div>
-  <div class="dq-title" id="dq-budget-title">Your Range Is Below Our Minimum Package</div>
-  <div class="dq-body">A properly sized solar system that covers a Nigerian home's energy needs starts higher than this range. Systems below this threshold often underperform and lead to poor outcomes.</div>
+  <div class="dq-title" id="dq-budget-title">Let's Find the Right Starting Point</div>
+  <div class="dq-body">Based on the range you selected, a system sized properly for a Nigerian home sits above it. Undersized systems tend to disappoint, and we'd rather tell you that now than sell you one.</div>
   <ul class="dq-reason-box">
     <li>Undersized systems burn out faster and waste your investment</li>
     <li>Component quality is compromised at very low price points</li>
-    <li>Our minimum package ensures your system lasts 10–15 years</li>
+    <li>A correctly sized system is what makes the 10 to 15 year lifespan realistic</li>
   </ul>
   <div class="dq-body">If you're building towards a solar budget, our free planning guide shows you how to save strategically and what to budget for each system size.</div>
   <a href="#" class="dq-alt-btn" id="dq-budget-link"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg> Ask About Payment Plan Options →</a>
@@ -937,8 +938,8 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="dq-page" id="dq-installer">
   <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 20h5v-2a4 4 0 0 0-3-3.87M9 20H4v-2a4 4 0 0 1 3-3.87m5-3.13a4 4 0 1 0 0-8 4 4 0 0 0 0 8zm7 2a4 4 0 1 0 0-8"/></svg></div>
   <div class="dq-title">You're Already in Good Hands</div>
-  <div class="dq-body">Since you're already in active discussions with an installer, we don't want to create confusion or split your focus. We work best with homeowners who haven't yet committed to a provider.</div>
-  <div class="dq-body">If your current discussions don't work out, or if you'd like a second opinion on a proposal you've received, come back and we'll pick things up from here.</div>
+  <div class="dq-body">You've already settled on someone, so putting another installer in front of you now would only muddy a decision you've made. We work best with homeowners who are still choosing.</div>
+  <div class="dq-body">If it doesn't work out, or you'd like a second opinion on what you've been quoted, come back any time and we'll pick things up from here.</div>
   <a href="#" class="dq-alt-btn" id="dq-installer-link" target="_blank">Get a Second Opinion on WhatsApp →</a>
 </div>
 
@@ -1628,7 +1629,9 @@ function nextQ3(){
   const ans = state.answers.q3;
   if (!ans) return;
   trackQuestionAnswered('q3', ans.val);
-  if (ans.val === 'renter-no' || ans.val === 'renter-unknown') { trackDisqualification('dq-ownership','q3',ans.val); showDQ('dq-ownership'); return; }
+  // Permission not yet secured. Asked as a logistics question rather than
+  // a status confession, so the honest answer carries no social cost.
+  if (ans.val === 'landlord-not-asked' || ans.val === 'family-need-ask') { trackDisqualification('dq-ownership','q3',ans.val); showDQ('dq-ownership'); return; }
   showCard('q4');
 }
 
@@ -1636,7 +1639,9 @@ function nextQ4(){
   const ans = state.answers.q4;
   if (!ans) return;
   trackQuestionAnswered('q4', ans.val);
-  if (ans.val === 'info-only' || ans.val === '3-6months') { trackDisqualification('dq-timeline','q4',ans.val); showDQ('dq-timeline'); return; }
+  // Asked about their own money rather than their intentions, which is
+  // harder to inflate casually than a stated plan to buy.
+  if (ans.val === 'funds-building') { trackDisqualification('dq-timeline','q4',ans.val); showDQ('dq-timeline'); return; }
   showCard('q5');
 }
 
@@ -1686,7 +1691,10 @@ function nextQ7(){
   const ans = state.answers.q7;
   if (!ans) return;
   trackQuestionAnswered('q7', ans.val);
-  if (ans.val === 'in-talks') { trackDisqualification('dq-installer','q7',ans.val); showDQ('dq-installer'); return; }
+  // Asks about the artefact (a quote, a deposit) rather than loyalty.
+  // A deposit is a fact people report honestly; "are you committed to
+  // someone else" is a confession they simply decline to make.
+  if (ans.val === 'chosen-unpaid' || ans.val === 'deposit-paid') { trackDisqualification('dq-installer','q7',ans.val); showDQ('dq-installer'); return; }
   showCard('q8');
 }
 
@@ -1850,7 +1858,17 @@ window.addEventListener('beforeunload', function(){
 // ══════════════════════════════════════════════════════
 // SUBMIT + ROI CALCULATION
 // ══════════════════════════════════════════════════════
-const TIMELINE_LABELS = { '0-14days': 'within the next 2 weeks', '2-4weeks': 'within the next month', '1-3months': 'within 1–3 months' };
+const TIMELINE_LABELS = { 'funds-now': 'as soon as possible, funds ready now', 'funds-1month': 'within the next month', 'funds-2-3months': 'in 2 to 3 months' };
+
+// Readable versions of the Gate 7 answer for the delivered lead. A buyer
+// holding a written quote is a stronger lead, not a weaker one: it proves
+// real intent and hands the installer a number to beat. Sent as plain text
+// so it is useful on sight rather than a code to decipher.
+const COMPETITOR_LABELS = {
+  'none-yet':     'Has not spoken to any installer yet',
+  'seen-prices':  'Has seen general prices online or in ads only',
+  'have-quote':   'Holds a written quote from another installer and is comparing',
+};
 function fmt(n){ return '₦' + Math.round(n).toLocaleString('en-NG'); }
 
 function slugify(s){ return (s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, ''); }
@@ -1902,7 +1920,7 @@ async function submitForm(){
   const packageRange = pkgAns?.size || 'To be assessed';
   const budgetRange = pkgAns?.budgetLabel || 'Not specified';
   const timelineLabel = TIMELINE_LABELS[state.answers.q4?.val] || 'within 90 days';
-  const competitorStatus = state.answers.q7?.val || 'Not specified';
+  const competitorStatus = COMPETITOR_LABELS[state.answers.q7?.val] || state.answers.q7?.val || 'Not specified';
   const paymentAns = state.answers.q8?.val || 'Not specified';
   const cityName = state.answers.city ? state.answers.city.name : loc;
 
