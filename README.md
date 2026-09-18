@@ -58,176 +58,49 @@ duplicate this for another installer.
 
 ---
 
-# Change 1: Deliver retry leads to the installer, flagged and unbilled
+# Retry leads: delivered, flagged, not billed
 
-**Do this one.** Right now a visitor who was disqualified, used their one
-correction, and then passed is not sent to GreenerAfrik at all. The
-decision was to send them instead, flagged, and not charge for them.
+**Already applied to this file.** A visitor who was disqualified, used
+their one correction, and then passed is delivered to the installer like
+any other lead, but flagged and never billed.
 
-Three edits, all inside `index.html`.
+- the result CTA points at the installer's line
+- the payload carries `deliverable: true` and `billable: false`
+- `priorDQ` records which gate rejected them, the answer they gave, and
+  when. `priorDQAnswerChanged` says whether the answer to that gate
+  actually changed, which separates a mis-click from an edit
+- the Meta `Lead` conversion does **not** fire, so the campaign is never
+  optimised toward people who game the gates. A custom
+  `RetryLeadFlagged` event fires instead
 
-### Edit A: the outgoing lead
+To stop sending them entirely instead, set `deliverable` back to
+`!isRetry` in the DELIVERY ROUTING block.
 
-Search for `DELIVERY ROUTING`. Replace this whole block:
+### The Make.com change this needs
 
-```js
-    // ── DELIVERY ROUTING ──
-    // deliverable false means this lead must NOT reach the installer and
-    // must not be billed. It is set only when a previously disqualified
-    // visitor used their one correction and then passed. The Make.com
-    // router needs a filter on this ahead of the installer routes;  see
-    // the README. Without that filter these leads still get through.
-    deliverable: !isRetry,
-    route: isRetry ? 'tubalcain-nurture' : 'installer',
-    priorDQ: isRetry ? state.retryOfDQ : null,
-    priorDQAnswerChanged: isRetry ? answerChanged : null,
-```
-
-with this:
-
-```js
-    // ── DELIVERY ROUTING ──
-    // A retry lead IS delivered to the installer, but flagged and never
-    // billed. billable false plus the priorDQ block is what the Make.com
-    // router and the billing sheet read. To stop sending them entirely
-    // instead, set deliverable back to !isRetry.
-    deliverable: true,
-    billable: !isRetry,
-    route: 'installer',
-    priorDQ: isRetry ? state.retryOfDQ : null,
-    priorDQAnswerChanged: isRetry ? answerChanged : null,
-```
-
-### Edit B: the WhatsApp button on the result page
-
-Search for `function bindWhatsAppCTA`. Replace these seven lines:
-
-```js
-  // A retry visitor still sees their real result, because the ROI and the
-  // package are computed from their own figures and there is nothing
-  // dishonest about showing them. The conversation goes to Tubalcain for
-  // review rather than to the installer, who is neither sent this lead
-  // nor billed for it.
-  const retry = !!state.retryOfDQ;
-  const num = retry ? SITE_CONFIG.installer.unqualifiedWhatsapp : SITE_CONFIG.installer.whatsapp;
-```
-
-with these three:
-
-```js
-  // A retry lead goes to the installer like any other, because it passed
-  // every gate. The flag rides in the lead data, not in the buyer's own
-  // message, and it is never billed.
-  const retry = !!state.retryOfDQ;
-  const num = SITE_CONFIG.installer.whatsapp;
-```
-
-Then, a few lines below in the same function, replace:
-
-```js
-  btn.addEventListener('click', () => {
-    if (retry) {
-      trackEvent('retry_whatsapp_clicked', { event_label: 'Retry lead opened nurture WhatsApp', content_id: resultType, content_type: 'gate_lockout' });
-    } else {
-      trackWhatsAppClick(resultType);
-    }
-  }, { once: true });
-```
-
-with:
-
-```js
-  btn.addEventListener('click', () => {
-    trackWhatsAppClick(resultType);
-    if (retry) {
-      trackEvent('retry_whatsapp_clicked', { event_label: 'Flagged retry lead opened installer WhatsApp', content_id: resultType, content_type: 'gate_lockout' });
-    }
-  }, { once: true });
-```
-
-A flagged lead now counts in your normal WhatsApp click number, because
-it is a real click on a real delivered lead, and it also fires its own
-event so you can still separate them in GA4.
-
-### Edit C: the event name, which currently says the wrong thing
-
-Search for `RetryLeadSuppressed`. Replace:
-
-```js
-    fbq('trackCustom', 'RetryLeadSuppressed', { gate: state.retryOfDQ.gate, dq: state.retryOfDQ.dq });
-    trackEvent('retry_lead_suppressed', {
-      event_label: 'Passed after ' + (DQ_LABELS[state.retryOfDQ.dq] || state.retryOfDQ.dq) + ', not delivered',
-```
-
-with:
-
-```js
-    fbq('trackCustom', 'RetryLeadFlagged', { gate: state.retryOfDQ.gate, dq: state.retryOfDQ.dq });
-    trackEvent('retry_lead_flagged', {
-      event_label: 'Passed after ' + (DQ_LABELS[state.retryOfDQ.dq] || state.retryOfDQ.dq) + ', delivered flagged and not billed',
-```
-
-Safe to rename both because nothing has fired yet. Once the campaign is
-live, renaming an event splits your reporting in two, so do it now or not
-at all.
-
-### Do NOT change this line
-
-```js
-  if (sent && !isAmber && !isRetry) fbq('track', 'Lead', { content_name: 'Solar 9-Gate Qualifier', lead_status: 'green', value: systemCost });
-```
-
-The `!isRetry` stays. The Meta `Lead` conversion must not fire on a retry
-lead even though you are now delivering it. Let it fire and the algorithm
-starts looking for more people who come back and change their answers.
-
-### How to test Edit 1
-
-1. Run the assessment and fail it deliberately at Gate 1 by picking
-   "still building" for funds.
-2. Reload. You should land on the same rejection screen with the
-   correction link.
-3. Click the link, answer everything so you pass.
-4. On the result page, right-click the green WhatsApp button, copy the
-   link, and check the number is **2349034308140** and not 2348029234994.
-5. In the console, check the lead went out flagged:
-
-```js
-// Look in the Network tab for the hook.us2.make.com request and open
-// its payload. You want to see:
-//   deliverable: true
-//   billable: false
-//   priorDQ: { dq: "dq-timeline", gate: "q4", ... }
-```
-
-### The matching Make.com change
-
-The lead now arrives on the normal installer route, so nothing has to
-change for it to be delivered. What you need is a branch that stops a
-flagged lead being counted as billable.
+The lead arrives on the normal installer route, so nothing has to change
+for it to be delivered. What you need is a branch that stops a flagged
+lead being counted as billable.
 
 ```
 Route 1  (new, put it first)
   Filter: billable = false
   Actions: append to the billing sheet with a "flagged, not billed"
-           column, notify yourself, and still forward to GreenerAfrik
+           column, notify yourself, and still forward to the installer
 
 Route 2..N  (your existing per-installer routes)
   Filter: billable = true  AND  installer_id = <the installer>
 ```
 
-If you would rather keep one route per installer and not split it, add
-`billable` as a column in the sheet and exclude it in your invoice
-formula instead. Either works. What matters is that a flagged lead never
-lands in the count you invoice against, and never counts toward the
-30-in-30 guarantee.
+If you would rather keep one route per installer, add `billable` as a
+column in the sheet and exclude it in your invoice formula instead.
+What matters is that a flagged lead never lands in the count you invoice
+against, and never counts toward the 30-in-30 guarantee.
 
-Old leads sent before this change carry `deliverable: false` and no
-`billable` field, so treat a missing `billable` as `true`.
+Leads sent before this change carry no `billable` field, so treat a
+missing `billable` as `true`.
 
----
-
-# Change 2: Branding, for a new installer
+# Branding
 
 `SITE_CONFIG.brand`, around line 101:
 
@@ -290,7 +163,56 @@ check the hero, a question card, and the dark result page.
 
 ---
 
-# Change 3: Duplicating this for a new installer
+## Contrast is corrected for you, but not composition
+
+Two values are fixed at load so a palette cannot make text unreadable:
+
+- **the button label** flips between white and near-black by whichever
+  actually reads on your `primary`, measured, not guessed
+- **`primaryDark`** is darkened until it clears 4.5:1 as text, because it
+  is used for the correction link and the pale badge as well as for
+  button hover
+
+Open the page with **`?brandcheck=1`** and the console prints a contrast
+table for every pairing, naming the value to change. Do that before you
+ship a palette.
+
+What it cannot fix is composition. **`navy` and `navy2` should share a
+hue.** Changing one and leaving the other is the most common mistake and
+puts cards of one colour family on a background of another. `wash` and
+`blueWash` should carry a faint tint of the same hue for the same reason.
+
+`navy` also has to be genuinely dark, because it carries white text
+across the hero and the whole result page. If `?brandcheck=1` says white
+on navy is under 4.5:1, darken it.
+
+## The browser tab icon
+
+```js
+faviconPath: "",
+```
+
+Left empty, `rep.photo` is used, so a client instance gets a branded tab
+without a second thing to configure. The extension does not have to be
+exact: if the file is a `.png` where the config says `.jpg`, both the rep
+photo and the favicon fall back to the other extension by themselves.
+
+A photo is a poor favicon at 16px and costs every visitor the full image
+download, which on Nigerian mobile data is worth avoiding. For a live
+page, save a small square crop as `assets/favicon.png` at 180x180 and
+point `faviconPath` at it.
+
+## The report number
+
+```js
+reportPrefix: "GA",
+```
+
+Appears on the result page as `#GA-20260918-4567`. Left empty, the
+business name's initials are used. Set it per instance so a duplicated
+page does not hand out another installer's report numbers.
+
+# Duplicating this for a new installer
 
 Only `SITE_CONFIG` changes. Everything else stays identical, which is the
 whole point of the master.
@@ -309,13 +231,19 @@ whole point of the master.
 | `warrantyMonths` | Badge on the result card |
 | `financingLine` | Badge shown to part-payment and financing buyers |
 | `packageInclusions` | What every package includes, shown as badges |
-| `brand` | The colour scheme, see Change 2 |
+| `brand` | The colour scheme, see Branding |
 | `installerId` | Routes the lead in the shared Make.com scenario. Must be unique |
+
+**Start from the master, not from this file.** The master carries no
+installer identity, so nothing of GreenerAfrik's can travel into another
+installer's page by accident. It also runs in template mode until you set
+a real `installerId`, which means it cannot post a lead or fire a pixel
+event while you are setting it up.
 
 Steps:
 
-1. Create the new repository and copy `index.html`, `README.md` and
-   `assets/` into it.
+1. Create the new repository and copy the master `index.html`,
+   `README.md` and `assets/` into it.
 2. Replace `assets/rep.jpg` with the new installer's photo. Square crop,
    face centred, 400x400 or larger.
 3. Edit `SITE_CONFIG` down the table above.
@@ -327,7 +255,7 @@ Steps:
 
 ---
 
-# Change 4: Other things you will want to edit
+# Other things you will want to edit
 
 ### The named service areas
 
