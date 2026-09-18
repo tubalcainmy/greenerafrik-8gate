@@ -21,20 +21,31 @@ const SITE_CONFIG = {
     // Every disqualified / not-a-fit lead is routed here instead, so
     // GreenerAfrik's line only ever receives buyers they are paying for.
     // This one is Tubalcain's, for nurture and future re-engagement.
-    unqualifiedWhatsapp: "2348029234994",
+    unqualifiedWhatsapp: "2349067930800",
     cityLabel: "Ibadan, Oyo State",
+    // Four named areas keep the list scannable on a phone. Anywhere else
+    // inside the city is captured by the "Elsewhere in Ibadan" option,
+    // which reveals a typed field  so coverage is not narrowed, the
+    // long tail just arrives as the buyer's own words instead of a
+    // dropdown we have to maintain.
     locations: [
       "Bodija (Old & New)",
       "Jericho GRA",
       "Iyaganku GRA",
       "Oluyole Estate",
-      "Agodi GRA",
-      "Akobo",
-      "Ring Road / Challenge",
-      "Samonda",
-      "Agbowo",
-      "Apete",
-      "Mokola",
+    ],
+    // Shown on the "Elsewhere in Ibadan" option once it is selected.
+    cityShortName: "Ibadan",
+    // Typed areas matching any of these are treated as out of coverage.
+    // Cheap guard against someone typing another city into a field
+    // labelled Ibadan;  not exhaustive, and never the only check.
+    outOfAreaTerms: [
+      "lagos","abuja","port harcourt","ph","warri","benin","kano","kaduna",
+      "enugu","aba","onitsha","owerri","calabar","uyo","jos","ilorin",
+      "abeokuta","akure","osogbo","ado ekiti","asaba","yenagoa","maiduguri",
+      "sokoto","zaria","minna","lokoja","makurdi","awka","umuahia","abakaliki",
+      "bauchi","gombe","yola","jalingo","katsina","birnin kebbi","dutse",
+      "damaturu","lafia","gusau","ikeja","lekki","ajah","surulere","wuse","garki",
     ],
   },
 
@@ -44,7 +55,7 @@ const SITE_CONFIG = {
   // PLACEHOLDER: replace name/title and drop the real photo at
   // assets/rep.jpg (square crop, face centred, 400x400 or larger).
   rep: {
-    name: "Caleb",
+    name: "Oracle of GreenerAfrik",
     title: "Co-Founder, GreenerAfrik Energies",
     photo: "assets/rep.jpg",
     introLine: "I'll take you through this myself. Answer a few honest questions and I'll show you exactly what solar would cost your home, and what it would save you.",
@@ -80,9 +91,40 @@ const SITE_CONFIG = {
     ],
   },
 
+  // ── BRAND COLOUR  one edit per client instance ──
+  // Drives the accent used on buttons, gate chips, the progress bar,
+  // selected options and headings. The qualified / flagged / rejected
+  // colours are deliberately NOT brand driven:  a client with a red or
+  // amber brand would otherwise make a passing result read as an error.
+  // Button label colour is worked out from the primary at load, so a
+  // pale brand colour still gives readable text original colors: #001B3D, #062A52, #0081CC, #00629B, #EEF3F8, #E4F0FA.
+  brand: {
+    navy:        "#1d8219",   // darkest surface: result page background, hero
+    navy2:       "#062A52",   // second dark surface, cards on the result page
+    primary:     "#f4731d",   // the accent. Buttons, chips, selected states
+    primaryDark: "#bad7a9",   // hover / pressed, and text on pale washes
+    wash:        "#EEF3F8",   // page background
+    blueWash:    "#E4F0FA",   // pale accent panels and the blue badge
+    // Both optional. Left out, they are worked out from the values
+    // above:  primaryLight is the accent lightened until it clears
+    // 4.5:1 against navy, and onDarkMuted is a light tint of navy2.
+    // Set them only if the brand has its own exact values.
+    // primaryLight: "#7FC4F0",
+    // onDarkMuted:  "#C4D3E3",
+  },
+
   // ── WARRANTY / FINANCING  shown on the result page ──
   warrantyMonths: 18,
   financingLine: "Go Solar. Pay Small Small.",
+
+  // ── WHAT EVERY PACKAGE INCLUDES  badges on the result card ──
+  // Reassurance at the point of highest intent. Only put things here
+  // the installer will actually honour;  this is the page the buyer
+  // screenshots and quotes back later.
+  packageInclusions: [
+    "Free periodic system check",
+    "24/7 after-sales support",
+  ],
 
   // ── TRACKING & DELIVERY ──
   // Per SLA clause 12 the campaign pixel stays Tubalcain's  do not swap
@@ -143,6 +185,10 @@ fbq('init', SITE_CONFIG.metaPixelId);fbq('track','PageView');
   --warning-wash:#FDF3DD;
   --negative:#C0392B;
   --negative-wash:#FBEAE8;
+  --blue-wash:#E4F0FA;
+  --on-primary:#FFFFFF;
+  --primary-light:#7FC4F0;
+  --on-dark-muted:#C4D3E3;
   --border:#DCE5EE;
 }
 
@@ -185,9 +231,9 @@ svg.icon{display:block;flex-shrink:0;}
   color:#fff;
   margin-bottom:14px;
 }
-.hero h1 span{color:#7FC4F0;}
+.hero h1 span{color:var(--primary-light);}
 .hero-sub{
-  font-size:16px;color:#C4D3E3;
+  font-size:16px;color:var(--on-dark-muted);
   line-height:1.6;max-width:440px;margin:0 auto 24px;
 }
 .trust-row{
@@ -197,9 +243,9 @@ svg.icon{display:block;flex-shrink:0;}
 }
 .trust-item{
   display:flex;align-items:center;gap:7px;
-  font-size:12.5px;color:#C4D3E3;font-weight:600;
+  font-size:12.5px;color:var(--on-dark-muted);font-weight:600;
 }
-.trust-item svg{stroke:#7FC4F0;}
+.trust-item svg{stroke:var(--primary-light);}
 
 /* ── PROGRESS ── */
 .progress-wrap{
@@ -272,11 +318,11 @@ svg.icon{display:block;flex-shrink:0;}
   min-height:44px;
 }
 
-.option:hover{border-color:var(--blue);background:#E4F0FA;}
+.option:hover{border-color:var(--blue);background:var(--blue-wash);}
 
 .option.selected{
   border-color:var(--blue);
-  background:#E4F0FA;
+  background:var(--blue-wash);
   box-shadow:0 0 0 1px var(--blue);
 }
 
@@ -299,7 +345,7 @@ svg.icon{display:block;flex-shrink:0;}
   min-height:52px;
   padding:14px 24px;
   background:var(--blue);
-  color:#fff;
+  color:var(--on-primary);
   font-family:'Manrope',sans-serif;
   font-size:16px;font-weight:700;
   border:none;border-radius:8px;cursor:pointer;
@@ -334,6 +380,23 @@ svg.icon{display:block;flex-shrink:0;}
 .spend-suffix{padding:0 16px 0 4px;font-size:13px;color:var(--muted);white-space:nowrap;}
 
 /* ── CONSENT CHECKBOX ── */
+.dq-correction{
+  margin-top:22px;padding-top:18px;
+  border-top:1px solid var(--border);
+  font-size:13.5px;color:var(--muted);
+  display:flex;flex-wrap:wrap;gap:6px;align-items:center;justify-content:center;
+}
+.dq-correction a{color:var(--blue-dark);font-weight:700;text-decoration:underline;text-underline-offset:3px;}
+.area-reveal{
+  display:none;
+  margin:2px 0 14px;
+  padding:14px 15px 4px;
+  background:var(--blue-wash);
+  border-radius:12px;
+  animation:areaIn .22s ease;
+}
+.area-reveal.show{display:block;}
+@keyframes areaIn{from{opacity:0;transform:translateY(-4px);}to{opacity:1;transform:none;}}
 .consent-row{display:flex;align-items:flex-start;gap:11px;cursor:pointer;margin:4px 0 6px;user-select:none;}
 .consent-row input{width:19px;height:19px;flex-shrink:0;margin-top:2px;accent-color:var(--blue);cursor:pointer;}
 .consent-row span{font-size:13.5px;color:var(--body);line-height:1.55;}
@@ -344,7 +407,7 @@ svg.icon{display:block;flex-shrink:0;}
 .rep-photo{width:58px;height:58px;border-radius:50%;object-fit:cover;flex-shrink:0;border:2px solid rgba(255,255,255,0.25);background:var(--wash);}
 .rep-intro-text{min-width:0;}
 .rep-name{font-size:15px;font-weight:800;color:#fff;margin-bottom:3px;}
-.rep-line{font-size:13px;color:#C4D3E3;line-height:1.55;}
+.rep-line{font-size:13px;color:var(--on-dark-muted);line-height:1.55;}
 
 .rep-byline{display:flex;align-items:center;gap:12px;background:var(--wash);border:1px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px;}
 .rep-byline .rep-photo{width:46px;height:46px;border-color:#fff;}
@@ -360,7 +423,7 @@ svg.icon{display:block;flex-shrink:0;}
 
 /* ── VERDICT / RECOMMENDATION BLOCK ── */
 .verdict-block{background:linear-gradient(155deg,var(--navy) 0%,var(--navy-2) 100%);border-radius:16px;padding:26px 22px;margin-bottom:14px;color:#fff;}
-.verdict-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:#7FC4F0;margin-bottom:8px;}
+.verdict-eyebrow{font-size:11.5px;font-weight:800;letter-spacing:0.08em;text-transform:uppercase;color:var(--primary-light);margin-bottom:8px;}
 .verdict-title{font-size:19px;font-weight:800;margin-bottom:12px;line-height:1.3;color:#fff;}
 .verdict-body{font-size:14.5px;line-height:1.7;color:#DCE6F2;}
 .verdict-body strong{color:#fff;}
@@ -375,7 +438,7 @@ svg.icon{display:block;flex-shrink:0;}
 .compare-track{height:16px;background:var(--wash);border-radius:8px;overflow:hidden;}
 .compare-bar{height:100%;border-radius:8px;width:0;transition:width 1.1s cubic-bezier(.16,1,.3,1);}
 .compare-bar-loss{background:linear-gradient(90deg,var(--negative),#E0574A);}
-.compare-bar-cost{background:linear-gradient(90deg,var(--blue),#35A6E8);}
+.compare-bar-cost{background:linear-gradient(90deg,var(--blue),var(--primary-light));}
 .compare-caption{font-size:13px;color:var(--muted);line-height:1.6;margin-top:14px;}
 
 /* ── PACKAGE DETAIL CARD ── */
@@ -386,7 +449,7 @@ svg.icon{display:block;flex-shrink:0;}
 .pkg-powers{font-size:13.5px;color:var(--body);line-height:1.65;margin-top:8px;padding-top:10px;border-top:1px solid var(--border);}
 .pkg-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;}
 .pkg-badge{font-size:11.5px;font-weight:700;padding:5px 11px;border-radius:100px;background:var(--success-wash);color:var(--success);}
-.pkg-badge.blue{background:#E4F0FA;color:var(--blue-dark);}
+.pkg-badge.blue{background:var(--blue-wash);color:var(--blue-dark);}
 
 /* ── TYPING CURSOR ── */
 .type-cursor{display:inline-block;width:2px;height:1em;background:currentColor;margin-left:1px;vertical-align:text-bottom;animation:typeBlink 0.8s step-end infinite;}
@@ -561,12 +624,12 @@ svg.icon{display:block;flex-shrink:0;}
   margin-bottom:10px;line-height:1.3;
 }
 
-.result-sub{font-size:14.5px;color:#C4D3E3;line-height:1.65;max-width:420px;margin:0 auto;}
+.result-sub{font-size:14.5px;color:var(--on-dark-muted);line-height:1.65;max-width:420px;margin:0 auto;}
 
 .roi-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:24px 0 0;}
 .roi-card{background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:16px 12px;text-align:center;}
 .roi-val{font-size:26px;font-weight:800;color:#fff;display:block;line-height:1;margin-bottom:5px;}
-.roi-val.blue{color:#7FC4F0;}
+.roi-val.blue{color:var(--primary-light);}
 .roi-val.green{color:#5FDB9A;}
 .roi-lbl{font-size:11.5px;color:#9FB3C8;}
 
@@ -643,7 +706,7 @@ svg.icon{display:block;flex-shrink:0;}
 .breakdown{background:var(--wash);border:1px solid var(--border);border-radius:10px;overflow:hidden;}
 .breakdown-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;font-size:13.5px;border-bottom:1px solid var(--border);}
 .breakdown-row:last-child{border-bottom:none;}
-.breakdown-row.total{background:#E4F0FA;font-weight:700;}
+.breakdown-row.total{background:var(--blue-wash);font-weight:700;}
 .breakdown-lbl{color:var(--muted);}
 .breakdown-val{color:var(--body);font-weight:700;}
 .breakdown-val.blue{color:var(--blue);}
@@ -700,7 +763,7 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="q-card" id="q1">
   <div class="q-num-row"><div class="q-num">Question 1 of 9</div><div class="q-gate" id="gate-q1"></div></div>
   <div class="q-text">Roughly how much do you spend monthly on electricity and generator fuel combined?</div>
-  <div class="q-hint">This helps us calculate whether solar makes financial sense for your home. Type your best real number;  the more accurate it is, the more accurate your savings estimate will be.</div>
+  <div class="q-hint">This helps us calculate whether solar makes financial sense for your home. Type your best real number. The more accurate it is, the more accurate your savings estimate will be.</div>
   <div class="spend-input-row">
     <span class="spend-prefix">₦</span>
     <input type="number" inputmode="numeric" id="q1-spend-input" class="text-input spend-input" placeholder="e.g. 45000" min="0">
@@ -718,6 +781,15 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="q-text">Which area is the property in?</div>
   <div class="q-hint" id="q2-hint">We currently serve specific areas. This confirms a vetted installer is active near you.</div>
   <div class="options" id="q2-opts"><!-- populated from SITE_CONFIG.installer.locations at load --></div>
+
+  <!-- Revealed only when "Elsewhere in Ibadan" is selected. Kept outside
+       the options list so the shuffle never moves it away from its parent. -->
+  <div class="area-reveal" id="q2-area-reveal">
+    <label class="input-label" id="q2-area-label">Which part of Ibadan?</label>
+    <input type="text" class="text-input" id="q2-area-input" placeholder="e.g. Akobo, Samonda, Ring Road" autocomplete="off">
+    <div class="field-error" id="err-q2-area">Please enter the name of your area, letters only.</div>
+  </div>
+
   <button class="next-btn" id="q2-next" disabled onclick="nextQ2()">Continue <span>→</span></button>
 </div>
 
@@ -761,7 +833,7 @@ svg.icon{display:block;flex-shrink:0;}
 <div class="q-card" id="q5">
   <div class="q-num-row"><div class="q-num">Question 5 of 9</div><div class="q-gate" id="gate-q5"></div></div>
   <div class="q-text" id="q5-text">Which solar package range fits your budget?</div>
-  <div class="q-hint" id="q5-hint">Pick the range that fits  the package size and what it powers is shown under each option. This selects a range; it's not a confirmation of funds.</div>
+  <div class="q-hint" id="q5-hint">Pick the range that fits. The package size and what it powers is shown under each option. This selects a range; it's not a confirmation of funds.</div>
   <div class="options" id="q5-opts"><!-- populated from SITE_CONFIG at load --></div>
   <div class="load-estimate" id="q5-load-estimate" style="display:none;">
     <div class="lval" id="q5-load-kva"></div>
@@ -791,8 +863,8 @@ svg.icon{display:block;flex-shrink:0;}
 ═══════════════════════════════════ -->
 <div class="q-card" id="q6">
   <div class="q-num-row"><div class="q-num">Question 6 of 9</div><div class="q-gate" id="gate-q6"></div></div>
-  <div class="q-text">Quick home check:  do any of these apply to your property?</div>
-  <div class="q-hint">Select all that apply. This does not disqualify you;  the flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
+  <div class="q-text">Quick home check: do any of these apply to your property?</div>
+  <div class="q-hint">Select all that apply. This does not disqualify you. The flagged items are things your installer will confirm before installation, not a barrier to seeing prices now.</div>
   <div class="options" id="q6-opts">
     <label class="option" data-val="roof" data-flag="Roof has leaks or is noticeably weak, needs inspection before installation">
       <div class="option-radio"></div><div><div class="option-text">Roof has leaks or feels old / weak</div></div>
@@ -912,7 +984,7 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="dq-title">Come Back When You're Ready to Install</div>
   <div class="dq-body">We're best matched with homeowners whose funds are close to ready, so the quote you get reflects real pricing and availability rather than an estimate that will have moved by the time you buy.</div>
   <ul class="dq-reason-box">
-    <li>Solar pricing and availability shift regularly;  quotes are time-sensitive</li>
+    <li>Solar pricing and availability shift regularly, so quotes are time-sensitive</li>
     <li>We prioritise homeowners who are close to being able to proceed</li>
     <li>Come back once your budget is in place and we'll pick this up</li>
   </ul>
@@ -955,6 +1027,15 @@ svg.icon{display:block;flex-shrink:0;}
   <a href="#" class="dq-alt-btn" id="dq-location-link" target="_blank">Join the Waitlist on WhatsApp →</a>
 </div>
 
+<!-- Shown when a visitor who already submitted returns. Prevents a second
+     lead for the same person, which is the usual pay-per-lead dispute. -->
+<div class="dq-page" id="dq-already">
+  <div class="dq-icon-wrap"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><path d="M22 4 12 14.01l-3-3"/></svg></div>
+  <div class="dq-title">You Have Already Completed This</div>
+  <div class="dq-body" id="dq-already-body"></div>
+  <a href="#" class="dq-alt-btn" id="dq-already-link" target="_blank">Continue on WhatsApp →</a>
+</div>
+
 <!-- ══════════════════════════════════
      LOADING
 ═══════════════════════════════════ -->
@@ -989,7 +1070,7 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="result-hero">
     <div class="result-badge green">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
-      Qualified  Home Suitable for Solar
+      Qualified · Home Suitable for Solar
     </div>
     <div class="result-title" id="rg-title">Your Home Qualifies. Here's Your ROI.</div>
     <div class="result-sub" id="rg-sub">Based on your answers, your home passes every eligibility check. Here are your personalised solar financial results and your matched package.</div>
@@ -1017,7 +1098,7 @@ svg.icon{display:block;flex-shrink:0;}
       <div class="breakdown-row"><span class="breakdown-lbl">Current monthly spend</span><span class="breakdown-val" id="rg-cur-monthly"></span></div>
       <div class="breakdown-row"><span class="breakdown-lbl">Current annual cost</span><span class="breakdown-val" id="rg-cur-annual"></span></div>
       <div class="breakdown-row"><span class="breakdown-lbl">System investment</span><span class="breakdown-val" id="rg-system-cost"></span></div>
-      <div class="breakdown-row"><span class="breakdown-lbl">Annual maintenance</span><span class="breakdown-val">₦30,000 – ₦60,000</span></div>
+      <div class="breakdown-row"><span class="breakdown-lbl">Annual maintenance</span><span class="breakdown-val">₦30,000 to ₦60,000</span></div>
       <div class="breakdown-row"><span class="breakdown-lbl">Battery replacement at</span><span class="breakdown-val" id="rg-battery-yr"></span></div>
       <div class="breakdown-row total"><span class="breakdown-lbl">Break-even point</span><span class="breakdown-val blue" id="rg-breakeven"></span></div>
     </div>
@@ -1088,10 +1169,10 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="result-hero">
     <div class="result-badge amber">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg>
-      Qualified  Site Details to Confirm
+      Qualified · Site Details to Confirm
     </div>
     <div class="result-title">Your Home Qualifies. A Few Details to Confirm On-Site</div>
-    <div class="result-sub">Your energy spend and package qualify you. We'll confirm 1–2 flagged home conditions before installation  this is not a barrier to seeing prices now.</div>
+    <div class="result-sub">Your energy spend and package qualify you. We'll confirm 1 or 2 flagged home conditions before installation. This is not a barrier to seeing prices now.</div>
     <div class="roi-grid">
       <div class="roi-card"><span class="roi-val blue" id="ra-payback"></span><div class="roi-lbl">Est. Payback Period</div></div>
       <div class="roi-card"><span class="roi-val green" id="ra-monthly"></span><div class="roi-lbl">Monthly Savings (Year 1)</div></div>
@@ -1101,19 +1182,19 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="section-card">
     <div class="section-title"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/></svg> We'll Confirm These</div>
     <ul class="check-list" id="ra-issues"></ul>
-    <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.7;">These are common and fixable. We confirm them on-site as part of the same visit where we walk you through packages;  it's not a separate booking step.</p>
+    <p style="font-size:13px;color:var(--muted);margin-top:16px;line-height:1.7;">These are common and fixable. We confirm them on-site as part of the same visit where we walk you through packages, not a separate booking step.</p>
   </div>
 
   <div class="cta-box">
     <div class="cta-heading">Your Next Step: See Your Package Options</div>
-    <div class="cta-sub">Message us on WhatsApp to see package options and prices;  we'll confirm the flagged items when we visit.</div>
+    <div class="cta-sub">Message us on WhatsApp to see package options and prices, and we'll confirm the flagged items when we visit.</div>
     <a href="#" class="cta-btn amber" id="amberCTA" target="_blank">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
       See My Package Options on WhatsApp →
     </a>
     <div class="guarantee-note">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
-      No obligation;  we confirm, then you decide
+      No obligation. We confirm, then you decide
     </div>
   </div>
 </div>
@@ -1125,7 +1206,7 @@ svg.icon{display:block;flex-shrink:0;}
     <h3 id="exitHeadline">Wait, your ROI result is almost ready</h3>
     <p id="exitBody">Finish the remaining questions to see your payback period, monthly savings, and matched solar package. It takes under a minute.</p>
     <button class="exit-continue" id="exitContinue">Continue My Assessment →</button>
-    <a class="exit-alt" id="exitGuide" href="#">I'm not ready;  send me the Free Solar Guide instead</a>
+    <a class="exit-alt" id="exitGuide" href="#">I'm not ready. Send me the Free Solar Guide instead</a>
   </div>
 </div>
 
@@ -1142,6 +1223,9 @@ const state = {
   safetyFlags: [],
   completed: false,
   recoverContext: null,
+  // Set when a previously disqualified visitor used their one correction.
+  // A lead carrying this is never delivered to the installer.
+  retryOfDQ: null,
 };
 
 const STEP = { q1:1, q2:2, q3:3, q4:4, q5:5, q5r:5, q6:6, q7:7, q8:8, q9:9 };
@@ -1170,6 +1254,8 @@ function gateChipText(qId){
 // INIT
 // ══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
+  applyBrand();
+
   document.querySelectorAll('[id^="gate-"]').forEach(el => {
     const qId = el.id.replace('gate-', '');
     el.textContent = gateChipText(qId);
@@ -1189,6 +1275,10 @@ document.addEventListener('DOMContentLoaded', () => {
   wireStaticOptionCards();
   wireSpendInput();
 
+  // After the builders so every option exists, and before
+  // restoreSession so a resumed visitor sees the order they left.
+  shuffleAllGates();
+
   ['firstName','whatsapp','location'].forEach(id => {
     document.getElementById(id).addEventListener('input', checkQ9);
   });
@@ -1198,7 +1288,9 @@ document.addEventListener('DOMContentLoaded', () => {
     checkQ9();
   });
 
-  if (!restoreSession()) {
+  // Before anything else in the funnel:  a returning visitor who was
+  // already disqualified, or who already submitted, is held here.
+  if (!enforceLock() && !restoreSession()) {
     trackEvent('qualifier_started', { event_label: 'Qualifier page loaded  Q1 visible', engagement_type: 'funnel_entry' });
     showCard('q1');
   }
@@ -1333,39 +1425,452 @@ function trackUnqualifiedWhatsApp(dqId, reason){
 // ══════════════════════════════════════════════════════
 // Q2  LOCATION (this installer's own area list, from SITE_CONFIG)
 // ══════════════════════════════════════════════════════
+// ══════════════════════════════════════════════════════
+// GATE LOCKOUT
+// A disqualified visitor used to be able to reload and start again with a
+// clean slate, because showDQ clears the session. This holds a record in
+// localStorage instead, so the casual "let me try a different answer"
+// costs them something.
+//
+// What this stops and what it does not. It survives reloads, tab closes
+// and browser restarts, which covers the ordinary retry and most traffic
+// arriving from the in-app browser on a Facebook click. A private window,
+// cleared site data, another browser or another phone all defeat it, and
+// nothing client side can change that: the page posts nothing for a
+// disqualified visitor, so there is no server record to check against.
+//
+// The key is namespaced per installer. Every client instance shares one
+// origin on GitHub Pages, so an unnamespaced key would lock a visitor out
+// of every other installer's page after one disqualification here.
+//
+// The record expires, because circumstances genuinely change. Someone
+// whose funds were still building in September may be ready in December,
+// and a permanent lock burns a real future buyer.
+// ══════════════════════════════════════════════════════
+const LOCK_DAYS = 7;
+
+function lockKey(){
+  return 'solar_gate_lock_v1__' + (SITE_CONFIG.installerId || slugify(SITE_CONFIG.installer.businessName));
+}
+
+function readLock(){
+  let raw;
+  try { raw = localStorage.getItem(lockKey()); } catch (e) { return null; }
+  if (!raw) return null;
+  let lock;
+  try { lock = JSON.parse(raw); } catch (e) { clearLock(); return null; }
+  if (!lock || !lock.at) return null;
+  const ageDays = (Date.now() - new Date(lock.at).getTime()) / 86400000;
+  if (!isFinite(ageDays) || ageDays > LOCK_DAYS) { clearLock(); return null; }
+  return lock;
+}
+
+function writeLock(lock){
+  try { localStorage.setItem(lockKey(), JSON.stringify(lock)); } catch (e) {}
+}
+
+function clearLock(){
+  try { localStorage.removeItem(lockKey()); } catch (e) {}
+}
+
+// Called from trackDisqualification, which every rejection path already
+// goes through, so no gate can be added later and quietly miss this.
+function recordDQ(dqId, qId, value){
+  const prior = readLock();
+  writeLock({
+    kind: 'dq',
+    dq: dqId,
+    gate: qId,
+    value: String(value === undefined || value === null ? '' : value),
+    at: new Date().toISOString(),
+    attempts: (prior && prior.kind === 'dq' ? (prior.attempts || 1) : 0) + 1,
+    firstAt: (prior && prior.firstAt) || new Date().toISOString(),
+  });
+}
+
+function recordCompletion(leadStatus){
+  writeLock({ kind: 'done', at: new Date().toISOString(), leadStatus: leadStatus || 'green' });
+}
+
+// Builds the one correction link offered on a first return visit.
+function correctionLink(){
+  const wrap = document.createElement('div');
+  wrap.className = 'dq-correction';
+  wrap.id = 'dqCorrection';
+  wrap.innerHTML = '<span>Answered something by mistake?</span>' +
+    '<a href="#" id="dqCorrectionLink">Go back and correct it</a>';
+  return wrap;
+}
+
+function useCorrection(lock){
+  const el = document.getElementById('dqCorrection');
+  if (el) el.remove();
+  state.retryOfDQ = { dq: lock.dq, gate: lock.gate, value: lock.value, at: lock.at };
+  writeLock(Object.assign({}, lock, { kind: 'dq', attempts: 2, at: new Date().toISOString() }));
+  document.querySelectorAll('.dq-page').forEach(pg => pg.classList.remove('show'));
+  document.getElementById('hero').style.display = '';
+  trackEvent('dq_correction_used', {
+    event_label: 'Returned after ' + (DQ_LABELS[lock.dq] || lock.dq) + ', correcting ' + (Q_LABELS[lock.gate] || lock.gate),
+    content_id: lock.gate, item_id: lock.dq, content_type: 'gate_lockout',
+  });
+  showCard('q1');
+}
+
+// Runs before the first question is shown. Returns true when the visitor
+// has been held on a screen and the normal flow must not start.
+function enforceLock(){
+  const lock = readLock();
+  if (!lock) return false;
+
+  // Already submitted successfully. Showing the questions again would
+  // produce a second lead for the same person, which is the classic
+  // pay-per-lead billing dispute. Send them to the conversation instead.
+  if (lock.kind === 'done') {
+    document.getElementById('hero').style.display = 'none';
+    document.getElementById('progressWrap').style.display = 'none';
+    const num = SITE_CONFIG.installer.whatsapp;
+    const link = document.getElementById('dq-already-link');
+    link.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(
+      'Hi, I completed the ' + SITE_CONFIG.installer.businessName +
+      ' Solar Assessment already and I would like to continue the conversation.');
+    document.getElementById('dq-already-body').textContent =
+      'You have already completed this assessment and your details are with ' +
+      SITE_CONFIG.installer.businessName + '. There is no need to fill it in again. ' +
+      'Pick up the conversation on WhatsApp and they will take it from where you left off.';
+    document.getElementById('dq-already').classList.add('show');
+    window.scrollTo({ top: 0 });
+    trackEvent('duplicate_submission_blocked', {
+      event_label: 'Returning visitor already submitted', content_type: 'gate_lockout',
+    });
+    return true;
+  }
+
+  if (lock.kind !== 'dq') return false;
+
+  const page = document.getElementById(lock.dq);
+  if (!page) { clearLock(); return false; }
+
+  document.getElementById('hero').style.display = 'none';
+  document.getElementById('progressWrap').style.display = 'none';
+  page.classList.add('show');
+  window.scrollTo({ top: 0 });
+
+  trackEvent('dq_lockout_shown', {
+    event_label: 'Returned after ' + (DQ_LABELS[lock.dq] || lock.dq) + ', attempt ' + (lock.attempts || 1),
+    content_id: lock.gate, item_id: lock.dq, content_type: 'gate_lockout',
+    value: lock.attempts || 1,
+  });
+
+  // One correction, and only on the first return. A genuine mis-click is
+  // recoverable;  a second attempt is not.
+  if ((lock.attempts || 1) < 2) {
+    page.appendChild(correctionLink());
+    document.getElementById('dqCorrectionLink').addEventListener('click', function(ev){
+      ev.preventDefault();
+      useCorrection(lock);
+    });
+  }
+  return true;
+}
+
+// ══════════════════════════════════════════════════════
+// OPTION ORDER
+// A visitor who means to click straight through looks for a pattern:
+// the first option, or the last, or the one that sounds harmless. Any
+// fixed order eventually teaches that pattern, and a rejected visitor
+// who reloads gets a second try at learning it.
+//
+// So the order is shuffled per session. It is deterministic against a
+// seed held in sessionStorage, which matters for two reasons: going
+// back through the gates shows the same order rather than reshuffling
+// under the visitor's hands, and restoreSession can still re-select a
+// saved answer because selection is bound to data-val, never position.
+//
+// Two gates are deliberately left alone. The package ladder stays in
+// ascending price order, because a buyer scanning prices out of
+// sequence reads the page as broken and leaves. And the home check
+// keeps "None of these" pinned last, since a fast clicker landing on
+// it first would flag their own home for no reason.
+// ══════════════════════════════════════════════════════
+const ORDER_SEED_KEY = 'solar_order_seed_v1';
+
+function orderSeed(){
+  let seed;
+  try { seed = sessionStorage.getItem(ORDER_SEED_KEY); } catch (e) { seed = null; }
+  if (!seed) {
+    seed = String(Math.floor(Math.random() * 1e9) + 1);
+    try { sessionStorage.setItem(ORDER_SEED_KEY, seed); } catch (e) {}
+  }
+  return parseInt(seed, 10) || 1;
+}
+
+// Small deterministic PRNG. Same seed and same key give the same order
+// every time the page is rebuilt inside one session.
+function seededRandom(seed){
+  let x = seed % 2147483647;
+  if (x <= 0) x += 2147483646;
+  return function(){ x = (x * 16807) % 2147483647; return (x - 1) / 2147483646; };
+}
+
+function keyToInt(key){
+  let h = 0;
+  for (let i = 0; i < key.length; i++) h = (h * 31 + key.charCodeAt(i)) % 2147483647;
+  return h;
+}
+
+// Fisher-Yates against the seeded stream, in place.
+function shuffleWithSeed(arr, key){
+  const rand = seededRandom(orderSeed() + keyToInt(key || 'default'));
+  for (let i = arr.length - 1; i > 0; i--) {
+    const j = Math.floor(rand() * (i + 1));
+    const tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp;
+  }
+  return arr;
+}
+
+// Reorders the option elements already in the DOM for one question.
+// pinLast holds any data-val that must stay at the bottom.
+function shuffleQuestionOptions(qId, pinLast){
+  const wrap = document.getElementById(qId + '-opts');
+  if (!wrap) return;
+  const all = Array.from(wrap.querySelectorAll('.option'));
+  const pinned = [];
+  const movable = [];
+  all.forEach(el => {
+    if (pinLast && pinLast.indexOf(el.dataset.val) !== -1) pinned.push(el);
+    else movable.push(el);
+  });
+  shuffleWithSeed(movable, qId);
+  movable.concat(pinned).forEach(el => wrap.appendChild(el));
+}
+
+function shuffleAllGates(){
+  // Categorical gates:  no natural reading order, so nothing is lost.
+  shuffleQuestionOptions('q3');   // whose permission
+  shuffleQuestionOptions('q7');   // progress with other installers
+  shuffleQuestionOptions('q8');   // payment method
+  shuffleQuestionOptions('q5r');  // instalment recovery
+  // Funds availability reads as a ladder, but the ladder is exactly the
+  // pattern a clicker uses, so it shuffles too.
+  shuffleQuestionOptions('q4');
+  // Home check:  flags shuffle, "my home is ready" stays last.
+  shuffleQuestionOptions('q6', ['none']);
+}
+
+// ══════════════════════════════════════════════════════
+// BRAND COLOUR
+// One block in SITE_CONFIG repaints the whole page. The qualified,
+// flagged and rejected colours stay out of it on purpose:  a client
+// whose brand is red would otherwise make a passing result look like
+// a failure. Button label colour is derived rather than configured,
+// so a pale brand colour still reads.
+// ══════════════════════════════════════════════════════
+function hexToRgb(hex){
+  const h = String(hex || '').replace('#', '').trim();
+  const full = h.length === 3 ? h.split('').map(c => c + c).join('') : h;
+  if (!/^[0-9a-fA-F]{6}$/.test(full)) return null;
+  return { r: parseInt(full.slice(0,2),16), g: parseInt(full.slice(2,4),16), b: parseInt(full.slice(4,6),16) };
+}
+
+// Relative luminance, WCAG definition. Used only to decide whether a
+// label sits better in white or in near-black.
+function luminance(hex){
+  const c = hexToRgb(hex);
+  if (!c) return 0;
+  const ch = [c.r, c.g, c.b].map(v => {
+    v /= 255;
+    return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+  });
+  return 0.2126 * ch[0] + 0.7152 * ch[1] + 0.0722 * ch[2];
+}
+
+function rgbToHex(c){
+  const h = v => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0');
+  return '#' + h(c.r) + h(c.g) + h(c.b);
+}
+
+// Mixes a colour toward white. Used to derive the light accent that sits
+// on the dark surfaces, so it always belongs to the brand's own hue.
+function lighten(hex, amount){
+  const c = hexToRgb(hex);
+  if (!c) return hex;
+  return rgbToHex({
+    r: c.r + (255 - c.r) * amount,
+    g: c.g + (255 - c.g) * amount,
+    b: c.b + (255 - c.b) * amount,
+  });
+}
+
+function contrastRatio(a, b){
+  const la = luminance(a), lb = luminance(b);
+  const hi = Math.max(la, lb), lo = Math.min(la, lb);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+// Lightens the accent just far enough to clear 4.5:1 against the dark
+// surface it sits on, so a dark brand colour does not disappear into
+// the result page and a light one does not get bleached out.
+function accentOnDark(primary, dark){
+  let best = primary;
+  for (let step = 0; step <= 16; step++) {
+    best = lighten(primary, step * 0.05);
+    if (contrastRatio(best, dark) >= 4.5) return best;
+  }
+  return best;
+}
+
+function applyBrand(){
+  const b = SITE_CONFIG.brand;
+  if (!b) return;
+  const root = document.documentElement;
+  const map = {
+    '--navy': b.navy, '--navy-2': b.navy2,
+    '--blue': b.primary, '--blue-dark': b.primaryDark,
+    '--wash': b.wash, '--blue-wash': b.blueWash,
+  };
+  Object.keys(map).forEach(k => { if (map[k]) root.style.setProperty(k, map[k]); });
+
+  if (b.primary) {
+    root.style.setProperty('--on-primary', luminance(b.primary) > 0.55 ? '#0F1B26' : '#FFFFFF');
+    root.style.setProperty('--primary-light', b.primaryLight || accentOnDark(b.primary, b.navy || '#001B3D'));
+  }
+  if (b.navy2 || b.navy) {
+    root.style.setProperty('--on-dark-muted', b.onDarkMuted || lighten(b.navy2 || b.navy, 0.74));
+  }
+  if (b.navy) {
+    const meta = document.querySelector('meta[name="theme-color"]');
+    if (meta) meta.setAttribute('content', b.navy);
+  }
+}
+
+const IBADAN_OTHER = '__ibadan_other__';
+const AREA_RE = /^[A-Za-z][A-Za-z\s'&().\/-]{1,39}$/;
+
+function normaliseArea(v){
+  return String(v || '').toLowerCase().replace(/[^a-z\s]/g, ' ').replace(/\s+/g, ' ').trim();
+}
+
+// Someone typing "Lagos" into a field labelled Ibadan is either confused or
+// testing the gate. Either way it is not a lead GreenerAfrik should pay for.
+function isOutOfArea(v){
+  const n = normaliseArea(v);
+  if (!n) return false;
+  const terms = SITE_CONFIG.installer.outOfAreaTerms || [];
+  return terms.some(term => n === term || n.split(' ').includes(term) || n.indexOf(term) === 0);
+}
+
+function areaRevealEl(){ return document.getElementById('q2-area-reveal'); }
+function areaInputEl(){ return document.getElementById('q2-area-input'); }
+
+function setAreaReveal(on){
+  const wrap = areaRevealEl();
+  wrap.classList.toggle('show', !!on);
+  if (!on) {
+    areaInputEl().value = '';
+    document.getElementById('err-q2-area').classList.remove('show');
+  } else {
+    setTimeout(() => areaInputEl().focus(), 120);
+  }
+}
+
+function q2SelectionValid(){
+  const sel = document.querySelector('#q2-opts .option.selected');
+  if (!sel) return false;
+  if (sel.dataset.val !== IBADAN_OTHER) return true;
+  return AREA_RE.test(areaInputEl().value.trim());
+}
+
+function refreshQ2Next(){
+  document.getElementById('q2-next').disabled = !q2SelectionValid();
+}
+
 function buildLocationOptions(){
   const wrap = document.getElementById('q2-opts');
+  const city = SITE_CONFIG.installer.cityShortName || SITE_CONFIG.installer.cityLabel;
   const frag = document.createDocumentFragment();
+
+  // The four named areas. Shuffled below so no single position is the
+  // safe click;  the two catch-alls are pinned to the end because a
+  // buyer scanning a list expects "somewhere else" last.
+  const named = [];
   SITE_CONFIG.installer.locations.forEach(loc => {
     const label = document.createElement('label');
     label.className = 'option';
     label.dataset.val = loc;
     label.innerHTML = '<div class="option-radio"></div><div><div class="option-text">' + loc + '</div></div>';
-    frag.appendChild(label);
+    named.push(label);
   });
+  shuffleWithSeed(named, 'q2');
+  named.forEach(el => frag.appendChild(el));
+
+  const ibadan = document.createElement('label');
+  ibadan.className = 'option';
+  ibadan.dataset.val = IBADAN_OTHER;
+  ibadan.innerHTML = '<div class="option-radio"></div><div><div class="option-text">Elsewhere in ' + city +
+    '</div><div class="option-sub">Select this and tell us your area</div></div>';
+  frag.appendChild(ibadan);
+
   const other = document.createElement('label');
   other.className = 'option';
   other.dataset.val = 'other';
-  other.innerHTML = '<div class="option-radio"></div><div><div class="option-text">Somewhere else</div><div class="option-sub">We may not have coverage in your area yet</div></div>';
+  other.innerHTML = '<div class="option-radio"></div><div><div class="option-text">Somewhere else</div><div class="option-sub">Outside ' + city + '</div></div>';
   frag.appendChild(other);
+
   wrap.appendChild(frag);
 
   wrap.querySelectorAll('.option').forEach(opt => {
     opt.addEventListener('click', () => {
       wrap.querySelectorAll('.option').forEach(o => o.classList.remove('selected'));
       opt.classList.add('selected');
-      document.getElementById('q2-next').disabled = false;
+      setAreaReveal(opt.dataset.val === IBADAN_OTHER);
+      refreshQ2Next();
     });
   });
+
+  areaInputEl().addEventListener('input', () => {
+    document.getElementById('err-q2-area').classList.remove('show');
+    refreshQ2Next();
+  });
+  document.getElementById('q2-area-label').textContent = 'Which part of ' + city + '?';
 }
 
 function nextQ2(){
   const selected = document.querySelector('#q2-opts .option.selected');
   if (!selected) return;
   const locVal = selected.dataset.val;
-  state.answers.city = { val: locVal, name: locVal === 'other' ? SITE_CONFIG.installer.cityLabel : locVal };
+  const city = SITE_CONFIG.installer.cityShortName || SITE_CONFIG.installer.cityLabel;
+
+  if (locVal === 'other') {
+    state.answers.city = { val: 'other', name: SITE_CONFIG.installer.cityLabel };
+    trackQuestionAnswered('q2', 'other');
+    trackDisqualification('dq-location','q2','other');
+    showDQ('dq-location');
+    return;
+  }
+
+  if (locVal === IBADAN_OTHER) {
+    const typed = areaInputEl().value.trim().replace(/\s+/g, ' ');
+    if (!AREA_RE.test(typed)) {
+      document.getElementById('err-q2-area').classList.add('show');
+      return;
+    }
+    // Typed a different city into the Ibadan field:  out of coverage.
+    if (isOutOfArea(typed)) {
+      state.answers.city = { val: 'other', name: typed, typedArea: typed, outOfArea: true };
+      trackQuestionAnswered('q2', 'typed-out-of-area');
+      trackDisqualification('dq-location','q2','typed:' + typed);
+      showDQ('dq-location');
+      return;
+    }
+    const pretty = typed.replace(/\b[a-z]/g, c => c.toUpperCase()) + ', ' + city;
+    state.answers.city = { val: IBADAN_OTHER, name: pretty, typedArea: typed };
+    trackQuestionAnswered('q2', 'typed:' + typed);
+    showCard('q3');
+    return;
+  }
+
+  state.answers.city = { val: locVal, name: locVal };
   trackQuestionAnswered('q2', locVal);
-  if (locVal === 'other') { trackDisqualification('dq-location','q2',locVal); showDQ('dq-location'); return; }
   showCard('q3');
 }
 
@@ -1779,14 +2284,36 @@ function restoreSession(){
   Object.keys(state.answers).forEach(qId => {
     const ans = state.answers[qId];
     const card = document.getElementById(qId);
-    if (!card || !ans || !ans.val) return;
-    ans.val.split(',').forEach(v => {
+    if (!card || !ans || ans.val === undefined || ans.val === null) return;
+
+    // Q1 is a typed numeric field, and its stored val is a number, so it
+    // restores by value rather than by re-selecting an option card.
+    if (qId === 'q1') {
+      const input = document.getElementById('q1-spend-input');
+      if (input) { input.value = ans.val; input.dispatchEvent(new Event('input', { bubbles: true })); }
+      return;
+    }
+
+    String(ans.val).split(',').forEach(v => {
       const opt = card.querySelector('.option[data-val="' + v + '"]');
       if (opt) opt.classList.add('selected');
     });
     const btn = document.getElementById(qId + '-next');
     if (btn) btn.disabled = false;
   });
+
+  // The location answer lives on state.answers.city, not on a q-card,
+  // so it restores separately  including the typed Ibadan area.
+  const savedCity = state.answers.city;
+  if (savedCity && savedCity.val) {
+    const cityOpt = document.querySelector('#q2-opts .option[data-val="' + savedCity.val + '"]');
+    if (cityOpt) cityOpt.classList.add('selected');
+    if (savedCity.val === IBADAN_OTHER && savedCity.typedArea) {
+      areaInputEl().value = savedCity.typedArea;
+      areaRevealEl().classList.add('show');
+    }
+    refreshQ2Next();
+  }
 
   trackEvent('qualifier_resumed', { event_label: 'Session restored at ' + saved.currentQ, content_id: saved.currentQ });
   showCard(saved.currentQ);
@@ -1830,6 +2357,7 @@ function trackQuestionAnswered(qId, answerVal){
   trackEvent('qualifier_question_answered', { event_label: (Q_LABELS[qId] || qId) + ' → ' + answerVal, content_id: qId, content_type: 'quiz_answer', item_id: answerVal, value: STEP[qId] || 0 });
 }
 function trackDisqualification(dqId, triggeredAtQ, answerVal){
+  recordDQ(dqId, triggeredAtQ, answerVal);
   var dqLabel = DQ_LABELS[dqId] || dqId, qLabel = Q_LABELS[triggeredAtQ] || triggeredAtQ;
   trackEvent('qualifier_disqualified', { event_label: qLabel + ' → ' + dqLabel, content_id: triggeredAtQ, content_type: 'disqualification', item_id: dqId, item_name: dqLabel, item_category: qLabel, value: STEP[triggeredAtQ] || 0 });
 }
@@ -1924,6 +2452,15 @@ async function submitForm(){
   const paymentAns = state.answers.q8?.val || 'Not specified';
   const cityName = state.answers.city ? state.answers.city.name : loc;
 
+  // A visitor who was disqualified, came back, and passed. Whether the
+  // answer to the gate that rejected them actually changed is the part
+  // worth knowing:  same answer means the earlier rejection was a
+  // mis-click, a different one means they went back and altered it.
+  const isRetry = !!state.retryOfDQ;
+  const answerChanged = isRetry
+    ? String(state.answers[state.retryOfDQ.gate]?.val ?? '') !== String(state.retryOfDQ.value ?? '')
+    : false;
+
   const payload = {
     installer_business_name: SITE_CONFIG.installer.businessName,
     installer_id: SITE_CONFIG.installerId || slugify(SITE_CONFIG.installer.businessName),
@@ -1945,10 +2482,31 @@ async function submitForm(){
     city: cityName,
     matchedPackage: pkgAns?.tier2Match ? { name: pkgAns.packageName, kva: pkgAns.size, price: pkgAns.cost, powers: pkgAns.note, undersized: !!pkgAns.undersized } : null,
     applianceLoad: pkgAns?.applianceLoad || null,
+
+    // ── DELIVERY ROUTING ──
+    // A retry lead IS delivered to the installer, but flagged and never
+    // billed. billable false plus the priorDQ block is what the Make.com
+    // router and the billing sheet read. To stop sending them entirely
+    // instead, set deliverable back to !isRetry.
+    deliverable: true,
+    billable: !isRetry,
+    route: 'installer',
+    priorDQ: isRetry ? state.retryOfDQ : null,
+    priorDQAnswerChanged: isRetry ? answerChanged : null,
   };
 
   const sent = await submitWithRetry(payload);
-  if (sent && !isAmber) fbq('track', 'Lead', { content_name: 'Solar 9-Gate Qualifier', lead_status: 'green', value: systemCost });
+  // A retry lead never fires the Lead conversion. Letting it through would
+  // teach Meta to optimise the campaign toward people who game the gates.
+  if (sent && !isAmber && !isRetry) fbq('track', 'Lead', { content_name: 'Solar 9-Gate Qualifier', lead_status: 'green', value: systemCost });
+  if (sent && isRetry) {
+    fbq('trackCustom', 'RetryLeadFlagged', { gate: state.retryOfDQ.gate, dq: state.retryOfDQ.dq });
+    trackEvent('retry_lead_flagged', {
+      event_label: 'Passed after ' + (DQ_LABELS[state.retryOfDQ.dq] || state.retryOfDQ.dq) + ', delivered flagged and not billed',
+      content_id: state.retryOfDQ.gate, item_id: state.retryOfDQ.dq,
+      content_type: 'gate_lockout', value: systemCost, currency: 'NGN',
+    });
+  }
 
   setTimeout(() => {
     document.getElementById('loadingPage').classList.remove('show');
@@ -1956,6 +2514,9 @@ async function submitForm(){
     if (isAmber) showAmberResult(payback, monthlySavingsY1, systemCost, lead);
     else showGreenResult(payback, monthlySavingsY1, roi20, cumSavings, systemCost, annualCost, breakEvenYear, batteryLife, lead);
     clearSession();
+    // Replaces any disqualification record, so a reload lands on the
+    // "already completed" screen rather than back at question one.
+    recordCompletion(isAmber ? 'yellow' : 'green');
   }, 2200);
 }
 
@@ -1991,8 +2552,18 @@ async function flushPendingLeads(){
 
 function bindWhatsAppCTA(id, msg, resultType){
   const btn = document.getElementById(id);
-  btn.href = 'https://wa.me/' + SITE_CONFIG.installer.whatsapp + '?text=' + encodeURIComponent(msg);
-  btn.addEventListener('click', () => trackWhatsAppClick(resultType), { once: true });
+  // A retry lead goes to the installer like any other, because it passed
+  // every gate. The flag rides in the lead data, not in the buyer's own
+  // message, and it is never billed.
+  const retry = !!state.retryOfDQ;
+  const num = SITE_CONFIG.installer.whatsapp;
+  btn.href = 'https://wa.me/' + num + '?text=' + encodeURIComponent(msg);
+  btn.addEventListener('click', () => {
+    trackWhatsAppClick(resultType);
+    if (retry) {
+      trackEvent('retry_whatsapp_clicked', { event_label: 'Flagged retry lead opened installer WhatsApp', content_id: resultType, content_type: 'gate_lockout' });
+    }
+  }, { once: true });
 }
 
 function showGreenResult(payback, monthly, roi, cumSavings, sysCost, annualCost, breakEven, batteryLife, lead){
@@ -2093,6 +2664,11 @@ function renderMatchedPackage(lead, sysCost){
   var badges = [];
   if (SITE_CONFIG.warrantyMonths) badges.push({ t: SITE_CONFIG.warrantyMonths + '-month warranty', c: '' });
   badges.push({ t: 'Logistics & installation included', c: '' });
+  // Included with every package, so they show on every qualified
+  // result rather than only where a payment path triggers them.
+  (SITE_CONFIG.packageInclusions || []).forEach(function(inc){
+    badges.push({ t: inc, c: '' });
+  });
   if (lead.paymentAns === 'part' || lead.paymentAns === 'financing' || lead.paymentAns === 'unsure') {
     badges.push({ t: SITE_CONFIG.financingLine || 'Payment plans available', c: 'blue' });
   }
