@@ -57,6 +57,9 @@ const SITE_CONFIG = {
   rep: {
     name: "Oracle of GreenerAfrik",
     title: "Co-Founder, GreenerAfrik Energies",
+    // This same file becomes the browser tab icon. If the image is a
+    // .png rather than a .jpg the page falls back automatically, so the
+    // extension here does not have to be exact.
     photo: "assets/rep.jpg",
     introLine: "I'll take you through this myself. Answer a few honest questions and I'll show you exactly what solar would cost your home, and what it would save you.",
   },
@@ -99,12 +102,12 @@ const SITE_CONFIG = {
   // Button label colour is worked out from the primary at load, so a
   // pale brand colour still gives readable text original colors: #001B3D, #062A52, #0081CC, #00629B, #EEF3F8, #E4F0FA.
   brand: {
-    navy:        "#1d8219",   // darkest surface: result page background, hero
-    navy2:       "#062A52",   // second dark surface, cards on the result page
+    navy:        "#0E3D12",   // darkest surface: result page background, hero
+    navy2:       "#15521A",   // second dark surface, cards on the result page
     primary:     "#f4731d",   // the accent. Buttons, chips, selected states
-    primaryDark: "#bad7a9",   // hover / pressed, and text on pale washes
-    wash:        "#EEF3F8",   // page background
-    blueWash:    "#E4F0FA",   // pale accent panels and the blue badge
+    primaryDark: "#B4541A",   // hover / pressed, and text on pale washes
+    wash:        "#F1F5EF",   // page background
+    blueWash:    "#E6F0E2",   // pale accent panels and the blue badge
     // Both optional. Left out, they are worked out from the values
     // above:  primaryLight is the accent lightened until it clears
     // 4.5:1 against navy, and onDarkMuted is a light tint of navy2.
@@ -124,8 +127,20 @@ const SITE_CONFIG = {
   packageInclusions: [
     "Free periodic system check",
     "24/7 after-sales support",
-     "7-Year Installation Guarantee"
+    "7-Year Installation Guarantee",
   ],
+
+  // ── REPORT NUMBER PREFIX ──
+  // Appears on the result page as #GA-20260918-4567. Left empty, the
+  // business name's initials are used.
+  reportPrefix: "GA",
+
+  // ── BROWSER TAB ICON ──
+  // Left empty, the rep photo above is used. A photo makes a poor
+  // favicon at 16px and costs every visitor the full image download,
+  // so for a live page prefer a small square crop saved separately,
+  // e.g. "assets/favicon.png" at 180x180.
+  faviconPath: "",
 
   // ── TRACKING & DELIVERY ──
   // Per SLA clause 12 the campaign pixel stays Tubalcain's  do not swap
@@ -1256,6 +1271,8 @@ function gateChipText(qId){
 // ══════════════════════════════════════════════════════
 document.addEventListener('DOMContentLoaded', () => {
   applyBrand();
+  brandCheck();
+  applyFavicon();
 
   document.querySelectorAll('[id^="gate-"]').forEach(el => {
     const qId = el.id.replace('gate-', '');
@@ -1304,21 +1321,65 @@ document.addEventListener('DOMContentLoaded', () => {
 // the intro and the result page. Everything hides gracefully if no
 // rep is configured, so a client without a photo still works.
 // ══════════════════════════════════════════════════════
+// Swaps .jpg for .png and back. The rep photo and the favicon both go
+// through this, so the file extension in SITE_CONFIG never has to be
+// exactly right for the page to work.
+function siblingExt(path){
+  if (/\.jpe?g$/i.test(path)) return path.replace(/\.jpe?g$/i, '.png');
+  if (/\.png$/i.test(path))   return path.replace(/\.png$/i, '.jpg');
+  return null;
+}
+
+function repImage(img, path, altName){
+  img.alt = 'Photo of ' + (altName || 'your consultant');
+  img.onerror = function(){
+    var alt = siblingExt(path);
+    if (alt && img.dataset.triedSibling !== '1') { img.dataset.triedSibling = '1'; img.src = alt; }
+    else { img.onerror = null; }
+  };
+  img.src = path;
+}
+
+// The tab icon. Uses faviconPath when set, otherwise the rep photo, so a
+// client instance gets a branded tab without a second thing to configure.
+function applyFavicon(){
+  var path = (SITE_CONFIG.faviconPath || '').trim() || (SITE_CONFIG.rep && SITE_CONFIG.rep.photo) || '';
+  if (!path) return;
+
+  function setIcon(rel, href){
+    var link = document.querySelector('link[rel="' + rel + '"]');
+    if (!link) { link = document.createElement('link'); link.rel = rel; document.head.appendChild(link); }
+    link.href = href;
+  }
+
+  // Confirm the file exists before pointing the tab at it, and fall back
+  // to the other extension if it does not. A broken favicon href leaves
+  // some browsers showing a blank page icon.
+  var probe = new Image();
+  probe.onload = function(){ setIcon('icon', path); setIcon('apple-touch-icon', path); };
+  probe.onerror = function(){
+    var alt = siblingExt(path);
+    if (!alt) return;
+    var probe2 = new Image();
+    probe2.onload = function(){ setIcon('icon', alt); setIcon('apple-touch-icon', alt); };
+    probe2.src = alt;
+  };
+  probe.src = path;
+}
+
 function applyRepIdentity(){
   var rep = SITE_CONFIG.rep;
   if (!rep || !rep.photo) return;
 
   var intro = document.getElementById('repIntro');
   var introImg = document.getElementById('repPhotoIntro');
-  introImg.src = rep.photo;
-  introImg.alt = 'Photo of ' + (rep.name || 'your consultant');
+  repImage(introImg, rep.photo, rep.name);
   document.getElementById('repNameIntro').textContent = rep.name ? ("Hi, I'm " + rep.name + '.') : SITE_CONFIG.installer.businessName;
   document.getElementById('repLineIntro').textContent = rep.introLine || '';
   intro.style.display = 'flex';
 
   var resImg = document.getElementById('repPhotoResult');
-  resImg.src = rep.photo;
-  resImg.alt = 'Photo of ' + (rep.name || 'your consultant');
+  repImage(resImg, rep.photo, rep.name);
   document.getElementById('repNameResult').textContent = rep.name ? ('Your assessment, from ' + rep.name) : ('Your assessment from ' + SITE_CONFIG.installer.businessName);
   document.getElementById('repTitleResult').textContent = rep.title || SITE_CONFIG.installer.businessName;
 }
@@ -1702,6 +1763,14 @@ function lighten(hex, amount){
   });
 }
 
+// Mixes a colour toward black. The counterpart to lighten, used to pull
+// a pale brand colour down until it is readable as text.
+function darken(hex, amount){
+  const c = hexToRgb(hex);
+  if (!c) return hex;
+  return rgbToHex({ r: c.r * (1 - amount), g: c.g * (1 - amount), b: c.b * (1 - amount) });
+}
+
 function contrastRatio(a, b){
   const la = luminance(a), lb = luminance(b);
   const hi = Math.max(la, lb), lo = Math.min(la, lb);
@@ -1713,11 +1782,50 @@ function contrastRatio(a, b){
 // the result page and a light one does not get bleached out.
 function accentOnDark(primary, dark){
   let best = primary;
-  for (let step = 0; step <= 16; step++) {
+  for (let step = 0; step <= 20; step++) {
     best = lighten(primary, step * 0.05);
     if (contrastRatio(best, dark) >= 4.5) return best;
   }
   return best;
+}
+
+// primaryDark is used as TEXT, on the pale badge and the correction
+// link, as well as for button hover. A brand whose dark shade is
+// actually pale, which happens more often than you would think, would
+// otherwise render those almost invisible. Darkening is safe for the
+// hover use too, so this is corrected rather than warned about.
+function textOnLight(color, background){
+  let best = color;
+  for (let step = 0; step <= 16; step++) {
+    best = darken(color, step * 0.05);
+    if (contrastRatio(best, background) >= 4.5) return best;
+  }
+  return best;
+}
+
+// Prints a contrast report when the page is opened with ?brandcheck=1.
+// Quicker than eyeballing a palette, and it names the value to change.
+function brandCheck(){
+  if (!/[?&]brandcheck=1/.test(window.location.search)) return;
+  const cs = getComputedStyle(document.documentElement);
+  const v = n => cs.getPropertyValue(n).trim();
+  const rows = [
+    ['white on navy (hero, result page)',      '#FFFFFF', v('--navy')],
+    ['white on navy2 (result cards)',          '#FFFFFF', v('--navy-2')],
+    ['button label on primary',                v('--on-primary'), v('--blue')],
+    ['primaryDark as text on wash',            v('--blue-dark'), v('--wash')],
+    ['primaryDark as text on blueWash',        v('--blue-dark'), v('--blue-wash')],
+    ['primaryLight on navy',                   v('--primary-light'), v('--navy')],
+    ['muted text on dark surfaces',            v('--on-dark-muted'), v('--navy-2')],
+  ];
+  console.log('%cBrand contrast check', 'font-weight:bold;font-size:14px');
+  console.table(rows.map(r => ({
+    check: r[0], foreground: r[1], background: r[2],
+    ratio: Math.round(contrastRatio(r[1], r[2]) * 100) / 100,
+    verdict: contrastRatio(r[1], r[2]) >= 4.5 ? 'ok' : 'too low',
+  })));
+  const navyGap = contrastRatio('#FFFFFF', v('--navy'));
+  if (navyGap < 4.5) console.warn('navy is too light to carry white text. Pick a darker value.');
 }
 
 function applyBrand(){
@@ -1732,8 +1840,16 @@ function applyBrand(){
   Object.keys(map).forEach(k => { if (map[k]) root.style.setProperty(k, map[k]); });
 
   if (b.primary) {
-    root.style.setProperty('--on-primary', luminance(b.primary) > 0.55 ? '#0F1B26' : '#FFFFFF');
+    // Whichever of the two actually reads better on this colour. A
+    // luminance threshold gets mid-tone oranges and teals wrong, where
+    // neither option is comfortable and the brighter one loses.
+    const onWhite = contrastRatio('#FFFFFF', b.primary);
+    const onDark  = contrastRatio('#0F1B26', b.primary);
+    root.style.setProperty('--on-primary', onDark > onWhite ? '#0F1B26' : '#FFFFFF');
     root.style.setProperty('--primary-light', b.primaryLight || accentOnDark(b.primary, b.navy || '#001B3D'));
+  }
+  if (b.primaryDark) {
+    root.style.setProperty('--blue-dark', textOnLight(b.primaryDark, b.wash || '#EEF3F8'));
   }
   if (b.navy2 || b.navy) {
     root.style.setProperty('--on-dark-muted', b.onDarkMuted || lighten(b.navy2 || b.navy, 0.74));
@@ -2638,7 +2754,16 @@ function renderReportHead(lead){
   var d = new Date();
   var stamp = '' + d.getFullYear() + String(d.getMonth()+1).padStart(2,'0') + String(d.getDate()).padStart(2,'0');
   var suffix = (document.getElementById('whatsapp').value || '0000').replace(/[^0-9]/g,'').slice(-4);
-  document.getElementById('rg-report-id').textContent = '#GA-' + stamp + '-' + suffix;
+  // Prefix comes from reportPrefix, or the installer's initials, so a
+  // duplicated instance does not hand out another installer's report
+  // numbers. Falls back to REF when neither is usable.
+  var prefix = (SITE_CONFIG.reportPrefix || '').trim().toUpperCase();
+  if (!prefix) {
+    prefix = (SITE_CONFIG.installer.businessName || '')
+      .replace(/[^A-Za-z ]/g, ' ').trim().split(/\s+/)
+      .map(function(w){ return w.charAt(0); }).join('').slice(0, 3).toUpperCase();
+  }
+  document.getElementById('rg-report-id').textContent = '#' + (prefix || 'REF') + '-' + stamp + '-' + suffix;
   document.getElementById('rg-report-for').textContent = 'Prepared for ' + lead.fn + '  ' + lead.cityName;
 }
 
