@@ -1,4 +1,4 @@
-[Uploading README.md…]()
+[README.md](https://github.com/user-attachments/files/32510950/README.md)
 # greenerafrik-8gate
 
 GreenerAfrik Energies instance of the Tubalcain 8-Gate qualification system.
@@ -99,6 +99,87 @@ against, and never counts toward the 30-in-30 guarantee.
 
 Leads sent before this change carry no `billable` field, so treat a
 missing `billable` as `true`.
+
+## Hero copy
+
+`SITE_CONFIG.hero` sets the top of the page so it can mirror the ad
+creative word for word. The ad earned the click, so the first screen
+should look like the same offer from the same person.
+
+```js
+hero: {
+  badge: "",                       // small pill above the photo; empty hides it
+  headlineLead: "Spending ₦50,000+",
+  headlineHighlight: "On Power Every Month?",   // accent colour, own line
+  headlineTail: "I Can Help.",
+  sub: "Answer 9 questions about your home, ...",
+  chips: ["Pay Small Small", "7-Year Installation Guarantee", "..."],
+},
+```
+
+`rep.introLine` is the second line of the speech bubble beside the photo,
+under "Hi, I'm [rep.name]." Match it to the bubble on the ad.
+
+On phones the hero is compacted so the photo, the headline and the start
+of Question 1 fit on the first screen, and the page no longer scrolls on
+arrival. Before this, it jumped down to Question 1 and pushed the rep's
+face, and on smaller screens the headline, off the top.
+
+## Number confirm step
+
+After a valid form, the page reads the WhatsApp number back ("Is this your
+WhatsApp number? 0803 123 4567") before anything is sent. Edit reopens the
+field; changing the number hides the box again.
+
+Numbers that look like samples are refused with their own message: a run
+of one digit, a counting sequence such as 08012345678, or a copied example.
+The placeholder no longer shows a sample number people could copy.
+
+This catches typos and lazy fakes. It does not prove the number is real;
+only an SMS code would do that.
+
+## Returning visitors
+
+A visitor who already submitted sees "Welcome back, [name]" with their
+package, price, size, payback and monthly saving, and a WhatsApp button
+using the same message as their original result. The summary is kept only
+in their own browser, inside the lockout record, and expires with it.
+
+New GA4 events: `number_confirm_shown`, `number_confirmed`,
+`number_edit_clicked`. The gap between shown and confirmed is how many
+people back out at the read-back.
+
+## Telling installers apart in GA4
+
+Every event from the page carries two extra parameters, `installer_id`
+(from `SITE_CONFIG.installerId`) and `installer_name` (the business name).
+They are set on the GA4 config, so GA4's own automatic events
+(`page_view`, `session_start`, `scroll`, `click`) carry them too, not only
+the qualifier's custom events.
+
+**Register them once or GA4 will not show them.** Admin, then Custom
+definitions, then Create custom dimension. Make two, both with scope
+**Event**: `installer_id` and `installer_name`. Registration is not
+retroactive: it only covers events from the day you create it.
+
+After that, add `installer_id` as a secondary dimension on any report,
+or as a comparison, and each campaign reads separately. Keep
+`installerId` unique per instance; two installers sharing one would be
+reported as one.
+
+## Telling installers apart in Meta
+
+Every instance fires the same pixel, so every pixel event carries the same
+two parameters, `installer_id` and `installer_name`. That covers
+`PageView`, `Lead`, `UnqualifiedContact` and `RetryLeadFlagged`. `Lead`
+now also sends `currency: NGN` alongside its value, which Meta needs to
+report the value correctly.
+
+To split results by installer in Meta, create a custom conversion in
+Events Manager: pick the `Lead` event and add the rule
+`installer_id` equals `greenerafrik-ibadan`. One per installer. The same
+parameter works in custom audience rules, so you can build an audience of
+one installer's visitors.
 
 # Branding
 
