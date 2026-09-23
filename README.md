@@ -1,4 +1,4 @@
-[README.md](https://github.com/user-attachments/files/32510950/README.md)
+[README.md](https://github.com/user-attachments/files/32555517/README.md)
 # greenerafrik-8gate
 
 GreenerAfrik Energies instance of the Tubalcain 8-Gate qualification system.
@@ -180,6 +180,41 @@ Events Manager: pick the `Lead` event and add the rule
 `installer_id` equals `greenerafrik-ibadan`. One per installer. The same
 parameter works in custom audience rules, so you can build an audience of
 one installer's visitors.
+
+## How the buyer wants to be reached
+
+Question 9 asks the buyer to pick one: **WhatsApp message**, **WhatsApp
+call** or **phone call**. The choice is required, and it changes three
+things on the page:
+
+- the number field is labelled for the channel they picked
+- a link appears offering a second number for the other channel, hidden
+  until they tap it, and empty for most people
+- the consent line rewrites itself, so a buyer who picks a phone call
+  agrees to a phone call rather than to WhatsApp
+
+Why it exists: a Nigerian number can be alive on WhatsApp and dead to
+calls, because WhatsApp stays registered long after a SIM stops working.
+An installer who only WhatsApp-calls with permission also gets that
+permission in writing, timestamped, inside the lead.
+
+Three new fields in the lead:
+
+| Field | What it holds |
+| --- | --- |
+| `contactMethod` | `whatsapp-message`, `whatsapp-call` or `phone-call` |
+| `contactMethodLabel` | The same thing in words, for the lead email |
+| `altPhone` | The second number, or empty |
+| `altPhoneType` | `phone` or `whatsapp`, what the second number is for |
+
+`contactConsentText` already carried the exact wording the buyer agreed
+to, and now reflects the channel they chose.
+
+**Add these to the lead email in Make.com**, or the installer will not see
+them. New GA4 events: `contact_method_selected`, `contact_method_changed`
+and `alt_number_opened`.
+
+A second number is rejected if it is invalid, or the same as the first.
 
 # Branding
 
