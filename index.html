@@ -837,6 +837,36 @@ svg.icon{display:block;flex-shrink:0;}
   .hero-chip{font-size:11px;padding:5px 9px;}
   .trust-row.chips{gap:6px;}
 }
+/* ── CONTACT PREFERENCE ─────────────────────────────────────────── */
+.method-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.method{
+  background:var(--wash);border:1.5px solid var(--border);border-radius:12px;
+  padding:11px 8px;min-height:62px;cursor:pointer;user-select:none;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+  text-align:center;transition:all 0.15s ease;
+}
+.method svg{width:19px;height:19px;stroke:var(--muted);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+.method-text{font-size:12px;font-weight:700;color:var(--body);line-height:1.25;}
+.method.selected{border-color:var(--blue);background:var(--blue-wash);box-shadow:0 0 0 1px var(--blue);}
+.method.selected svg{stroke:var(--blue-dark);}
+.method.selected .method-text{color:var(--navy);}
+.method-row.method-invalid .method{border-color:var(--negative);}
+
+.alt-toggle{
+  display:none;background:none;border:none;cursor:pointer;padding:0;
+  margin:-6px 0 14px;font-family:'Manrope',sans-serif;
+  font-size:13.5px;font-weight:700;color:var(--blue-dark);
+  text-decoration:underline;text-underline-offset:3px;
+}
+.alt-toggle.show{display:inline-block;}
+.alt-wrap{display:none;}
+.alt-wrap.show{display:block;animation:qIn 0.22s ease;}
+.alt-hint{font-size:12.5px;color:var(--muted);margin:-10px 0 12px;line-height:1.5;}
+
+@media(max-width:360px){
+  .method-row{grid-template-columns:1fr 1fr;}
+  .method-row .method:last-child{grid-column:span 2;flex-direction:row;min-height:48px;}
+}
 </style>
 </head>
 <body>
@@ -1045,9 +1075,26 @@ svg.icon{display:block;flex-shrink:0;}
   <input type="text" class="text-input" id="firstName" placeholder="e.g. Emeka" autocomplete="given-name">
   <div class="field-error" id="err-firstName">Please enter a valid name (letters only, at least 2 characters).</div>
 
-  <label class="input-label">WhatsApp Number</label>
+  <!-- Asked before the number so the field below can name the right one.
+       A buyer reached the way they asked to be reached answers; the same
+       buyer rung when they wanted a message often does not. -->
+  <label class="input-label" id="methodLabel">How should we reach you?</label>
+  <div class="method-row" id="methodRow" role="radiogroup" aria-labelledby="methodLabel"></div>
+  <div class="field-error" id="err-method">Please choose how you would like to be contacted.</div>
+
+  <label class="input-label" id="primaryNumLabel">WhatsApp Number</label>
   <input type="tel" class="text-input" id="whatsapp" placeholder="Your WhatsApp number" inputmode="tel" autocomplete="tel">
   <div class="field-error" id="err-whatsapp">Please enter a valid Nigerian phone number.</div>
+
+  <!-- Second number stays hidden until asked for. Most people use one
+       number for both, and a permanent second field asks everyone to
+       wonder why two are needed. -->
+  <button type="button" class="alt-toggle" id="altToggle"></button>
+  <div class="alt-wrap" id="altWrap">
+    <label class="input-label" id="altNumLabel"></label>
+    <input type="tel" class="text-input" id="altPhone" placeholder="Optional" inputmode="tel" autocomplete="tel">
+    <div class="field-error" id="err-altPhone">Please enter a valid Nigerian phone number, or leave it empty.</div>
+  </div>
 
   <label class="input-label">Your City / Location</label>
   <input type="text" class="text-input" id="location" placeholder="e.g. Lagos, Abuja, Port Harcourt..." autocomplete="address-level2">
@@ -1064,7 +1111,7 @@ svg.icon{display:block;flex-shrink:0;}
   <div class="confirm-box" id="confirmBox" role="group" aria-labelledby="confirmQ">
     <div class="confirm-q" id="confirmQ">Is this your WhatsApp number?</div>
     <div class="confirm-num" id="confirmNum"></div>
-    <div class="confirm-note">Your result and package options go to this number. If it is wrong, nobody can reach you.</div>
+    <div class="confirm-note" id="confirmNote">Your result and package options go to this number. If it is wrong, nobody can reach you.</div>
     <div class="confirm-actions">
       <button type="button" class="confirm-yes" id="confirmYes">Yes, show my result <span>→</span></button>
       <button type="button" class="confirm-edit" id="confirmEdit">Edit number</button>
@@ -1397,7 +1444,7 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('heroBusinessName').textContent = SITE_CONFIG.installer.businessName;
   document.getElementById('q2-hint').textContent = 'We currently serve ' + SITE_CONFIG.installer.cityLabel + '. This confirms ' + SITE_CONFIG.installer.businessName + ' covers your area.';
   document.getElementById('q9-hint').textContent = SITE_CONFIG.installer.businessName + ' will reach out on WhatsApp. Your details are never shared with third parties.';
-  document.getElementById('consentText').textContent = 'I agree to be contacted by ' + SITE_CONFIG.installer.businessName + ' on WhatsApp about my solar assessment.';
+  updateConsentText();
   document.getElementById('dq-location-body').textContent = 'We currently only serve ' + SITE_CONFIG.installer.cityLabel + '. We do not have coverage confirmed for your area at this time.';
   document.getElementById('rg-guarantee-note').textContent = SITE_CONFIG.installer.businessName + ' replies with package details soon';
 
@@ -1417,6 +1464,18 @@ document.addEventListener('DOMContentLoaded', () => {
     document.getElementById(id).addEventListener('input', checkQ9);
   });
   document.getElementById('whatsapp').addEventListener('input', hideConfirm);
+  buildContactMethods();
+  document.getElementById('altPhone').addEventListener('input', function(){
+    document.getElementById('err-altPhone').classList.remove('show');
+    hideConfirm(); checkQ9();
+  });
+  document.getElementById('altToggle').addEventListener('click', function(){
+    const wrap = document.getElementById('altWrap');
+    wrap.classList.add('show');
+    this.classList.remove('show');
+    document.getElementById('altPhone').focus({ preventScroll: true });
+    trackEvent('alt_number_opened', { event_label: 'Q9  second number opened', question_id: 'q9' });
+  });
   document.getElementById('confirmYes').addEventListener('click', function(){
     trackEvent('number_confirmed', { event_label: 'Q9  number confirmed', question_id: 'q9' });
     hideConfirm();
@@ -1545,6 +1604,137 @@ function applyHeroCopy(){
       chips.appendChild(el);
     });
   }
+}
+
+// ══════════════════════════════════════════════════════
+// CONTACT PREFERENCE
+// A number can be alive on WhatsApp and dead to calls, because WhatsApp
+// stays registered long after a SIM stops working. So the buyer says how
+// they want to be reached, and the installer is told rather than guessing.
+//
+// It also settles permission: an installer who only WhatsApp-calls with
+// consent has that consent in writing, timestamped, inside the lead.
+//
+// The labels below are the same for every installer, so they live here
+// rather than in SITE_CONFIG.
+// ══════════════════════════════════════════════════════
+const CONTACT_METHODS = [
+  { val: 'whatsapp-message',
+    text: 'WhatsApp<br>message',
+    label: 'WhatsApp message',
+    numberLabel: 'Your WhatsApp Number',
+    confirmQ: 'Is this your WhatsApp number?',
+    altPrompt: 'Prefer a call on a different number? Add it',
+    altLabel: 'Number to call (optional)',
+    altKind: 'phone',
+    consent: 'on WhatsApp',
+    icon: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>' },
+
+  { val: 'whatsapp-call',
+    text: 'WhatsApp<br>call',
+    label: 'WhatsApp call',
+    numberLabel: 'Your WhatsApp Number',
+    confirmQ: 'Is this your WhatsApp number?',
+    altPrompt: 'Prefer a normal call on a different number? Add it',
+    altLabel: 'Number to call (optional)',
+    altKind: 'phone',
+    consent: 'by WhatsApp, including a WhatsApp call,',
+    icon: '<svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/><path d="M9.6 9.1c.2-.4.5-.4.8-.4h.5c.2 0 .4 0 .6.4l.7 1.5c.1.3 0 .5-.1.7l-.4.4c-.1.2-.2.3-.1.5.3.6 1.1 1.4 1.7 1.7.2.1.4 0 .5-.1l.4-.4c.2-.2.4-.2.7-.1l1.5.7c.3.2.4.4.4.6v.5c0 .3 0 .6-.4.8-.3.2-.8.4-1.2.4-1.6 0-4.9-2.9-5.5-5.2-.1-.4 0-.9.2-1.2z"/></svg>' },
+
+  { val: 'phone-call',
+    text: 'Phone<br>call',
+    label: 'Phone call',
+    numberLabel: 'Your Phone Number',
+    confirmQ: 'Is this the number to call?',
+    altPrompt: 'Have a different WhatsApp number? Add it',
+    altLabel: 'WhatsApp number (optional)',
+    altKind: 'whatsapp',
+    consent: 'by phone call',
+    icon: '<svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.4 1.8.7 2.7a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.7.7a2 2 0 0 1 1.8 2.1z"/></svg>' },
+];
+
+function currentMethod(){
+  const v = state.answers.contactMethod;
+  return CONTACT_METHODS.filter(function(m){ return m.val === v; })[0] || null;
+}
+
+function buildContactMethods(){
+  const row = document.getElementById('methodRow');
+  CONTACT_METHODS.forEach(function(m){
+    const el = document.createElement('div');
+    el.className = 'method';
+    el.dataset.val = m.val;
+    el.setAttribute('role', 'radio');
+    el.setAttribute('aria-checked', 'false');
+    el.setAttribute('tabindex', '0');
+    el.innerHTML = m.icon + '<div class="method-text">' + m.text + '</div>';
+    el.addEventListener('click', function(){ selectContactMethod(m.val); });
+    el.addEventListener('keydown', function(ev){
+      if (ev.key === ' ' || ev.key === 'Enter') { ev.preventDefault(); selectContactMethod(m.val); }
+    });
+    row.appendChild(el);
+  });
+}
+
+function selectContactMethod(val){
+  const row = document.getElementById('methodRow');
+  row.querySelectorAll('.method').forEach(function(el){
+    const on = el.dataset.val === val;
+    el.classList.toggle('selected', on);
+    el.setAttribute('aria-checked', on ? 'true' : 'false');
+  });
+  row.classList.remove('method-invalid');
+  document.getElementById('err-method').classList.remove('show');
+
+  const first = !state.answers.contactMethod;
+  state.answers.contactMethod = val;
+  const m = currentMethod();
+
+  document.getElementById('primaryNumLabel').textContent = m.numberLabel;
+  document.getElementById('whatsapp').placeholder = m.numberLabel.replace('Your ', '');
+
+  // Reset the second number whenever the channel changes, because the
+  // question it answers has changed with it.
+  const toggle = document.getElementById('altToggle');
+  toggle.textContent = m.altPrompt;
+  toggle.classList.add('show');
+  document.getElementById('altNumLabel').textContent = m.altLabel;
+  document.getElementById('altWrap').classList.remove('show');
+  document.getElementById('altPhone').value = '';
+  document.getElementById('err-altPhone').classList.remove('show');
+
+  updateConsentText();
+  hideConfirm();
+  checkQ9();
+  // Question 9 is the last card, so nothing else saves after this. Without
+  // it, a visitor who reloads on the contact form loses the choice.
+  persistSession();
+
+  if (first) trackEvent('contact_method_selected', { event_label: m.label, content_id: val, question_id: 'q9' });
+  else trackEvent('contact_method_changed', { event_label: m.label, content_id: val, question_id: 'q9' });
+}
+
+// The consent line has to describe the channel the buyer actually chose,
+// or it is not consent to what happens next.
+function updateConsentText(){
+  const m = currentMethod();
+  document.getElementById('consentText').textContent =
+    'I agree to be contacted by ' + SITE_CONFIG.installer.businessName + ' ' +
+    (m ? m.consent : 'on WhatsApp') + ' about my solar assessment.';
+}
+
+function altPhoneValue(){
+  return document.getElementById('altPhone').value.trim();
+}
+
+// Empty is fine. Filled has to be a real number, and a different one.
+function altPhoneState(){
+  const v = altPhoneValue();
+  if (!v) return 'empty';
+  if (!isValidNGPhone(v)) return 'invalid';
+  const a = v.replace(/\D/g, '').replace(/^234/, '0');
+  const b = document.getElementById('whatsapp').value.trim().replace(/\D/g, '').replace(/^234/, '0');
+  return a === b ? 'same' : 'ok';
 }
 
 function applyRepIdentity(){
@@ -2593,7 +2783,15 @@ function hideConfirm(){
 function confirmNumber(){
   if (!showFieldErrors()) return;
   const wa = document.getElementById('whatsapp').value.trim();
+  const m = currentMethod();
   document.getElementById('confirmNum').textContent = formatNGPhone(wa);
+  document.getElementById('confirmQ').textContent = m ? m.confirmQ : 'Is this your WhatsApp number?';
+  const alt = altPhoneState() === 'ok' ? altPhoneValue() : '';
+  document.getElementById('confirmNote').textContent = m
+    ? ((alt ? (m.altLabel.replace(' (optional)', '') + ': ' + formatNGPhone(alt) + '. ') : '') +
+       'Your result and package options go to this number by ' + m.label +
+       '. If it is wrong, nobody can reach you.')
+    : 'Your result and package options go to this number. If it is wrong, nobody can reach you.';
   document.getElementById('confirmBox').classList.add('show');
   document.getElementById('q9-next').style.display = 'none';
   document.getElementById('confirmYes').focus({ preventScroll: true });
@@ -2611,7 +2809,9 @@ function checkQ9(){
   // form is to pass the person's details to a named third-party installer.
   // Without agreement there is no lawful basis to deliver the lead, and a
   // lead who hasn't agreed to contact isn't a deliverable lead anyway.
-  btn.disabled = !(NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent);
+  const altState = altPhoneState();
+  btn.disabled = !(NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent
+    && !!state.answers.contactMethod && (altState === 'empty' || altState === 'ok'));
 }
 
 function showFieldErrors(){
@@ -2628,7 +2828,19 @@ function showFieldErrors(){
   const consent = document.getElementById('contactConsent').checked;
   document.getElementById('err-consent').classList.toggle('show', !consent);
   document.getElementById('consentRow').classList.toggle('consent-invalid', !consent);
-  return NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent;
+  const methodOk = !!state.answers.contactMethod;
+  document.getElementById('err-method').classList.toggle('show', !methodOk);
+  document.getElementById('methodRow').classList.toggle('method-invalid', !methodOk);
+
+  const altState = altPhoneState();
+  const altErr = document.getElementById('err-altPhone');
+  altErr.textContent = altState === 'same'
+    ? 'That is the same number you entered above. Leave it empty if you only use one.'
+    : 'Please enter a valid Nigerian phone number, or leave it empty.';
+  altErr.classList.toggle('show', altState === 'invalid' || altState === 'same');
+
+  return NAME_RE.test(fn) && isValidNGPhone(wa) && CITY_RE.test(loc) && consent
+    && methodOk && (altState === 'empty' || altState === 'ok');
 }
 
 // ══════════════════════════════════════════════════════
@@ -2677,6 +2889,10 @@ function restoreSession(){
     const btn = document.getElementById(qId + '-next');
     if (btn) btn.disabled = false;
   });
+
+  // The contact preference is not an option card either, so it restores
+  // on its own and rebuilds everything that follows from it.
+  if (state.answers.contactMethod) selectContactMethod(state.answers.contactMethod);
 
   // The location answer lives on state.answers.city, not on a q-card,
   // so it restores separately  including the typed Ibadan area.
@@ -2849,6 +3065,15 @@ async function submitForm(){
     contactConsent: true,
     contactConsentText: document.getElementById('consentText').textContent,
     contactConsentAt: new Date().toISOString(),
+
+    // ── HOW TO REACH THEM ──
+    // contactMethod is what the buyer asked for. altPhone is a second
+    // number they volunteered, empty for most. A lead contacted the way
+    // it asked to be contacted is the one that answers.
+    contactMethod: state.answers.contactMethod || null,
+    contactMethodLabel: (currentMethod() || {}).label || null,
+    altPhone: altPhoneState() === 'ok' ? altPhoneValue() : null,
+    altPhoneType: altPhoneState() === 'ok' ? ((currentMethod() || {}).altKind || null) : null,
     packageRange, budgetRange, packageBracketTag: pkgAns?.tagged || null,
     timeline: timelineLabel, competitorStatus,
     paymentMethod: paymentAns,
